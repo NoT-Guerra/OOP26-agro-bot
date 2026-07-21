@@ -35,6 +35,16 @@ public interface Grid {
     Optional<Tile> getTile(Position position);
 
     /**
+     * immposta o sostituisce la Tile alla coordinata (x, y)
+     * 
+     * @param x coordinata X
+     * @param y coordinata Y
+     * @param tile la nuova casella
+     * @return true se l'inserimento ha avuto successo, false se le coordinate non sono valide
+     */
+    boolean setTile(int x, int y, Tile tile);
+
+    /**
      * verifica se una coordinata (x, y) rientra nei limiti della griglia
      * 
      * @param x coordinata X
