@@ -1,5 +1,7 @@
 package it.unibo.agrobot.model;
 
+import java.util.Optional;
+
 /**
  * rappresenta l'interfaccia per una singola casella della griglia di gioco.
  */
@@ -40,4 +42,24 @@ public interface Tile {
      * @return true se l'irrigazione ha avuto successo, false altrimenti
      */
     boolean irrigate();
+
+    /**
+     * pianta una coltura nella zolla
+     * 
+     * @param crop la coltura da piantare
+     * @return true se la semina ha avuto successo, false altrimenti
+     */
+    boolean plant(Crop crop);
+
+    /**
+     * raccoglie la coltura presente nella zolla
+     * 
+     * @return un Optional contenente la coltura se era matura, Optional.empty() altrimenti
+     */
+    Optional<Crop> harvest();
+
+    /**
+     * @return un Optional contenente la coltura attualmente piantata, solo se presente, altrimenti Optional vuoto
+     */
+    Optional<Crop> getCrop();
 }
