@@ -56,4 +56,48 @@ class GridTest {
         assertFalse(grid.isInBounds(new Position(5.0, 5.0))); // entrambe fuori
         assertFalse(grid.isInBounds(null));     // posizione nulla
     }
+
+    /**
+     * verifica il recupero delle tile dalla griglia, sia in posizione valida che fuori dai limiti
+     */
+    @Test
+    void testGetTile() {
+        Grid grid = new GridImpl(3, 3);
+
+        // recupero tile in posizione valida (1,1)
+        Optional<Tile> validTile = grid.getTile(1, 1);
+        assertTrue(validTile.isPresent());
+        // la posizione della tile deve corrispondere a quella richiesta con tolleranza per i double
+        assertEquals(1.0, validTile.get().getPosition().getX(), 0.001);
+        assertEquals(1.0, validTile.get().getPosition().getY(), 0.001);
+
+        // richiesta fuori dai limiti
+        Optional<Tile> invalidTile = grid.getTile(3, 3);
+        assertFalse(invalidTile.isPresent());
+
+        // richiesta con Position fuori dai limiti
+        Optional<Tile> invalidPosition = grid.getTile(new Position(-1, 0));
+        assertFalse(invalidPosition.isPresent());
+    }
+
+    /**
+     * verifica l'inserimento di una tile nella griglia
+     */
+    @Test
+    void testSetTile() {
+        Grid grid = new GridImpl(2, 2);
+        
+        // creo una tile di tipo hangar in posizione (1,1)
+        Tile hangar = new TileImpl(new Position(1, 1), TileType.HANGAR);
+        assertTrue(grid.setTile(1, 1, hangar));
+
+        Optional<Tile> tileOpt = grid.getTile(1, 1);
+        assertTrue(tileOpt.isPresent());
+        // verifico che il tipo sia effettivamente HANGAR
+        assertEquals(TileType.HANGAR, tileOpt.get().getType());
+
+        // provo a inserire una tile fuori dai limiti
+        Tile well = new TileImpl(new Position(2, 2), TileType.WELL);
+        assertFalse(grid.setTile(2, 2, well));
+    }
 }
