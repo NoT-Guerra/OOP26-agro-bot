@@ -57,4 +57,32 @@ public class GridImpl implements Grid {
         int y = (int) Math.round(position.getY());
         return isInBounds(x, y);
     }
+
+        @Override
+    public Optional<Tile> getTile(int x, int y) {
+        if (!isInBounds(x, y)) {
+            return Optional.empty();
+        }
+        return Optional.of(this.tiles[x][y]);
+    }
+
+    @Override
+    public Optional<Tile> getTile(Position position) {
+        if (position == null) {
+            return Optional.empty();
+        }
+        int x = (int) Math.round(position.getX());
+        int y = (int) Math.round(position.getY());
+        return getTile(x, y);
+    }
+
+    @Override
+    public boolean setTile(int x, int y, Tile tile) {
+        Objects.requireNonNull(tile, "Tile cannot be null");
+        if (!isInBounds(x, y)) {
+            return false;
+        }
+        this.tiles[x][y] = tile;
+        return true;
+    }
 }
