@@ -1,4 +1,4 @@
-# agro-bot-progetto-oop
+# OOP26-agro-bot
 
 Il gruppo si pone come obiettivo quello di realizzare un videogioco chiamato "Agro-Bot", un titolo gestionale con visuale 2D top-down, incentrato sulla gestione di una farm futuristica tramite l'uso di un drone agricolo comandato manualmente dal giocatore.
 
