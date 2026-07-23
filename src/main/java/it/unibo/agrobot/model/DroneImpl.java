@@ -15,7 +15,7 @@ public class DroneImpl implements Drone {
     //variabili per il movimento fluido
     private boolean moving;
     private Position targetPosition;
-    private static final double SPEED = 2.0; // Unità al secondo
+    private static final double SPEED = 2.0;
     
     //costante per il consumo base del movimento
     private static final double MOVEMENT_ENERGY_COST = 2.0;
