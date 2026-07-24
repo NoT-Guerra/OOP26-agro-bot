@@ -52,7 +52,7 @@ public class GameLoop implements Runnable {
         }
     }
 
-    private void update() {
+    protected void update() {
         // serve per aggiornare i vari oggetticon le funzioni di ognuno
     }
 }
