@@ -1,13 +1,5 @@
 package it.unibo.agrobot.view;
 
-import it.unibo.agrobot.model.Drone;
-import it.unibo.agrobot.model.DroneImpl;
-import it.unibo.agrobot.model.Position;
-import it.unibo.agrobot.model.Direction;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,11 +7,19 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import it.unibo.agrobot.model.Direction;
+import it.unibo.agrobot.model.Drone;
+import it.unibo.agrobot.model.DroneImpl;
+import it.unibo.agrobot.model.Position;
+
 /**
- * demo visiva per testare il rendering del drone
- * apre una finestra con una griglia e permette di muovere
- * il drone con i tasti W/A/S/D.
- * non e un test JUnit, e un programmino di verifica visiva
+ * demo visiva per testare il rendering del drone apre una finestra con una
+ * griglia e permette di muovere il drone con i tasti W/A/S/D. non e un test
+ * JUnit, e un programmino di verifica visiva
  */
 public class DroneViewDemo extends JPanel {
 
@@ -71,10 +71,18 @@ public class DroneViewDemo extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_W: demo.drone.move(Direction.UP); break;
-                    case KeyEvent.VK_S: demo.drone.move(Direction.DOWN); break;
-                    case KeyEvent.VK_A: demo.drone.move(Direction.LEFT); break;
-                    case KeyEvent.VK_D: demo.drone.move(Direction.RIGHT); break;
+                    case KeyEvent.VK_W:
+                        demo.drone.move(Direction.UP);
+                        break;
+                    case KeyEvent.VK_S:
+                        demo.drone.move(Direction.DOWN);
+                        break;
+                    case KeyEvent.VK_A:
+                        demo.drone.move(Direction.LEFT);
+                        break;
+                    case KeyEvent.VK_D:
+                        demo.drone.move(Direction.RIGHT);
+                        break;
                 }
             }
         });

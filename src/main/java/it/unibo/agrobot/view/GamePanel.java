@@ -15,6 +15,11 @@ public class GamePanel extends JPanel {
 
     private DroneView droneView;
 
+    /**
+     * Constructs the game panel with the specified drone view.
+     *
+     * @param droneView the view component responsible for drawing the drone
+     */
     public GamePanel(DroneView droneView) {
         this.droneView = droneView;
         setPreferredSize(new Dimension(GRID_COLS * TILE_SIZE, GRID_ROWS * TILE_SIZE));
@@ -22,6 +27,11 @@ public class GamePanel extends JPanel {
         setDoubleBuffered(true);
     }
 
+    /**
+     * Paints the grid and delegates the drawing of the drone to the DroneView.
+     *
+     * @param g the Graphics context in which to paint
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

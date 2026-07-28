@@ -10,6 +10,14 @@ import org.junit.jupiter.api.Test;
 
 class ConcurrencyTest {
 
+    /**
+     * Tests concurrent read and write operations on the inventory to ensure
+     * thread safety and prevent concurrent modification exceptions or
+     * deadlocks.
+     *
+     * @throws InterruptedException if the test is interrupted while waiting for
+     * threads to finish
+     */
     @Test
     void testInventoryConcurrency() throws InterruptedException {
         Inventory inventory = new Inventory(3);
@@ -72,6 +80,13 @@ class ConcurrencyTest {
         assertFalse(hasException.get(), "E' stata lanciata un'eccezione (es. ConcurrentModificationException)");
     }
 
+    /**
+     * Tests concurrent read and write operations on the grid to ensure thread
+     * safety and prevent race conditions or unexpected exceptions.
+     *
+     * @throws InterruptedException if the test is interrupted while waiting for
+     * threads to finish
+     */
     @Test
     void testGridConcurrency() throws InterruptedException {
         GridImpl grid = new GridImpl(10, 10);

@@ -1,25 +1,37 @@
 package it.unibo.agrobot;
+
 import it.unibo.agrobot.view.GamePanel;
 
 public class GameLoop implements Runnable {
+
     private static final int UPS_SET = 60;
     private static final int FPS_SET = 60;
-    
+
     private boolean running;
     private Thread logicThread;
     private Thread renderThread;
-    
+
     private GamePanel gamePanel;
 
+    /**
+     * Constructs a GameLoop with the specified game panel for rendering.
+     *
+     * @param gamePanel the panel to repaint during the render phase
+     */
     public GameLoop(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
+    /**
+     * Constructs a GameLoop without a view (test).
+     */
     public GameLoop() {
         this.gamePanel = null;
     }
 
-
+    /**
+     * Starts the game loop logic and rendering threads.
+     */
     public synchronized void start() {
         if (running) {
             return;
@@ -31,6 +43,10 @@ public class GameLoop implements Runnable {
         renderThread.start();
     }
 
+    /**
+     * Stops the game loop and safely waits for both the logic and rendering
+     * threads to terminate.
+     */
     public void stop() {
         if (!running) {
             return;
@@ -48,6 +64,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * Continuously updates the game state at the defined UPS.
+     */
     @Override
     public void run() {
         long previousTime = System.nanoTime();
@@ -74,6 +93,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * Continuously triggers the rendering of frames at the defined FPS.
+     */
     private void renderLoop() { // lo stesso ragionamento fatto per il thread principale, ma per il thread di rendering
         long previousTime = System.nanoTime();
         double timePerFrame = 1000000000.0 / FPS_SET;
@@ -103,6 +125,9 @@ public class GameLoop implements Runnable {
         // serve per aggiornare i vari oggetticon le funzioni di ognuno
     }
 
+    /**
+     * Triggers the rendering of the game view.
+     */
     protected void render() {
         if (gamePanel != null) {
             gamePanel.repaint();

@@ -8,16 +8,17 @@ import it.unibo.agrobot.view.GamePanel;
 import it.unibo.agrobot.view.MainFrame;
 
 public class App {
+
     public String getGreeting() {
         return "Welcome to Agro-Bot!";
     }
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        
+
         Drone drone = new DroneImpl(new Position(3.0, 3.0));
         DroneView droneView = new DroneView(drone);
-        
+
         GamePanel gamePanel = new GamePanel(droneView);
         MainFrame mainFrame = new MainFrame(gamePanel);
 
