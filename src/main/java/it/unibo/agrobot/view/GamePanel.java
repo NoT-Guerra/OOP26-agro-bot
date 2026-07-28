@@ -32,4 +32,25 @@ public class GamePanel extends JPanel {
         // pannello focusable per ricevere input da tastiera
         this.setFocusable(true);
     }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // puliamo il pannello prima di disegnare
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // disegna la griglia di gioco
+        if (this.gridView != null) {
+            this.gridView.draw(g2d);
+        }
+
+        // disegna il drone sopra la griglia
+        if (this.droneView != null && this.gridView != null) {
+            this.droneView.draw(g2d, this.gridView.getTileSize());
+        }
+        
+        // rilascia le risorse grafiche, per evitare memory leak
+        g2d.dispose();
+    }
 }
