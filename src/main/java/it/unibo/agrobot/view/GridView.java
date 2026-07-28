@@ -25,4 +25,26 @@ public class GridView {
         this.tileSize = tileSize;
         this.tileView = new TileView();
     }
+
+    /**
+     * metodo per disegnare l'intera griglia
+     * itera su tutte le caselle della griglia e usa TileView per disegnarle
+     * 
+     * @param g contesto grafico su cui disegnare la griglia
+     */
+    public void draw(Graphics2D g) {
+        for (int y = 0; y < grid.getHeight(); y++) {
+            for (int x = 0; x < grid.getWidth(); x++) {
+                Optional<Tile> tileOpt = grid.getTile(x, y);
+                if (tileOpt.isPresent()) {
+                    // calcolo delle coordinate in pixel
+                    int pixelX = x * tileSize;
+                    int pixelY = y * tileSize;
+                    
+                    // disegna la tile usando TileView
+                    tileView.draw(g, tileOpt.get(), pixelX, pixelY, tileSize);
+                }
+            }
+        }
+    }
 }
