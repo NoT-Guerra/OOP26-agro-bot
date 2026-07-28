@@ -1,4 +1,5 @@
 package it.unibo.agrobot;
+import it.unibo.agrobot.view.GamePanel;
 
 public class GameLoop implements Runnable {
     private static final int UPS_SET = 60;
@@ -7,6 +8,17 @@ public class GameLoop implements Runnable {
     private boolean running;
     private Thread logicThread;
     private Thread renderThread;
+    
+    private GamePanel gamePanel;
+
+    public GameLoop(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
+    public GameLoop() {
+        this.gamePanel = null;
+    }
+
 
     public synchronized void start() {
         if (running) {
@@ -92,6 +104,8 @@ public class GameLoop implements Runnable {
     }
 
     protected void render() {
-        // serve per il rendering grafico
+        if (gamePanel != null) {
+            gamePanel.repaint();
+        }
     }
 }
