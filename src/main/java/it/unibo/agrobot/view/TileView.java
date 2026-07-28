@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -22,6 +24,9 @@ public class TileView {
     private BufferedImage wateredImage;
     private BufferedImage hangarImage;
     private BufferedImage wellImage;
+    
+    // mappa per memorizzare le immagini delle colture in base al loro stato
+    private final Map<String, BufferedImage> cropImages = new HashMap<>();
 
     public TileView() {
         this.loadSprites();
@@ -29,20 +34,35 @@ public class TileView {
 
     private void loadSprites() {
         // carica le diverse immagini per gli stati del terreno e gli edifici
-        this.unplowedImage = loadAndCropImage("soil_unplowed.png");
-        this.plowedImage = loadAndCropImage("soil_plowed.png");
-        this.wateredImage = loadAndCropImage("soil_watered.png");
+        this.unplowedImage = loadImage("soil_unplowed.png", true);
+        this.plowedImage = loadImage("soil_plowed.png", true);
+        this.wateredImage = loadImage("soil_watered.png", true);
         
-        this.hangarImage = loadAndCropImage("hangar.png");
-        this.wellImage = loadAndCropImage("well.png");
+        this.hangarImage = loadImage("hangar.png", true);
+        this.wellImage = loadImage("well.png", true);
+        
+        // carica le immagini delle colture per ogni stato (seed, growing, mature, dead)
+        String[] cropNames = {"wheat", "corn"};
+        String[] cropStates = {"seed", "growing", "mature", "dead"};
+        
+        for (String name : cropNames) {
+            for (String state : cropStates) {
+                String key = name + "_" + state;
+                String fileName = key + ".png";
+                BufferedImage img = loadImage(fileName, false);
+                if (img != null) {
+                    this.cropImages.put(key, img);
+                }
+            }
+        }
     }
 
-    private BufferedImage loadAndCropImage(String fileName) {
+    private BufferedImage loadImage(String fileName, boolean shouldCrop) {
         try {
             InputStream stream = getClass().getClassLoader().getResourceAsStream(fileName);
             if (stream != null) {
                 BufferedImage rawImage = ImageIO.read(stream);
-                return autoCrop(rawImage);
+                return shouldCrop ? autoCrop(rawImage) : rawImage;
             }
         } catch (IOException e) {
             System.err.println("Impossibile caricare l'immagine: " + fileName);
@@ -140,19 +160,31 @@ public class TileView {
     }
 
     private void drawCrop(Graphics2D g, Crop crop, int x, int y, int size) {
-        Color cropColor = Color.GREEN;
-
-        switch (crop.getState()) {
-            case SEED -> cropColor = new Color(245, 222, 179);
-            case GROWING -> cropColor = new Color(144, 238, 144);
-            case MATURE -> cropColor = new Color(34, 139, 34);
-            case DEAD -> cropColor = new Color(105, 105, 105);
+        // troviamo l'immagine corrispondente alla coltura e al suo stato
+        String cropName = crop.getName().toLowerCase();
+        String cropState = crop.getState().name().toLowerCase();
+        String imageKey = cropName + "_" + cropState;
+        
+        BufferedImage cropImg = this.cropImages.get(imageKey);
+        
+        if (cropImg != null) {
+            // se esiste l'immagine della coltura, la disegniamo centrata nella tile
+            g.drawImage(cropImg, x, y, size, size, null);
+        } else {
+            // se manca l'immagine, disegniamo un cerchio colorato come fallback
+            Color cropColor = Color.GREEN;
+            switch (crop.getState()) {
+                case SEED -> cropColor = new Color(245, 222, 179);
+                case GROWING -> cropColor = new Color(144, 238, 144);
+                case MATURE -> cropColor = new Color(34, 139, 34);
+                case DEAD -> cropColor = new Color(105, 105, 105);
+            }
+    
+            g.setColor(cropColor);
+            int cropSize = size / 2;
+            int offsetX = x + (size - cropSize) / 2;
+            int offsetY = y + (size - cropSize) / 2;
+            g.fillOval(offsetX, offsetY, cropSize, cropSize);
         }
-
-        g.setColor(cropColor);
-        int cropSize = size / 2;
-        int offsetX = x + (size - cropSize) / 2;
-        int offsetY = y + (size - cropSize) / 2;
-        g.fillOval(offsetX, offsetY, cropSize, cropSize);
     }
 }
