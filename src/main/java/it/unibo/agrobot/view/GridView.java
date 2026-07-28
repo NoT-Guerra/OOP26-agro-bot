@@ -47,4 +47,13 @@ public class GridView {
             }
         }
     }
+
+    /**
+     * ritorna la dimensione di una tile in pixel
+     * 
+     * @return tileSize
+     */
+    public int getTileSize() {
+        return this.tileSize;
+    }
 }
