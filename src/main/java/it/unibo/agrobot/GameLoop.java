@@ -13,6 +13,9 @@ public class GameLoop implements Runnable {
 
     private GamePanel gamePanel;
 
+    // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
+    private final Object stateLock = new Object();
+
     /**
      * Constructs a GameLoop with the specified game panel for rendering.
      *
@@ -79,7 +82,10 @@ public class GameLoop implements Runnable {
             previousTime = currentTime;
 
             if (delta >= 1) {
-                update();
+                // sincronizziamo l'aggiornamento dello stato logico facendo in modo che il thread di rendering dovrà aspettare
+                synchronized (stateLock) {
+                    update();
+                }
                 delta--;
             }
 
@@ -107,7 +113,10 @@ public class GameLoop implements Runnable {
             previousTime = currentTime;
 
             if (delta >= 1) {
-                render();
+                // sincronizziamo la fase di rendering in modo che il thread logico non possa accedere ai dati del gioco
+                synchronized (stateLock) {
+                    render();
+                }
                 delta--;
             }
 
