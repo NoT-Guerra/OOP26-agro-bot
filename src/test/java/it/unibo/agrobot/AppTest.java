@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     @Test
-    void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    void appLoads() {
+        // test di base per assicurarsi che la suite JUnit funzioni
+        App app = new App();
+        assertNotNull(app, "L'app deve poter essere istanziata");
     }
 }

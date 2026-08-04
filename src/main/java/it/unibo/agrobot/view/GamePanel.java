@@ -1,51 +1,56 @@
 package it.unibo.agrobot.view;
 
-import java.awt.Color;
+import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
-import javax.swing.JPanel;
-
+/**
+ * gestisce la rappresentazione grafica del pannello di gioco
+ * estende JPanel e e ridefinisce paintComponent per disegnare la griglia e il drone
+ */
 public class GamePanel extends JPanel {
-
-    private static final int TILE_SIZE = 64;
-    private static final int GRID_COLS = 8;
-    private static final int GRID_ROWS = 8;
-
-    private DroneView droneView;
+    
+    private final GridView gridView;
+    private final DroneView droneView;
 
     /**
-     * Constructs the game panel with the specified drone view.
-     *
-     * @param droneView the view component responsible for drawing the drone
+     * costruisce il pannello di gioco
+     * 
+     * @param gridView vista dedicata alla griglia
+     * @param droneView vista dedicata al drone
+     * @param width larghezza in pixel della finestra
+     * @param height altezza in pixel della finestra
      */
-    public GamePanel(DroneView droneView) {
+    public GamePanel(GridView gridView, DroneView droneView, int width, int height) {
+        this.gridView = gridView;
         this.droneView = droneView;
-        setPreferredSize(new Dimension(GRID_COLS * TILE_SIZE, GRID_ROWS * TILE_SIZE));
-        setBackground(new Color(120, 180, 80));
-        setDoubleBuffered(true);
+        
+        // dimensioni preferite del pannello
+        this.setPreferredSize(new Dimension(width, height));
+        // pannello focusable per ricevere input da tastiera
+        this.setFocusable(true);
     }
 
-    /**
-     * Paints the grid and delegates the drawing of the drone to the DroneView.
-     *
-     * @param g the Graphics context in which to paint
-     */
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        super.paintComponent(g); // puliamo il pannello prima di disegnare
+
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2d.setColor(new Color(100, 160, 60));
-        for (int x = 0; x < GRID_COLS; x++) {
-            for (int y = 0; y < GRID_ROWS; y++) {
-                g2d.drawRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            }
+        // disegna la griglia di gioco
+        if (this.gridView != null) {
+            this.gridView.draw(g2d);
         }
 
-        if (droneView != null) {
-            droneView.draw(g2d, TILE_SIZE);
+        // disegna il drone sopra la griglia
+        if (this.droneView != null && this.gridView != null) {
+            this.droneView.draw(g2d, this.gridView.getTileSize());
         }
+        
+        // rilascia le risorse grafiche, per evitare memory leak
+        g2d.dispose();
     }
 }
