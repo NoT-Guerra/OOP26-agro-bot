@@ -1,28 +1,28 @@
 package it.unibo.agrobot.view;
 
-import it.unibo.agrobot.model.Drone;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+
+import it.unibo.agrobot.model.Drone;
+
 /**
- * si occupa di disegnare il drone sullo schermo
- * carica la img da file e lo disegna nella posizione corretta
- * convertendo le coordinate del model in pixel
+ * si occupa di disegnare il drone sullo schermo carica la img da file e lo
+ * disegna nella posizione corretta convertendo le coordinate del model in pixel
  */
 public class DroneView {
 
-    private Drone drone;
+    private final Drone drone;
     private BufferedImage spriteImage;
 
     /**
-     * crea la view del drone caricando lo sprite dal file drone.png
-     * se il file non viene trovato si usera un placeholder coloratoa caso
-     * 
+     * crea la view del drone caricando lo sprite dal file drone.png se il file
+     * non viene trovato si usera un placeholder coloratoa caso
+     *
      * @param drone il drone del model da disegnare
      */
     public DroneView(Drone drone) {
@@ -44,11 +44,12 @@ public class DroneView {
     }
 
     /**
-     * disegna il drone sullo schermo
-     * converte le coordinate del model in pixel moltiplicandole per la tileSize
-     * 
+     * disegna il drone sullo schermo converte le coordinate del model in pixel
+     * moltiplicandole per la tileSize
+     *
      * @param g il contesto grafico su cui disegnare
-     * @param tileSize la dimensione in pixel di una singola casella della griglia
+     * @param tileSize la dimensione in pixel di una singola casella della
+     * griglia
      */
     public void draw(Graphics2D g, int tileSize) {
         int pixelX = (int) (this.drone.getPosition().getX() * tileSize);
