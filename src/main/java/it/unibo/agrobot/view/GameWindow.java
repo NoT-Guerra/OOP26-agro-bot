@@ -28,8 +28,7 @@ public class GameWindow {
         // chiude l'applicazione quando la finestra viene chiusa
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        // Ievita la possibilità di ridimensionare la finestra per mantenere le proporzioni della griglia
-        this.frame.setResizable(false);
+        this.frame.setResizable(true);
 
         // aggiunge il pannello di gioco al frame
         this.frame.add(this.gamePanel);
