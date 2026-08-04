@@ -27,7 +27,7 @@ public class Wallet {
      *
      * @return il saldo corrente
      */
-    public double getBalance() {
+    public synchronized double getBalance() {
         return this.balance;
     }
 
@@ -36,7 +36,7 @@ public class Wallet {
      *
      * @param amount somma da aggiungere
      */
-    public void addFunds(double amount) {
+    public synchronized void addFunds(double amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Impossibile aggiungere un ammontare negativo.");
         }
@@ -50,7 +50,7 @@ public class Wallet {
      * @return true se la somma è stata dedotta con successo, false se i fondi
      * sono insufficienti
      */
-    public boolean deductFunds(double amount) {
+    public synchronized boolean deductFunds(double amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("Impossibile dedurre un ammontare negativo.");
         }
@@ -69,7 +69,7 @@ public class Wallet {
      * @return true se il saldo è uguale o superiore all'ammontare, false
      * altrimenti
      */
-    public boolean hasEnoughFunds(double amount) {
+    public synchronized boolean hasEnoughFunds(double amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("L'ammontare da verificare non può essere negativo.");
         }
