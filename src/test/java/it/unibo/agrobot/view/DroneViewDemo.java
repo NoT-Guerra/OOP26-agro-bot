@@ -28,7 +28,7 @@ public class DroneViewDemo extends JPanel {
     private static final int GRID_ROWS = 8;
 
     private Drone drone;
-    private DroneView droneView;
+    private final DroneView droneView;
 
     public DroneViewDemo() {
         this.drone = new DroneImpl(new Position(3.0, 3.0));
@@ -71,18 +71,14 @@ public class DroneViewDemo extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_W:
+                    case KeyEvent.VK_W ->
                         demo.drone.move(Direction.UP);
-                        break;
-                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_S ->
                         demo.drone.move(Direction.DOWN);
-                        break;
-                    case KeyEvent.VK_A:
+                    case KeyEvent.VK_A ->
                         demo.drone.move(Direction.LEFT);
-                        break;
-                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_D ->
                         demo.drone.move(Direction.RIGHT);
-                        break;
                 }
             }
         });
