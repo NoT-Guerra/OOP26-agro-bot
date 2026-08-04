@@ -33,7 +33,7 @@ public class Inventory {
      * @param type il tipo dell oggetto (CROP o SEED)
      * @return true se l oggetto e stato inserito, false se l inventario e pieno
      */
-    public boolean addItem(String itemName, ItemType type) {
+    public synchronized boolean addItem(String itemName, ItemType type) {
         //prima cerchiamo uno slot che ha gia lo stesso oggetto e non e pieno
         for (InventorySlot slot : this.slots) {
             if (!slot.isEmpty() && slot.getItemName().equals(itemName) && slot.getType() == type && !slot.isFull()) {
@@ -56,7 +56,7 @@ public class Inventory {
      * @param itemName il nome dell oggetto da rimuovere
      * @return true se l oggetto e stato trovato e rimosso, false altrimenti
      */
-    public boolean removeItem(String itemName) {
+    public synchronized boolean removeItem(String itemName) {
         for (InventorySlot slot : this.slots) {
             if (!slot.isEmpty() && slot.getItemName().equals(itemName)) {
                 return slot.removeItem();
@@ -72,7 +72,7 @@ public class Inventory {
      * @param itemName il nome dell oggetto da contare
      * @return il numero totale di oggetti con quel nome
      */
-    public int getItemCount(String itemName) {
+    public synchronized int getItemCount(String itemName) {
         int count = 0;
         for (InventorySlot slot : this.slots) {
             if (!slot.isEmpty() && slot.getItemName().equals(itemName)) {
@@ -86,14 +86,14 @@ public class Inventory {
      * aggiunge un nuovo slot vuoto all inventario.
      * utile per futuri upgrade acquistabili al mercato.
      */
-    public void addSlot() {
+    public synchronized void addSlot() {
         this.slots.add(new InventorySlot());
     }
 
     /**
      * @return il numero totale di slot nell inventario
      */
-    public int getSlotCount() {
+    public synchronized int getSlotCount() {
         return this.slots.size();
     }
 
@@ -101,7 +101,7 @@ public class Inventory {
      * @param index l indice dello slot da ottenere
      * @return lo slot alla posizione specificata
      */
-    public InventorySlot getSlot(int index) {
+    public synchronized InventorySlot getSlot(int index) {
         return this.slots.get(index);
     }
 
@@ -111,7 +111,7 @@ public class Inventory {
      * @param itemName il nome dell oggetto da cercare
      * @return il tipo dell oggetto se trovato, null altrimenti
      */
-    public ItemType findItemType(String itemName) {
+    public synchronized ItemType findItemType(String itemName) {
         for (InventorySlot slot : this.slots) {
             if (!slot.isEmpty() && slot.getItemName().equals(itemName)) {
                 return slot.getType();
