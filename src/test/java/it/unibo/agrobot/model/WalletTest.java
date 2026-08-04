@@ -17,6 +17,7 @@ class WalletTest {
     private Wallet wallet;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         wallet = new Wallet(100.0);
     }
@@ -53,7 +54,8 @@ class WalletTest {
         assertTrue(wallet.hasEnoughFunds(100.0), "Deve confermare la presenza di fondi per importi <= saldo");
         assertTrue(wallet.hasEnoughFunds(50.0), "Deve confermare la presenza di fondi per importi < saldo");
         assertFalse(wallet.hasEnoughFunds(150.0), "Deve negare la presenza di fondi per importi > saldo");
-        assertThrows(IllegalArgumentException.class, () -> wallet.hasEnoughFunds(-10.0), "Deve lanciare eccezione per importi negativi");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> wallet.hasEnoughFunds(-10.0), "Deve lanciare eccezione per importi negativi");
+        assertEquals("L'ammontare da verificare non può essere negativo.", e.getMessage());
     }
 
     @Test
