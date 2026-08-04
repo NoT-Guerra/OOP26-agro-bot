@@ -24,14 +24,16 @@ class WalletTest {
     @Test
     void testInitialBalance() {
         assertEquals(100.0, wallet.getBalance(), "Il saldo iniziale deve corrispondere a quanto impostato");
-        assertThrows(IllegalArgumentException.class, () -> new Wallet(-50.0), "Deve lanciare eccezione per saldo negativo");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Wallet(-50.0), "Deve lanciare eccezione per saldo negativo");
+        assertEquals("Il saldo iniziale non può essere negativo.", e.getMessage());
     }
 
     @Test
     void testAddFunds() {
         wallet.addFunds(50.0);
         assertEquals(150.0, wallet.getBalance(), "Il saldo dopo l'aggiunta deve essere incrementato correttamente");
-        assertThrows(IllegalArgumentException.class, () -> wallet.addFunds(-10.0), "Non deve essere possibile aggiungere importi negativi");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> wallet.addFunds(-10.0), "Non deve essere possibile aggiungere importi negativi");
+        assertEquals("Impossibile aggiungere un ammontare negativo.", e.getMessage());
     }
 
     @Test
@@ -42,7 +44,8 @@ class WalletTest {
         // deve fallire se i fondi vanno sotto zero (fondi non sufficienti)
         assertFalse(wallet.deductFunds(100.0), "La detrazione con fondi insufficienti deve restituire false");
         assertEquals(60.0, wallet.getBalance(), "Il saldo non deve cambiare se la detrazione fallisce");
-        assertThrows(IllegalArgumentException.class, () -> wallet.deductFunds(-10.0), "Non deve essere possibile detrarre importi negativi");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> wallet.deductFunds(-10.0), "Non deve essere possibile detrarre importi negativi");
+        assertEquals("Impossibile dedurre un ammontare negativo.", e.getMessage());
     }
 
     @Test
