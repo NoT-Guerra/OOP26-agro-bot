@@ -19,7 +19,7 @@ public class WaterTank {
 
     /**
      * aggiunge acqua al serbatoio senza superarne la capienza massima.
-     * 
+     *
      * @param amount quantità d'acqua da aggiungere
      */
     public void add(double amount) {
@@ -38,7 +38,7 @@ public class WaterTank {
 
     /**
      * rimuove acqua dal serbatoio fermandosi a zero se necessario
-     * 
+     *
      * @param amount quantità d'acqua da rimuovere
      */
     public void remove(double amount) {

@@ -1,9 +1,8 @@
 package it.unibo.agrobot.model;
 
 /**
- * implementazione dell'interfaccia Drone
- * Mantiene lo stato interno del drone come le coordinate e ne gestisce
- * l'aggiornamento durante la simulazione
+ * implementazione dell'interfaccia Drone Mantiene lo stato interno del drone
+ * come le coordinate e ne gestisce l'aggiornamento durante la simulazione
  */
 public class DroneImpl implements Drone {
 
@@ -11,12 +10,12 @@ public class DroneImpl implements Drone {
     private Battery battery;
     private WaterTank waterTank;
     private Inventory inventory;
-    
+
     //variabili per il movimento fluido
     private boolean moving;
     private Position targetPosition;
     private static final double SPEED = 2.0;
-    
+
     //costante per il consumo base del movimento
     private static final double MOVEMENT_ENERGY_COST = 2.0;
     //costante per il consumo delle azioni agricole
@@ -31,39 +30,47 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public double getBatteryLevel() {
+    public synchronized double getBatteryLevel() {
         return this.battery.getLevel();
     }
 
     @Override
-    public double getWaterLevel() {
+    public synchronized double getWaterLevel() {
         return this.waterTank.getLevel();
     }
 
     @Override
-    public Position getPosition() {
-        return this.position;
+    public synchronized Position getPosition() {
+        return new Position(this.position.getX(), this.position.getY());
     }
 
     @Override
-    public boolean isMoving() {
+    public synchronized boolean isMoving() {
         return this.moving;
     }
 
     @Override
-    public boolean move(Direction dir) {
+    public synchronized boolean move(Direction dir) {
         if (!this.moving && !this.battery.isDead()) {
             this.battery.decrease(MOVEMENT_ENERGY_COST);
             this.moving = true;
-            
+
             double targetX = this.position.getX();
             double targetY = this.position.getY();
-            
+
             switch (dir) {
-                case UP: targetY += 1.0; break;
-                case DOWN: targetY -= 1.0; break;
-                case LEFT: targetX -= 1.0; break;
-                case RIGHT: targetX += 1.0; break;
+                case UP:
+                    targetY += 1.0;
+                    break;
+                case DOWN:
+                    targetY -= 1.0;
+                    break;
+                case LEFT:
+                    targetX -= 1.0;
+                    break;
+                case RIGHT:
+                    targetX += 1.0;
+                    break;
             }
             this.targetPosition = new Position(targetX, targetY);
             return true;
@@ -72,20 +79,20 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public void updateState(double deltaTime) {
+    public synchronized void updateState(double deltaTime) {
         if (this.moving) {
             double distanceToTravel = SPEED * deltaTime;
-            
+
             double currentX = this.position.getX();
             double currentY = this.position.getY();
             double targetX = this.targetPosition.getX();
             double targetY = this.targetPosition.getY();
-            
+
             //calcolo distanza verso il target
             double dx = targetX - currentX;
             double dy = targetY - currentY;
             double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distanceToTravel >= distanceToTarget) {
                 //raggiunto o superato il target: allineamento alla griglia
                 this.position.setX(targetX);
@@ -102,16 +109,16 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public void plow() {
+    public synchronized void plow() {
         if (!this.battery.isDead()) {
             this.battery.decrease(ACTION_ENERGY_COST);
             //todo
-            //inserisci la logica di interazione col terreno 
+            //serisci la logica di interazione col terreno 
         }
     }
 
     @Override
-    public void harvest() {
+    public synchronized void harvest() {
         if (!this.battery.isDead()) {
             this.battery.decrease(ACTION_ENERGY_COST);
             // La logica effettiva di raccolta risorsa verrà inserita qui
@@ -119,7 +126,7 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public boolean irrigate() {
+    public synchronized boolean irrigate() {
         double IRRIGATION_WATER_COST = 10.0;
         if (!this.battery.isDead() && this.waterTank.getLevel() >= IRRIGATION_WATER_COST) {
             this.battery.decrease(ACTION_ENERGY_COST);
@@ -130,22 +137,22 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public boolean isDead() {
+    public synchronized boolean isDead() {
         return this.battery.isDead();
     }
 
     @Override
-    public void rechargeAtHangar() {
+    public synchronized void rechargeAtHangar() {
         this.battery.recharge();
     }
 
     @Override
-    public void rechargeWaterAtLake() {
+    public synchronized void rechargeWaterAtLake() {
         this.waterTank.fill();
     }
 
     @Override
-    public Inventory getInventory() {
+    public synchronized Inventory getInventory() {
         return this.inventory;
     }
 }

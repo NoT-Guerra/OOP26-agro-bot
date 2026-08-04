@@ -37,27 +37,27 @@ public class TileImpl implements Tile {
     }
 
     @Override
-    public Position getPosition() {
+    public synchronized Position getPosition() { // synchronized serve per far si che un solo thread alla volta possa accedere a questo metodo
         return this.position;
     }
 
     @Override
-    public TileType getType() {
+    public synchronized TileType getType() {
         return this.type;
     }
 
     @Override
-    public SoilState getSoilState() {
+    public synchronized SoilState getSoilState() {
         return this.soilState;
     }
 
     @Override
-    public void setSoilState(SoilState state) {
+    public synchronized void setSoilState(SoilState state) {
         this.soilState = Objects.requireNonNull(state, "SoilState cannot be null");
     }
 
     @Override
-    public boolean plow() {
+    public synchronized boolean plow() {
         if (this.type == TileType.SOIL && this.soilState == SoilState.UNPLOWED) {
             this.soilState = SoilState.PLOWED;
             return true;
@@ -66,7 +66,7 @@ public class TileImpl implements Tile {
     }
 
     @Override
-    public boolean irrigate() {
+    public synchronized boolean irrigate() {
         if (this.type == TileType.SOIL && (this.soilState == SoilState.PLOWED || this.soilState == SoilState.WATERED)) {
             this.soilState = SoilState.WATERED;
             this.crop.ifPresent(Crop::water);
@@ -76,7 +76,7 @@ public class TileImpl implements Tile {
     }
 
     @Override
-    public boolean plant(Crop crop) {
+    public synchronized boolean plant(Crop crop) {
         if (this.type == TileType.SOIL && 
             (this.soilState == SoilState.PLOWED || this.soilState == SoilState.WATERED) && 
             this.crop.isEmpty()) {
@@ -88,7 +88,7 @@ public class TileImpl implements Tile {
     }
 
     @Override
-    public Optional<Crop> harvest() {
+    public synchronized Optional<Crop> harvest() {
         if (this.crop.isPresent() && this.crop.get().isReadyToHarvest()) {
             Optional<Crop> harvested = this.crop;
             this.crop = Optional.empty();
@@ -107,7 +107,7 @@ public class TileImpl implements Tile {
     }
 
     @Override
-    public Optional<Crop> getCrop() {
+    public synchronized Optional<Crop> getCrop() {
         return this.crop;
     }
 }
