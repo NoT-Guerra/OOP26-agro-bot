@@ -12,7 +12,7 @@ public class GridView {
     
     private final Grid grid;
     private final TileView tileView;
-    private final int tileSize;
+    private int tileSize;
 
     /**
      * costruisce un oggetto GridView per visualizzare la griglia di gioco
@@ -26,6 +26,18 @@ public class GridView {
         this.tileView = new TileView();
     }
 
+    public void setTileSize(int newSize) {
+        this.tileSize = newSize;
+    }
+    
+    public int getCols() {
+        return this.grid.getWidth();
+    }
+    
+    public int getRows() {
+        return this.grid.getHeight();
+    }
+
     /**
      * metodo per disegnare l'intera griglia
      * itera su tutte le caselle della griglia e usa TileView per disegnarle
@@ -33,21 +45,31 @@ public class GridView {
      * @param g contesto grafico su cui disegnare la griglia
      */
     public void draw(Graphics2D g) {
+        // disegno il terreno (sfondo) per ogni tile
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
                 Optional<Tile> tileOpt = grid.getTile(x, y);
                 if (tileOpt.isPresent()) {
-                    // calcolo delle coordinate in pixel
                     int pixelX = x * tileSize;
                     int pixelY = y * tileSize;
-                    
-                    // disegna la tile usando TileView
-                    tileView.draw(g, tileOpt.get(), pixelX, pixelY, tileSize);
+                    tileView.drawGround(g, tileOpt.get(), pixelX, pixelY, tileSize);
+                }
+            }
+        }
+
+        // disegnogli oggetti
+        for (int y = 0; y < grid.getHeight(); y++) {
+            for (int x = 0; x < grid.getWidth(); x++) {
+                Optional<Tile> tileOpt = grid.getTile(x, y);
+                if (tileOpt.isPresent()) {
+                    int pixelX = x * tileSize;
+                    int pixelY = y * tileSize;
+                    tileView.drawObject(g, tileOpt.get(), pixelX, pixelY, tileSize);
                 }
             }
         }
     }
-
+    
     /**
      * ritorna la dimensione di una tile in pixel
      * 
