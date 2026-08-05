@@ -57,22 +57,22 @@ public class GridImpl implements Grid {
     }
 
     @Override
-    public int getWidth() {
+    public synchronized int getWidth() {
         return this.width;
     }
 
     @Override
-    public int getHeight() {
+    public synchronized int getHeight() {
         return this.height;
     }
 
     @Override
-    public boolean isInBounds(int x, int y) {
+    public synchronized boolean isInBounds(int x, int y) {
         return x >= 0 && x < this.width && y >= 0 && y < this.height;
     }
 
     @Override
-    public boolean isInBounds(Position position) {
+    public synchronized boolean isInBounds(Position position) {
         if (position == null) {
             return false;
         }
@@ -82,7 +82,7 @@ public class GridImpl implements Grid {
     }
 
     @Override
-    public Optional<Tile> getTile(int x, int y) {
+    public synchronized Optional<Tile> getTile(int x, int y) {
         if (!isInBounds(x, y)) {
             return Optional.empty();
         }
@@ -90,7 +90,7 @@ public class GridImpl implements Grid {
     }
 
     @Override
-    public Optional<Tile> getTile(Position position) {
+    public synchronized Optional<Tile> getTile(Position position) {
         if (position == null) {
             return Optional.empty();
         }
@@ -100,7 +100,7 @@ public class GridImpl implements Grid {
     }
 
     @Override
-    public boolean setTile(int x, int y, Tile tile) {
+    public synchronized boolean setTile(int x, int y, Tile tile) {
         Objects.requireNonNull(tile, "Tile cannot be null");
         if (!isInBounds(x, y)) {
             return false;
