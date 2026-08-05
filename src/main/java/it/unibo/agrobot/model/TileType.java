@@ -9,5 +9,7 @@ public enum TileType {
     /** pozzo d'acqua per la ricarica del serbatoio del drone */
     WELL,
     /** hangar per la ricarica della batteria del drone */
-    HANGAR
+    HANGAR,
+    /** tappeto erboso */
+    GRASS
 }
