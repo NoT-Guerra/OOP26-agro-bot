@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * gestisce l inventario completo del drone.
- * l inventario e composto da piu slot, ognuno dei quali puo contenere
- * un certo numero di oggetti dello stesso tipo.
+ * gestisce l inventario completo del drone. l inventario e composto da piu
+ * slot, ognuno dei quali puo contenere un certo numero di oggetti dello stesso
+ * tipo.
  */
 public class Inventory {
 
-    private List<InventorySlot> slots;
+    private final List<InventorySlot> slots;
 
     /**
      * crea un inventario con il numero di slot specificato.
-     * 
+     *
      * @param numSlots il numero di slot iniziali
      */
     public Inventory(int numSlots) {
@@ -25,10 +25,10 @@ public class Inventory {
     }
 
     /**
-     * aggiunge un oggetto nell inventario.
-     * prima cerca uno slot che contiene gia lo stesso oggetto e ha spazio,
-     * poi cerca uno slot vuoto. se non trova nulla restituisce false.
-     * 
+     * aggiunge un oggetto nell inventario. prima cerca uno slot che contiene
+     * gia lo stesso oggetto e ha spazio, poi cerca uno slot vuoto. se non trova
+     * nulla restituisce false.
+     *
      * @param itemName il nome dell oggetto da inserire
      * @param type il tipo dell oggetto (CROP o SEED)
      * @return true se l oggetto e stato inserito, false se l inventario e pieno
@@ -52,7 +52,7 @@ public class Inventory {
 
     /**
      * rimuove una unita dell oggetto specificato dall inventario.
-     * 
+     *
      * @param itemName il nome dell oggetto da rimuovere
      * @return true se l oggetto e stato trovato e rimosso, false altrimenti
      */
@@ -66,9 +66,9 @@ public class Inventory {
     }
 
     /**
-     * conta quanti oggetti con quel nome ci sono in tutto l inventario
-     * sommando le quantita di tutti gli slot.
-     * 
+     * conta quanti oggetti con quel nome ci sono in tutto l inventario sommando
+     * le quantita di tutti gli slot.
+     *
      * @param itemName il nome dell oggetto da contare
      * @return il numero totale di oggetti con quel nome
      */
@@ -83,8 +83,8 @@ public class Inventory {
     }
 
     /**
-     * aggiunge un nuovo slot vuoto all inventario.
-     * utile per futuri upgrade acquistabili al mercato.
+     * aggiunge un nuovo slot vuoto all inventario. utile per futuri upgrade
+     * acquistabili al mercato.
      */
     public synchronized void addSlot() {
         this.slots.add(new InventorySlot());
@@ -107,7 +107,7 @@ public class Inventory {
 
     /**
      * cerca il tipo di un oggetto presente nell inventario dato il suo nome
-     * 
+     *
      * @param itemName il nome dell oggetto da cercare
      * @return il tipo dell oggetto se trovato, null altrimenti
      */
