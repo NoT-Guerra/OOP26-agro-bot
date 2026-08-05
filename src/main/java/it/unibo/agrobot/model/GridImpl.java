@@ -26,10 +26,33 @@ public class GridImpl implements Grid {
         this.height = height;
         this.tiles = new Tile[width][height];
 
+        // calcolo della colonna di divisione tra le due aree (due terzi a sinistra, un terzo a destra)
+        int splitCol = (width * 2) / 3;
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                this.tiles[x][y] = new TileImpl(new Position(x, y), TileType.SOIL);
+                if (x >= splitCol) {
+                    // la parte destra solo tappeto erboso (GRASS)
+                    this.tiles[x][y] = new TileImpl(new Position(x, y), TileType.GRASS);
+                } else {
+                    // i 2/3 a sinistra sono zolle colvibili
+                    this.tiles[x][y] = new TileImpl(new Position(x, y), TileType.SOIL);
+                }
             }
+        }
+
+        // posiziono l'hangar nell'area di destra
+        int hangarX = width - 2;
+        int hangarY = 1;
+        if (hangarX >= splitCol && hangarY < height) {
+            this.tiles[hangarX][hangarY] = new TileImpl(new Position(hangarX, hangarY), TileType.HANGAR);
+        }
+
+        // posiziono il pozzo d'acqua
+        int wellX = width - 2;
+        int wellY = 4;
+        if (wellX >= splitCol && wellY < height && (wellX != hangarX || wellY != hangarY)) {
+            this.tiles[wellX][wellY] = new TileImpl(new Position(wellX, wellY), TileType.WELL);
         }
     }
 

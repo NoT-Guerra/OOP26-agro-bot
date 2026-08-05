@@ -97,65 +97,80 @@ public class TileView {
     }
 
     /**
-     * disegna una Tile
-     * 
+     * disegna il terreno (zolle o prato) della tile
      * @param g il contesto grafico su cui disegnare
      * @param tile la Tile da disegnare
      * @param x la coordinata x in pixel (angolo in alto a sinistra)
      * @param y la coordinata y in pixel (angolo in alto a sinistra)
      * @param size la dimensione in pixel della casella (larghezza e altezza)
      */
-    public void draw(Graphics2D g, Tile tile, int x, int y, int size) {
-        // disegna lo sfondo della tile in base al tipo e allo stato
-        drawBackground(g, tile, x, y, size);
+    public void drawGround(Graphics2D g, Tile tile, int x, int y, int size) {
+        // disegna l'erba di sfondo su tutte le celle
+        g.setColor(new Color(124, 204, 76)); // Un bel verde per l'erba
+        g.fillRect(x, y, size, size);
 
         // disegna l'eventuale coltura presente nella tile
         if (tile.getType() == TileType.SOIL) {
-            Optional<Crop> optionalCrop = tile.getCrop();
-            if (optionalCrop.isPresent()) {
-                drawCrop(g, optionalCrop.get(), x, y, size);
+            BufferedImage soilImage = null;
+            Color fallbackColor = new Color(139, 69, 19);
+
+            switch (tile.getSoilState()) {
+                case UNPLOWED -> { soilImage = this.unplowedImage; fallbackColor = new Color(139, 69, 19); }
+                case PLOWED -> { soilImage = this.plowedImage; fallbackColor = new Color(160, 82, 45); }
+                case WATERED -> { soilImage = this.wateredImage; fallbackColor = new Color(101, 67, 33); }
+            }
+
+            int padding = Math.max(1, size / 16); // spazio interno per evitare che l'immagine tocchi i bordi della tile
+            int innerSize = size - (padding * 2);
+            int innerX = x + padding;
+            int innerY = y + padding;
+
+            if (soilImage != null) {
+                g.drawImage(soilImage, innerX, innerY, innerSize, innerSize, null);
+            } else {
+                g.setColor(fallbackColor);
+                g.fillRect(innerX, innerY, innerSize, innerSize);
             }
         }
     }
 
-    private void drawBackground(Graphics2D g, Tile tile, int x, int y, int size) {
-        BufferedImage imageToDraw = null;
-        Color fallbackColor = Color.WHITE;
-
-        switch (tile.getType()) {
-            case WELL -> {
-                imageToDraw = this.wellImage;
-                fallbackColor = new Color(50, 150, 255);
+    /**
+     * disegna l'oggetto presente nella tile (hangar, pozzo, coltura)
+     * @param g il contesto grafico su cui disegnare
+     * @param tile la Tile da disegnare
+     * @param x la coordinata x in pixel (angolo in alto a sinistra)
+     * @param y la coordinata y in pixel (angolo in alto a sinistra)
+     * @param size la dimensione in pixel della casella (larghezza e altezza)
+     */
+    public void drawObject(Graphics2D g, Tile tile, int x, int y, int size) {
+        if (tile.getType() == TileType.WELL) {
+            if (this.wellImage != null) {
+                // faccio occupare al pozzo più spazio
+                double scale = 1.8;
+                int newSize = (int)(size * scale);
+                int offsetX = (newSize - size) / 2;
+                int offsetY = newSize - size;
+                g.drawImage(this.wellImage, x - offsetX, y - offsetY, newSize, newSize, null);
+            } else {
+                g.setColor(new Color(50, 150, 255));
+                g.fillOval(x - size/4, y - size/4, (int)(size*1.5), (int)(size*1.5));
             }
-            case HANGAR -> {
-                imageToDraw = this.hangarImage;
-                fallbackColor = new Color(150, 150, 150);
+        } else if (tile.getType() == TileType.HANGAR) {
+            if (this.hangarImage != null) {
+                // aumento le dimensioni dell'hangar
+                int hangarSize = size * 2;
+                int offsetY = hangarSize - size; // offset per farlo crescere in alto
+                g.drawImage(this.hangarImage, x, y - offsetY, hangarSize, hangarSize, null);
+            } else {
+                g.setColor(new Color(150, 150, 150));
+                g.fillRect(x, y - size, size * 2, size * 2);
             }
-            case SOIL -> {
-                switch (tile.getSoilState()) {
-                    case UNPLOWED -> {
-                        imageToDraw = this.unplowedImage;
-                        fallbackColor = new Color(139, 69, 19);
-                    }
-                    case PLOWED -> {
-                        imageToDraw = this.plowedImage;
-                        fallbackColor = new Color(160, 82, 45);
-                    }
-                    case WATERED -> {
-                        imageToDraw = this.wateredImage;
-                        fallbackColor = new Color(101, 67, 33);
-                    }
-                }
+        } else if (tile.getType() == TileType.SOIL) {
+            // se ho una coltura, la disegno sopra il terreno
+            Optional<Crop> optionalCrop = tile.getCrop();
+            if (optionalCrop.isPresent()) {
+                drawCrop(g, optionalCrop.get(), x, y, size);
             }
-        }
-
-        if (imageToDraw != null) {
-            // se abbiamo un'immagine corrispondente, la disegniamo
-            g.drawImage(imageToDraw, x, y, size, size, null);
-        } else {
-            // se l'img non è disponibile, disegniamo un rettangolo colorato come fallback
-            g.setColor(fallbackColor);
-            g.fillRect(x, y, size, size);
         }
     }
 
