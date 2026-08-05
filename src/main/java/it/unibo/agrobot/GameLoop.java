@@ -11,7 +11,7 @@ public class GameLoop implements Runnable {
     private Thread logicThread;
     private Thread renderThread;
 
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
 
     // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
     private final Object stateLock = new Object();
@@ -63,7 +63,7 @@ public class GameLoop implements Runnable {
                 renderThread.join();
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -71,6 +71,7 @@ public class GameLoop implements Runnable {
      * Continuously updates the game state at the defined UPS.
      */
     @Override
+    @SuppressWarnings("BusyWait")
     public void run() {
         long previousTime = System.nanoTime();
         double timePerUpdate = 1000000000.0 / UPS_SET;
@@ -102,6 +103,7 @@ public class GameLoop implements Runnable {
     /**
      * Continuously triggers the rendering of frames at the defined FPS.
      */
+    @SuppressWarnings("BusyWait")
     private void renderLoop() { // lo stesso ragionamento fatto per il thread principale, ma per il thread di rendering
         long previousTime = System.nanoTime();
         double timePerFrame = 1000000000.0 / FPS_SET;

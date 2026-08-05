@@ -10,6 +10,7 @@ public class DroneImpl implements Drone {
     private Battery battery;
     private WaterTank waterTank;
     private Inventory inventory;
+    private Wallet wallet;
 
     //variabili per il movimento fluido
     private boolean moving;
@@ -26,6 +27,7 @@ public class DroneImpl implements Drone {
         this.battery = new Battery(100.0); //la batteria parte sempre carica al max
         this.waterTank = new WaterTank(50.0); //serbatoio parte vuoto, capienza 50
         this.inventory = new Inventory(3); //inventario con 3 slot iniziali
+        this.wallet = new Wallet(0.0); //portafoglio con saldo iniziale 0
         this.moving = false;
     }
 
@@ -154,5 +156,10 @@ public class DroneImpl implements Drone {
     @Override
     public synchronized Inventory getInventory() {
         return this.inventory;
+    }
+
+    @Override
+    public synchronized Wallet getWallet() {
+        return this.wallet;
     }
 }
