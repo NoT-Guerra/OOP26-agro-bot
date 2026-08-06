@@ -46,4 +46,28 @@ public class Market {
 
         return false;
     }
+
+    /**
+     * acquista un seme e lo aggiunge all'inventario, deducendo il costo dal portafoglio.
+     *
+     * @param seedName il nome del seme da acquistare
+     * @return true se l'acquisto ha successo, false se i fondi sono insufficienti o l'inventario è pieno
+     */
+    public boolean buySeed(String seedName) {
+        double buyPrice = this.priceManager.getBuyPrice(seedName, ItemType.SEED);
+
+        // verifica se il giocatore ha abbastanza fondi
+        if (!this.wallet.hasEnoughFunds(buyPrice)) {
+            return false;
+        }
+
+        // tenta di aggiungere il seme all'inventario
+        if (this.inventory.addItem(seedName, ItemType.SEED)) {
+            // se c'è spazio e l'aggiunta ha successo, deduce i fondi
+            this.wallet.deductFunds(buyPrice);
+            return true;
+        }
+
+        return false;
+    }
 }
