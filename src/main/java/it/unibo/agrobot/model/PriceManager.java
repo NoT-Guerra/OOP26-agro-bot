@@ -57,7 +57,7 @@ public class PriceManager {
     /**
      * restituisce il prezzo di vendita per un determinato item name e ItemType.
      *
-     *      * @param itemName il nome dell'oggetto
+     * @param itemName il nome dell'oggetto
      * @param type il tipo di oggetto
      * @return il prezzo di vendita
      */
