@@ -1,5 +1,6 @@
 package it.unibo.agrobot;
 
+import it.unibo.agrobot.model.Drone;
 import it.unibo.agrobot.view.GamePanel;
 
 public class GameLoop implements Runnable {
@@ -12,6 +13,7 @@ public class GameLoop implements Runnable {
     private Thread renderThread;
 
     private final GamePanel gamePanel;
+    private final Drone drone;
 
     // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
     private final Object stateLock = new Object();
@@ -20,9 +22,11 @@ public class GameLoop implements Runnable {
      * Constructs a GameLoop with the specified game panel for rendering.
      *
      * @param gamePanel the panel to repaint during the render phase
+     * @param drone the drone to update
      */
-    public GameLoop(GamePanel gamePanel) {
+    public GameLoop(GamePanel gamePanel, Drone drone) {
         this.gamePanel = gamePanel;
+        this.drone = drone;
     }
 
     /**
@@ -30,6 +34,7 @@ public class GameLoop implements Runnable {
      */
     public GameLoop() {
         this.gamePanel = null;
+        this.drone = null;
     }
 
     /**
@@ -132,8 +137,47 @@ public class GameLoop implements Runnable {
         }
     }
 
+    // per il test dell'HUD
+    private int debugTickCount = 0;
+    private boolean debugAddingMoney = true;
+
     protected void update() {
-        // serve per aggiornare i vari oggetticon le funzioni di ognuno
+        if (this.drone == null) return;
+        
+        // calcola deltaTime in secondi
+        double deltaTime = 1.0 / UPS_SET;
+        this.drone.updateState(deltaTime);
+        
+        debugTickCount++;
+        
+        // eseguiamo l'aggiornamento visibile ogni 10 tick (6 volte al secondo)
+        if (debugTickCount % 10 == 0) {
+            
+            // modifica ciclica dei soldi
+            if (debugAddingMoney) {
+                this.drone.getWallet().addFunds(2.50);
+                if (this.drone.getWallet().getBalance() >= 100.0) {
+                    debugAddingMoney = false;
+                }
+            } else {
+                this.drone.getWallet().deductFunds(2.50);
+                if (this.drone.getWallet().getBalance() <= 10.0) {
+                    debugAddingMoney = true;
+                }
+            }
+            
+            // ricarichiamo la batteria per evitare che il drone si scarichi e smetta di irrigare
+            this.drone.rechargeAtHangar();
+            
+            // modifica ciclica dell'acqua
+            if (this.drone.getWaterLevel() >= 10.0) {
+                // irrigate() consuma 10 unità d'acqua e un po' di batteria
+                this.drone.irrigate(); 
+            } else {
+                // ricarica completamente il serbatoio
+                this.drone.rechargeWaterAtLake();
+            }
+        }
     }
 
     /**
