@@ -8,6 +8,7 @@ import it.unibo.agrobot.view.GamePanel;
 import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
+import it.unibo.agrobot.controller.InputHandler;
 
 public class App {
 
@@ -23,13 +24,23 @@ public class App {
         HUDView hudView = new HUDView(drone);
 
         // calcolo la dimensione della finestra in base alla griglia e alla dimensione delle tile
-        int screenWidth = grid.getWidth() * tileSize;
+        int hudSpace = 220;
+        int screenWidth = grid.getWidth() * tileSize + hudSpace;
         int screenHeight = grid.getHeight() * tileSize;
 
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight);
         GameWindow gameWindow = new GameWindow("Agro-Bot", gamePanel);
 
+        // aggiungo il controller per gestire l'input, passandogli anche la griglia per i limiti
+        InputHandler inputHandler = new InputHandler(drone, grid);
+        gamePanel.addKeyListener(inputHandler);
+
         // mostro la finestra di gioco
         gameWindow.show();
+        gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
+        
+        // avvio il game loop per la logica e il rendering continuo
+        GameLoop gameLoop = new GameLoop(gamePanel, drone);
+        gameLoop.start();
     }
 }

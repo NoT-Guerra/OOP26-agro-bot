@@ -52,16 +52,20 @@ public class GamePanel extends JPanel {
 
         // Calcoliamo la grandezza di una singola tile in base alla grandezza attuale della finestra
         if (this.gridView != null) {
+            int hudSpace = 220; // spazio riservato a sinistra per l'HUD
+            int availableWidthForGrid = this.getWidth() - hudSpace;
+            
             int dynamicTileSize = Math.min(
-                this.getWidth() / this.gridView.getCols(),
+                availableWidthForGrid / this.gridView.getCols(),
                 this.getHeight() / this.gridView.getRows()
             );
             this.gridView.setTileSize(dynamicTileSize);
 
-            // Calcoliamo di quanto spostare la griglia per centrarla perfettamente!
+            // Calcoliamo di quanto spostare la griglia per centrarla nello spazio rimanente a destra dell'HUD
             int totalGridWidth = dynamicTileSize * this.gridView.getCols();
             int totalGridHeight = dynamicTileSize * this.gridView.getRows();
-            offsetX = (this.getWidth() - totalGridWidth) / 2;
+            
+            offsetX = hudSpace + (availableWidthForGrid - totalGridWidth) / 2;
             offsetY = (this.getHeight() - totalGridHeight) / 2;
         }
 
