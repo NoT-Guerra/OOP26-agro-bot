@@ -1,10 +1,10 @@
 package it.unibo.agrobot.view;
-
-import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
+import javax.swing.JPanel;
 
 /**
  * gestisce la rappresentazione grafica del pannello di gioco
@@ -14,18 +14,21 @@ public class GamePanel extends JPanel {
     
     private final GridView gridView;
     private final DroneView droneView;
+    private final HUDView hudView;
 
     /**
      * costruisce il pannello di gioco
      * 
      * @param gridView vista dedicata alla griglia
      * @param droneView vista dedicata al drone
+     * @param hudView vista dedicata all'HUD
      * @param width larghezza in pixel della finestra
      * @param height altezza in pixel della finestra
      */
-    public GamePanel(GridView gridView, DroneView droneView, int width, int height) {
+    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height) {
         this.gridView = gridView;
         this.droneView = droneView;
+        this.hudView = hudView;
         
         // dimensioni preferite del pannello
         this.setPreferredSize(new Dimension(width, height));
@@ -41,6 +44,30 @@ public class GamePanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // disegna la griglia di gioco
+        g2d.setColor(new java.awt.Color(124, 204, 76));
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+        int offsetX = 0;
+        int offsetY = 0;
+
+        // Calcoliamo la grandezza di una singola tile in base alla grandezza attuale della finestra
+        if (this.gridView != null) {
+            int dynamicTileSize = Math.min(
+                this.getWidth() / this.gridView.getCols(),
+                this.getHeight() / this.gridView.getRows()
+            );
+            this.gridView.setTileSize(dynamicTileSize);
+
+            // Calcoliamo di quanto spostare la griglia per centrarla perfettamente!
+            int totalGridWidth = dynamicTileSize * this.gridView.getCols();
+            int totalGridHeight = dynamicTileSize * this.gridView.getRows();
+            offsetX = (this.getWidth() - totalGridWidth) / 2;
+            offsetY = (this.getHeight() - totalGridHeight) / 2;
+        }
+
+        // Spostiamo il "pennello" per centrare tutto quello che stiamo per disegnare
+        g2d.translate(offsetX, offsetY);
+
         if (this.gridView != null) {
             this.gridView.draw(g2d);
         }
@@ -50,6 +77,13 @@ public class GamePanel extends JPanel {
             this.droneView.draw(g2d, this.gridView.getTileSize());
         }
         
+        // riportiamo il pennello alla posizione originale
+        g2d.translate(-offsetX, -offsetY);
+        // disegna l'HUD in sovraimpressione
+        if (this.hudView != null) {
+            this.hudView.draw(g2d, getWidth(), getHeight());
+        }
+
         // rilascia le risorse grafiche, per evitare memory leak
         g2d.dispose();
     }

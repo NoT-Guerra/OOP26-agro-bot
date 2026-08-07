@@ -36,6 +36,9 @@ public class GameWindow {
         // adatta le dimensioni della finestra al pannnello di gioco
         this.frame.pack();
         
+        // imposta la finestra a schermo intero
+        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
         // centra la finestra sullo schermo
         this.frame.setLocationRelativeTo(null);
     }
