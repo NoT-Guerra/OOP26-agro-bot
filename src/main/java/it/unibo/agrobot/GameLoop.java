@@ -137,47 +137,12 @@ public class GameLoop implements Runnable {
         }
     }
 
-    // per il test dell'HUD
-    private int debugTickCount = 0;
-    private boolean debugAddingMoney = true;
-
     protected void update() {
         if (this.drone == null) return;
         
         // calcola deltaTime in secondi
         double deltaTime = 1.0 / UPS_SET;
         this.drone.updateState(deltaTime);
-        
-        debugTickCount++;
-        
-        // eseguiamo l'aggiornamento visibile ogni 10 tick (6 volte al secondo)
-        if (debugTickCount % 10 == 0) {
-            
-            // modifica ciclica dei soldi
-            if (debugAddingMoney) {
-                this.drone.getWallet().addFunds(2.50);
-                if (this.drone.getWallet().getBalance() >= 100.0) {
-                    debugAddingMoney = false;
-                }
-            } else {
-                this.drone.getWallet().deductFunds(2.50);
-                if (this.drone.getWallet().getBalance() <= 10.0) {
-                    debugAddingMoney = true;
-                }
-            }
-            
-            // ricarichiamo la batteria per evitare che il drone si scarichi e smetta di irrigare
-            this.drone.rechargeAtHangar();
-            
-            // modifica ciclica dell'acqua
-            if (this.drone.getWaterLevel() >= 10.0) {
-                // irrigate() consuma 10 unità d'acqua e un po' di batteria
-                this.drone.irrigate(); 
-            } else {
-                // ricarica completamente il serbatoio
-                this.drone.rechargeWaterAtLake();
-            }
-        }
     }
 
     /**
