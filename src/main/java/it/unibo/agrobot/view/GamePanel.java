@@ -1,10 +1,15 @@
 package it.unibo.agrobot.view;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Color;
 
 import javax.swing.JPanel;
+
+import it.unibo.agrobot.controller.GameState;
+import it.unibo.agrobot.controller.GameStateManager;
 
 /**
  * gestisce la rappresentazione grafica del pannello di gioco
@@ -15,6 +20,7 @@ public class GamePanel extends JPanel {
     private final GridView gridView;
     private final DroneView droneView;
     private final HUDView hudView;
+    private final GameStateManager stateManager;
 
     /**
      * costruisce il pannello di gioco
@@ -24,11 +30,13 @@ public class GamePanel extends JPanel {
      * @param hudView vista dedicata all'HUD
      * @param width larghezza in pixel della finestra
      * @param height altezza in pixel della finestra
+     * @param stateManager gestore degli stati di gioco
      */
-    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height) {
+    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height, GameStateManager stateManager) {
         this.gridView = gridView;
         this.droneView = droneView;
         this.hudView = hudView;
+        this.stateManager = stateManager;
         
         // dimensioni preferite del pannello
         this.setPreferredSize(new Dimension(width, height));
@@ -52,16 +60,20 @@ public class GamePanel extends JPanel {
 
         // Calcoliamo la grandezza di una singola tile in base alla grandezza attuale della finestra
         if (this.gridView != null) {
+            int hudSpace = 220; // spazio riservato a sinistra per l'HUD
+            int availableWidthForGrid = this.getWidth() - hudSpace;
+            
             int dynamicTileSize = Math.min(
-                this.getWidth() / this.gridView.getCols(),
+                availableWidthForGrid / this.gridView.getCols(),
                 this.getHeight() / this.gridView.getRows()
             );
             this.gridView.setTileSize(dynamicTileSize);
 
-            // Calcoliamo di quanto spostare la griglia per centrarla perfettamente!
+            // Calcoliamo di quanto spostare la griglia per centrarla nello spazio rimanente a destra dell'HUD
             int totalGridWidth = dynamicTileSize * this.gridView.getCols();
             int totalGridHeight = dynamicTileSize * this.gridView.getRows();
-            offsetX = (this.getWidth() - totalGridWidth) / 2;
+            
+            offsetX = hudSpace + (availableWidthForGrid - totalGridWidth) / 2;
             offsetY = (this.getHeight() - totalGridHeight) / 2;
         }
 
@@ -82,6 +94,18 @@ public class GamePanel extends JPanel {
         // disegna l'HUD in sovraimpressione
         if (this.hudView != null) {
             this.hudView.draw(g2d, getWidth(), getHeight());
+        }
+
+        // overlay per lo stato di pausa
+        if (this.stateManager != null && this.stateManager.getState() == GameState.PAUSED) {
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 64));
+            String pauseText = "PAUSED";
+            int stringWidth = g2d.getFontMetrics().stringWidth(pauseText);
+            g2d.drawString(pauseText, (getWidth() - stringWidth) / 2, getHeight() / 2);
         }
 
         // rilascia le risorse grafiche, per evitare memory leak

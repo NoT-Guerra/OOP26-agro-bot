@@ -1,5 +1,6 @@
-package it.unibo.agrobot;
+package it.unibo.agrobot.controller;
 
+import it.unibo.agrobot.model.Drone;
 import it.unibo.agrobot.view.GamePanel;
 
 public class GameLoop implements Runnable {
@@ -12,6 +13,8 @@ public class GameLoop implements Runnable {
     private Thread renderThread;
 
     private final GamePanel gamePanel;
+    private final Drone drone;
+    private final GameStateManager stateManager;
 
     // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
     private final Object stateLock = new Object();
@@ -20,9 +23,13 @@ public class GameLoop implements Runnable {
      * Constructs a GameLoop with the specified game panel for rendering.
      *
      * @param gamePanel the panel to repaint during the render phase
+     * @param drone the drone to update
+     * @param stateManager the state manager
      */
-    public GameLoop(GamePanel gamePanel) {
+    public GameLoop(GamePanel gamePanel, Drone drone, GameStateManager stateManager) {
         this.gamePanel = gamePanel;
+        this.drone = drone;
+        this.stateManager = stateManager;
     }
 
     /**
@@ -30,6 +37,8 @@ public class GameLoop implements Runnable {
      */
     public GameLoop() {
         this.gamePanel = null;
+        this.drone = null;
+        this.stateManager = null;
     }
 
     /**
@@ -133,7 +142,11 @@ public class GameLoop implements Runnable {
     }
 
     protected void update() {
-        // serve per aggiornare i vari oggetticon le funzioni di ognuno
+        if (this.drone == null || (this.stateManager != null && this.stateManager.getState() != GameState.PLAYING)) return;
+        
+        // calcola deltaTime in secondi
+        double deltaTime = 1.0 / UPS_SET;
+        this.drone.updateState(deltaTime);
     }
 
     /**

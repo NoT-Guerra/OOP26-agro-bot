@@ -8,6 +8,11 @@ import it.unibo.agrobot.view.GamePanel;
 import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
+import it.unibo.agrobot.view.MainMenuView;
+import it.unibo.agrobot.controller.InputHandler;
+import it.unibo.agrobot.controller.GameLoop;
+import it.unibo.agrobot.controller.GameState;
+import it.unibo.agrobot.controller.GameStateManager;
 
 public class App {
 
@@ -23,13 +28,38 @@ public class App {
         HUDView hudView = new HUDView(drone);
 
         // calcolo la dimensione della finestra in base alla griglia e alla dimensione delle tile
-        int screenWidth = grid.getWidth() * tileSize;
+        int hudSpace = 220;
+        int screenWidth = grid.getWidth() * tileSize + hudSpace;
         int screenHeight = grid.getHeight() * tileSize;
 
-        GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight);
-        GameWindow gameWindow = new GameWindow("Agro-Bot", gamePanel);
+        GameStateManager stateManager = new GameStateManager();
+
+        GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
+        GameWindow gameWindow = new GameWindow("Agro-Bot");
+        MainMenuView mainMenuView = new MainMenuView(stateManager);
+
+        gameWindow.addPanel(mainMenuView, "MENU");
+        gameWindow.addPanel(gamePanel, "PLAYING");
+
+        stateManager.setOnStateChange(state -> {
+            if (state == GameState.MENU) {
+                gameWindow.showPanel("MENU");
+            } else if (state == GameState.PLAYING) {
+                gameWindow.showPanel("PLAYING");
+                gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
+            }
+        });
+
+        // aggiungo il controller per gestire l'input, passandogli anche la griglia per i limiti
+        InputHandler inputHandler = new InputHandler(drone, grid, stateManager);
+        gamePanel.addKeyListener(inputHandler);
 
         // mostro la finestra di gioco
         gameWindow.show();
+        stateManager.setState(GameState.MENU);
+        
+        // avvio il game loop per la logica e il rendering continuo
+        GameLoop gameLoop = new GameLoop(gamePanel, drone, stateManager);
+        gameLoop.start();
     }
 }

@@ -61,18 +61,10 @@ public class DroneImpl implements Drone {
             double targetY = this.position.getY();
 
             switch (dir) {
-                case UP:
-                    targetY += 1.0;
-                    break;
-                case DOWN:
-                    targetY -= 1.0;
-                    break;
-                case LEFT:
-                    targetX -= 1.0;
-                    break;
-                case RIGHT:
-                    targetX += 1.0;
-                    break;
+                case UP -> targetY -= 1.0;
+                case DOWN -> targetY += 1.0;
+                case LEFT -> targetX -= 1.0;
+                case RIGHT -> targetX += 1.0;
             }
             this.targetPosition = new Position(targetX, targetY);
             return true;

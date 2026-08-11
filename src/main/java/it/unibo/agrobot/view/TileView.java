@@ -1,18 +1,19 @@
 package it.unibo.agrobot.view;
 
-import it.unibo.agrobot.model.Tile;
-import it.unibo.agrobot.model.TileType;
-import it.unibo.agrobot.model.Crop;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+
+import it.unibo.agrobot.model.Crop;
+import it.unibo.agrobot.model.Tile;
+import it.unibo.agrobot.model.TileType;
 
 /**
  * gestisce la rappresentazione grafica di una singola Tile della griglia
@@ -120,7 +121,7 @@ public class TileView {
                 case WATERED -> { soilImage = this.wateredImage; fallbackColor = new Color(101, 67, 33); }
             }
 
-            int padding = Math.max(1, size / 16); // spazio interno per evitare che l'immagine tocchi i bordi della tile
+            int padding = 1; // margine ridotto al minimo tra le varie zolle di terreno
             int innerSize = size - (padding * 2);
             int innerX = x + padding;
             int innerY = y + padding;
@@ -143,33 +144,39 @@ public class TileView {
      * @param size la dimensione in pixel della casella (larghezza e altezza)
      */
     public void drawObject(Graphics2D g, Tile tile, int x, int y, int size) {
-        if (tile.getType() == TileType.WELL) {
-            if (this.wellImage != null) {
-                // faccio occupare al pozzo più spazio
-                double scale = 1.8;
-                int newSize = (int)(size * scale);
-                int offsetX = (newSize - size) / 2;
-                int offsetY = newSize - size;
-                g.drawImage(this.wellImage, x - offsetX, y - offsetY, newSize, newSize, null);
-            } else {
-                g.setColor(new Color(50, 150, 255));
-                g.fillOval(x - size/4, y - size/4, (int)(size*1.5), (int)(size*1.5));
+        if (null != tile.getType()) switch (tile.getType()) {
+            case WELL -> {
+                if (this.wellImage != null) {
+                    // faccio occupare al pozzo più spazio
+                    double scale = 1.8;
+                    int newSize = (int)(size * scale);
+                    int offsetX = (newSize - size) / 2;
+                    int offsetY = newSize - size;
+                    g.drawImage(this.wellImage, x - offsetX, y - offsetY, newSize, newSize, null);
+                } else {
+                    g.setColor(new Color(50, 150, 255));
+                    g.fillOval(x - size/4, y - size/4, (int)(size*1.5), (int)(size*1.5));
+                }
             }
-        } else if (tile.getType() == TileType.HANGAR) {
-            if (this.hangarImage != null) {
-                // aumento le dimensioni dell'hangar
-                int hangarSize = size * 2;
-                int offsetY = hangarSize - size; // offset per farlo crescere in alto
-                g.drawImage(this.hangarImage, x, y - offsetY, hangarSize, hangarSize, null);
-            } else {
-                g.setColor(new Color(150, 150, 150));
-                g.fillRect(x, y - size, size * 2, size * 2);
+            case HANGAR -> {
+                if (this.hangarImage != null) {
+                    // aumento le dimensioni dell'hangar
+                    int hangarSize = size * 2;
+                    int offsetY = hangarSize - size; // offset per farlo crescere in alto
+                    g.drawImage(this.hangarImage, x, y - offsetY, hangarSize, hangarSize, null);
+                } else {
+                    g.setColor(new Color(150, 150, 150));
+                    g.fillRect(x, y - size, size * 2, size * 2);
+                }
             }
-        } else if (tile.getType() == TileType.SOIL) {
-            // se ho una coltura, la disegno sopra il terreno
-            Optional<Crop> optionalCrop = tile.getCrop();
-            if (optionalCrop.isPresent()) {
-                drawCrop(g, optionalCrop.get(), x, y, size);
+            case SOIL -> {
+                // se ho una coltura, la disegno sopra il terreno
+                Optional<Crop> optionalCrop = tile.getCrop();
+                if (optionalCrop.isPresent()) {
+                    drawCrop(g, optionalCrop.get(), x, y, size);
+                }
+            }
+            default -> {
             }
         }
     }

@@ -2,9 +2,12 @@ package it.unibo.agrobot.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 import it.unibo.agrobot.model.Drone;
+import it.unibo.agrobot.model.Inventory;
+import it.unibo.agrobot.model.InventorySlot;
 
 /**
  * gestisce la visualizzazione dell'HUD con le informazioni del drone:
@@ -45,5 +48,53 @@ public class HUDView {
         
         double water = this.drone.getWaterLevel();
         g2d.drawString(String.format("Water Tank: %.0f", water), 20, 95);
+
+        drawInventory(g2d, screenWidth, screenHeight);
+    }
+
+    private void drawInventory(Graphics2D g2d, int screenWidth, int screenHeight) {
+        Inventory inventory = this.drone.getInventory();
+        if (inventory == null) {
+            return;
+        }
+
+        int slotCount = inventory.getSlotCount();
+        int slotSize = 50;
+        int spacing = 10;
+        int totalWidth = (slotSize * slotCount) + (spacing * (slotCount - 1));
+        
+        int startX = 10;
+        int startY = 120;
+
+        g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+        FontMetrics fm = g2d.getFontMetrics();
+
+        for (int i = 0; i < slotCount; i++) {
+            InventorySlot slot = inventory.getSlot(i);
+            int x = startX + (i * (slotSize + spacing));
+
+            // Sfondo dello slot
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRoundRect(x, startY, slotSize, slotSize, 10, 10);
+            
+            // Bordo dello slot
+            g2d.setColor(Color.WHITE);
+            g2d.drawRoundRect(x, startY, slotSize, slotSize, 10, 10);
+
+            String itemName = slot.getItemName();
+            int quantity = slot.getQuantity();
+
+            // Contenuto dello slot
+            if (itemName != null && quantity > 0) {
+                String quantityStr = String.valueOf(quantity);
+
+                String shortName = itemName.length() > 6 ? itemName.substring(0, 6) + "." : itemName;
+                int textX = x + (slotSize - fm.stringWidth(shortName)) / 2;
+                g2d.drawString(shortName, textX, startY + 20);
+
+                int qX = x + (slotSize - fm.stringWidth(quantityStr)) / 2;
+                g2d.drawString(quantityStr, qX, startY + 40);
+            }
+        }
     }
 }
