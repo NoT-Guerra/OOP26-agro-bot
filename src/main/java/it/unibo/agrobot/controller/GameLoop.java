@@ -144,6 +144,13 @@ public class GameLoop implements Runnable {
     protected void update() {
         if (this.drone == null || (this.stateManager != null && this.stateManager.getState() != GameState.PLAYING)) return;
         
+        if (this.drone.isDead()) {
+            if (this.stateManager != null) {
+                this.stateManager.setState(GameState.GAME_OVER);
+            }
+            return;
+        }
+
         // calcola deltaTime in secondi
         double deltaTime = 1.0 / UPS_SET;
         this.drone.updateState(deltaTime);

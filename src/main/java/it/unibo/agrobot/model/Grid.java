@@ -60,4 +60,9 @@ public interface Grid {
      * @return true se nei limiti, false altrimenti
      */
     boolean isInBounds(Position position);
+
+    /**
+     * resetta la griglia al suo stato iniziale
+     */
+    void reset();
 }

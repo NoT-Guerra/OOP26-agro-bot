@@ -9,6 +9,7 @@ import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.view.MainMenuView;
+import it.unibo.agrobot.view.GameOverView;
 import it.unibo.agrobot.controller.InputHandler;
 import it.unibo.agrobot.controller.GameLoop;
 import it.unibo.agrobot.controller.GameState;
@@ -37,9 +38,14 @@ public class App {
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
         GameWindow gameWindow = new GameWindow("Agro-Bot");
         MainMenuView mainMenuView = new MainMenuView(stateManager);
+        GameOverView gameOverView = new GameOverView(stateManager, () -> {
+            drone.reset();
+            grid.reset();
+        });
 
         gameWindow.addPanel(mainMenuView, "MENU");
         gameWindow.addPanel(gamePanel, "PLAYING");
+        gameWindow.addPanel(gameOverView, "GAME_OVER");
 
         stateManager.setOnStateChange(state -> {
             if (state == GameState.MENU) {
@@ -47,6 +53,8 @@ public class App {
             } else if (state == GameState.PLAYING) {
                 gameWindow.showPanel("PLAYING");
                 gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
+            } else if (state == GameState.GAME_OVER) {
+                gameWindow.showPanel("GAME_OVER");
             }
         });
 
