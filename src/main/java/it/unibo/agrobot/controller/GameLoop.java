@@ -1,4 +1,4 @@
-package it.unibo.agrobot;
+package it.unibo.agrobot.controller;
 
 import it.unibo.agrobot.model.Drone;
 import it.unibo.agrobot.view.GamePanel;

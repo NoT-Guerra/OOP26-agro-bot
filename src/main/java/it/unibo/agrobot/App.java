@@ -9,6 +9,7 @@ import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.controller.InputHandler;
+import it.unibo.agrobot.controller.GameLoop;
 
 public class App {
 
