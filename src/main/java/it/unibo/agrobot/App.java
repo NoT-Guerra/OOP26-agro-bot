@@ -3,6 +3,7 @@ package it.unibo.agrobot;
 import it.unibo.agrobot.model.DroneImpl;
 import it.unibo.agrobot.model.GridImpl;
 import it.unibo.agrobot.model.Position;
+import it.unibo.agrobot.model.Storage;
 import it.unibo.agrobot.view.DroneView;
 import it.unibo.agrobot.view.GamePanel;
 import it.unibo.agrobot.view.GameWindow;
@@ -10,6 +11,7 @@ import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.view.MainMenuView;
 import it.unibo.agrobot.view.GameOverView;
+import it.unibo.agrobot.view.StorageView;
 import it.unibo.agrobot.controller.InputHandler;
 import it.unibo.agrobot.controller.GameLoop;
 import it.unibo.agrobot.controller.GameState;
@@ -34,6 +36,7 @@ public class App {
         int screenHeight = grid.getHeight() * tileSize;
 
         GameStateManager stateManager = new GameStateManager();
+        Storage storage = new Storage();
 
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
         GameWindow gameWindow = new GameWindow("Agro-Bot");
@@ -41,11 +44,14 @@ public class App {
         GameOverView gameOverView = new GameOverView(stateManager, () -> {
             drone.reset();
             grid.reset();
+            storage.clear();
         });
+        StorageView storageView = new StorageView(stateManager, drone.getInventory(), storage);
 
         gameWindow.addPanel(mainMenuView, "MENU");
         gameWindow.addPanel(gamePanel, "PLAYING");
         gameWindow.addPanel(gameOverView, "GAME_OVER");
+        gameWindow.addPanel(storageView, "STORAGE_MENU");
 
         stateManager.setOnStateChange(state -> {
             if (state == GameState.MENU) {
@@ -55,6 +61,9 @@ public class App {
                 gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
             } else if (state == GameState.GAME_OVER) {
                 gameWindow.showPanel("GAME_OVER");
+            } else if (state == GameState.STORAGE_MENU) {
+                storageView.refreshView();
+                gameWindow.showPanel("STORAGE_MENU");
             }
         });
 

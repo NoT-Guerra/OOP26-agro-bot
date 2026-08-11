@@ -119,4 +119,15 @@ public class Inventory {
         }
         return null;
     }
+
+    /**
+     * svuota completamente l'inventario.
+     */
+    public synchronized void clear() {
+        for (InventorySlot slot : this.slots) {
+            while (!slot.isEmpty()) {
+                slot.removeItem();
+            }
+        }
+    }
 }
