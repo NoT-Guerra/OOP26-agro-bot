@@ -55,6 +55,7 @@ class GameStateTest {
             @Override public void rechargeAtHangar() {}
             @Override public Inventory getInventory() { return null; }
             @Override public Wallet getWallet() { return null; }
+            @Override public void reset() {}
         };
 
         GameStateManager stateManager = new GameStateManager();
