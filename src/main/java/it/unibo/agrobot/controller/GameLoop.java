@@ -14,6 +14,7 @@ public class GameLoop implements Runnable {
 
     private final GamePanel gamePanel;
     private final Drone drone;
+    private final GameStateManager stateManager;
 
     // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
     private final Object stateLock = new Object();
@@ -23,10 +24,12 @@ public class GameLoop implements Runnable {
      *
      * @param gamePanel the panel to repaint during the render phase
      * @param drone the drone to update
+     * @param stateManager the state manager
      */
-    public GameLoop(GamePanel gamePanel, Drone drone) {
+    public GameLoop(GamePanel gamePanel, Drone drone, GameStateManager stateManager) {
         this.gamePanel = gamePanel;
         this.drone = drone;
+        this.stateManager = stateManager;
     }
 
     /**
@@ -35,6 +38,7 @@ public class GameLoop implements Runnable {
     public GameLoop() {
         this.gamePanel = null;
         this.drone = null;
+        this.stateManager = null;
     }
 
     /**
@@ -138,7 +142,7 @@ public class GameLoop implements Runnable {
     }
 
     protected void update() {
-        if (this.drone == null) return;
+        if (this.drone == null || (this.stateManager != null && this.stateManager.getState() != GameState.PLAYING)) return;
         
         // calcola deltaTime in secondi
         double deltaTime = 1.0 / UPS_SET;

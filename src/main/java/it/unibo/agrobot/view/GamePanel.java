@@ -1,10 +1,15 @@
 package it.unibo.agrobot.view;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Color;
 
 import javax.swing.JPanel;
+
+import it.unibo.agrobot.controller.GameState;
+import it.unibo.agrobot.controller.GameStateManager;
 
 /**
  * gestisce la rappresentazione grafica del pannello di gioco
@@ -15,6 +20,7 @@ public class GamePanel extends JPanel {
     private final GridView gridView;
     private final DroneView droneView;
     private final HUDView hudView;
+    private final GameStateManager stateManager;
 
     /**
      * costruisce il pannello di gioco
@@ -24,11 +30,13 @@ public class GamePanel extends JPanel {
      * @param hudView vista dedicata all'HUD
      * @param width larghezza in pixel della finestra
      * @param height altezza in pixel della finestra
+     * @param stateManager gestore degli stati di gioco
      */
-    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height) {
+    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height, GameStateManager stateManager) {
         this.gridView = gridView;
         this.droneView = droneView;
         this.hudView = hudView;
+        this.stateManager = stateManager;
         
         // dimensioni preferite del pannello
         this.setPreferredSize(new Dimension(width, height));
@@ -86,6 +94,18 @@ public class GamePanel extends JPanel {
         // disegna l'HUD in sovraimpressione
         if (this.hudView != null) {
             this.hudView.draw(g2d, getWidth(), getHeight());
+        }
+
+        // overlay per lo stato di pausa
+        if (this.stateManager != null && this.stateManager.getState() == GameState.PAUSED) {
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 64));
+            String pauseText = "PAUSED";
+            int stringWidth = g2d.getFontMetrics().stringWidth(pauseText);
+            g2d.drawString(pauseText, (getWidth() - stringWidth) / 2, getHeight() / 2);
         }
 
         // rilascia le risorse grafiche, per evitare memory leak

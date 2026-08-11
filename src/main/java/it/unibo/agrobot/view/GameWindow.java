@@ -1,7 +1,9 @@
 package it.unibo.agrobot.view;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import java.awt.CardLayout;
 
 /**
  * gestione del jframe principale del gioco
@@ -9,17 +11,18 @@ import javax.swing.SwingUtilities;
 public class GameWindow {
 
     private final JFrame frame;
-    private final GamePanel gamePanel;
+    private final JPanel cards;
+    private final CardLayout cardLayout;
 
     /**
      * inizializza la finestra di gioco.
      * 
      * @param title titolo della finestra
-     * @param gamePanel pannello di gioco da inserire nella finestra
      */
-    public GameWindow(String title, GamePanel gamePanel) {
+    public GameWindow(String title) {
         this.frame = new JFrame(title);
-        this.gamePanel = gamePanel;
+        this.cardLayout = new CardLayout();
+        this.cards = new JPanel(this.cardLayout);
         
         this.setupWindow();
     }
@@ -30,14 +33,27 @@ public class GameWindow {
         
         this.frame.setResizable(true);
 
-        // aggiunge il pannello di gioco al frame
-        this.frame.add(this.gamePanel);
+        // aggiunge il pannello principale al frame
+        this.frame.add(this.cards);
+    }
 
-        // adatta le dimensioni della finestra al pannnello di gioco
-        this.frame.pack();
-        
-        // centra la finestra sullo schermo
-        this.frame.setLocationRelativeTo(null);
+    /**
+     * Aggiunge un pannello con un nome specifico.
+     *
+     * @param panel il pannello da aggiungere
+     * @param name il nome identificativo del pannello
+     */
+    public void addPanel(JPanel panel, String name) {
+        this.cards.add(panel, name);
+    }
+
+    /**
+     * Mostra il pannello associato al nome specificato.
+     *
+     * @param name il nome del pannello da mostrare
+     */
+    public void showPanel(String name) {
+        this.cardLayout.show(this.cards, name);
     }
 
     /**
@@ -46,6 +62,12 @@ public class GameWindow {
      */
     public void show() {
         SwingUtilities.invokeLater(() -> {
+            // adatta le dimensioni della finestra
+            this.frame.pack();
+            
+            // centra la finestra sullo schermo
+            this.frame.setLocationRelativeTo(null);
+            
             this.frame.setVisible(true);
         });
     }

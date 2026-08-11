@@ -22,8 +22,8 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //diamo il comando di muoversi verso l'alto
-        assertTrue(drone.move(Direction.UP));
+        //diamo il comando di muoversi verso il basso perche ora sopra non puo piu andare
+        assertTrue(drone.move(Direction.DOWN));
         assertTrue(drone.isMoving());
         
         //Simuliamo un quarto di secondo (Velocità 2.0 * 0.25s = 0.5 spazio percorso)

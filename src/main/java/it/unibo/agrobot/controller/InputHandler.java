@@ -13,14 +13,30 @@ public class InputHandler extends KeyAdapter {
 
     private final Drone drone;
     private final Grid grid;
+    private final GameStateManager stateManager;
 
-    public InputHandler(Drone drone, Grid grid) {
+    public InputHandler(Drone drone, Grid grid, GameStateManager stateManager) {
         this.drone = drone;
         this.grid = grid;
+        this.stateManager = stateManager;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (stateManager != null) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (stateManager.getState() == GameState.PLAYING) {
+                    stateManager.setState(GameState.PAUSED);
+                } else if (stateManager.getState() == GameState.PAUSED) {
+                    stateManager.setState(GameState.PLAYING);
+                }
+            }
+
+            if (stateManager.getState() != GameState.PLAYING) {
+                return;
+            }
+        }
+
         if (drone == null || drone.isMoving()) return;
 
         Position pos = drone.getPosition();
