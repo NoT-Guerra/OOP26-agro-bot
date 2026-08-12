@@ -1,10 +1,10 @@
 package it.unibo.agrobot.view;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Color;
 
 import javax.swing.JPanel;
 
@@ -107,8 +107,5 @@ public class GamePanel extends JPanel {
             int stringWidth = g2d.getFontMetrics().stringWidth(pauseText);
             g2d.drawString(pauseText, (getWidth() - stringWidth) / 2, getHeight() / 2);
         }
-
-        // rilascia le risorse grafiche, per evitare memory leak
-        g2d.dispose();
     }
 }

@@ -64,4 +64,24 @@ public class PriceManager {
     public double getSellPrice(String itemName, ItemType type) {
         return sellPrices.getOrDefault(itemName, java.util.Collections.emptyMap()).getOrDefault(type, 0.0);
     }
+
+    /**
+     * restituisce un set di nomi di oggetti acquistabili per un dato tipo.
+     */
+    public java.util.Set<String> getBuyableItems(ItemType type) {
+        return buyPrices.entrySet().stream()
+                .filter(e -> e.getValue().containsKey(type))
+                .map(Map.Entry::getKey)
+                .collect(java.util.stream.Collectors.toSet());
+    }
+
+    /**
+     * restituisce un set di nomi di oggetti vendibili per un dato tipo.
+     */
+    public java.util.Set<String> getSellableItems(ItemType type) {
+        return sellPrices.entrySet().stream()
+                .filter(e -> e.getValue().containsKey(type))
+                .map(Map.Entry::getKey)
+                .collect(java.util.stream.Collectors.toSet());
+    }
 }

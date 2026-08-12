@@ -22,28 +22,25 @@ public class Market {
     }
 
     /**
+     * restituisce il listino prezzi.
+     */
+    public PriceManager getPriceManager() {
+        return this.priceManager;
+    }
+
+    /**
      * vende un'unità di raccolto dall'inventario e aggiunge i fondi corrispondenti al portafoglio.
      *
      * @param cropName il nome del raccolto da vendere
      * @return true se la vendita ha successo, false se il raccolto non è in inventario o non è di tipo CROP
      */
     public boolean sellCrop(String cropName) {
-        ItemType type = this.inventory.findItemType(cropName);
-
-        // verifica se l'oggetto è presente e se è un raccolto
-        if (type != ItemType.CROP) {
-            return false;
-        }
-
-        // ottiene il prezzo di vendita
-        double sellPrice = this.priceManager.getSellPrice(cropName, type);
-
-        // se riesco a rimuoverlo dall'inventario, aggiungo i soldi
-        if (this.inventory.removeItem(cropName)) {
+        // tenta di rimuovere direttamente l'oggetto specificando che deve essere un CROP
+        if (this.inventory.removeItem(cropName, ItemType.CROP)) {
+            double sellPrice = this.priceManager.getSellPrice(cropName, ItemType.CROP);
             this.wallet.addFunds(sellPrice);
             return true;
         }
-
         return false;
     }
 
