@@ -22,13 +22,28 @@ public class DroneImpl implements Drone {
     //costante per il consumo delle azioni agricole
     private static final double ACTION_ENERGY_COST = 5.0;
 
+    private final Position startPosition;
+
     public DroneImpl(Position position) {
+        this.startPosition = new Position(position.getX(), position.getY());
         this.position = position;
         this.battery = new Battery(100.0); //la batteria parte sempre carica al max
         this.waterTank = new WaterTank(50.0); //serbatoio parte vuoto, capienza 50
         this.inventory = new Inventory(3); //inventario con 3 slot iniziali
         this.wallet = new Wallet(0.0); //portafoglio con saldo iniziale 0
         this.moving = false;
+    }
+
+    @Override
+    public synchronized void reset() {
+        this.position.setX(this.startPosition.getX());
+        this.position.setY(this.startPosition.getY());
+        this.battery = new Battery(100.0);
+        this.waterTank = new WaterTank(50.0);
+        this.inventory = new Inventory(3);
+        this.wallet = new Wallet(0.0);
+        this.moving = false;
+        this.targetPosition = null;
     }
 
     @Override

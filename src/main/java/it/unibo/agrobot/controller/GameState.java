@@ -15,5 +15,15 @@ public enum GameState {
     /**
      * The game is paused
      */
-    PAUSED
+    PAUSED,
+
+    /**
+     * The game is over
+     */
+    GAME_OVER,
+
+    /**
+     * The game is in the storage menu
+     */
+    STORAGE_MENU
 }

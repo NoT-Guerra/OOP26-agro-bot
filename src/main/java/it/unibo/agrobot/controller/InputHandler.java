@@ -64,6 +64,22 @@ public class InputHandler extends KeyAdapter {
                     drone.move(Direction.RIGHT);
                 }
             }
+            case KeyEvent.VK_R -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.HANGAR) {
+                        drone.rechargeAtHangar();
+                    }
+                });
+            }
+            case KeyEvent.VK_I -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.HANGAR) {
+                        if (stateManager != null) {
+                            stateManager.setState(GameState.STORAGE_MENU);
+                        }
+                    }
+                });
+            }
             default -> {
             }
         }

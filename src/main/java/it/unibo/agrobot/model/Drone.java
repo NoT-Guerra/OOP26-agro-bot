@@ -97,4 +97,9 @@ public interface Drone {
      * @return il portafoglio associato al drone
      */
     Wallet getWallet();
+
+    /**
+     * resetta lo stato del drone ai valori iniziali
+     */
+    void reset();
 }

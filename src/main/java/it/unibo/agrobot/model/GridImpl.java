@@ -26,6 +26,11 @@ public class GridImpl implements Grid {
         this.height = height;
         this.tiles = new Tile[width][height];
 
+        reset();
+    }
+
+    @Override
+    public synchronized void reset() {
         // calcolo della colonna di divisione tra le due aree (due terzi a sinistra, un terzo a destra)
         int splitCol = (width * 2) / 3;
 
