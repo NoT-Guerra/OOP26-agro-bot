@@ -76,7 +76,7 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
-            case KeyEvent.VK_I -> {
+            case KeyEvent.VK_M -> {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.HANGAR) {
                         if (stateManager != null) {

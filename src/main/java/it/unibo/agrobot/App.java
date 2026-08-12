@@ -26,10 +26,9 @@ import it.unibo.agrobot.view.StorageView;
 public class App {
 
     public static void main(String[] args) {
-        // creazione della griglia 10x10 e posizionamento iniziale del drone in (0,0)
+        // creazione della griglia 10x10 e posizionamento iniziale del drone sulla base di ricarica (magazzino in 8,1)
         GridImpl grid = new GridImpl(10, 10);
-        DroneImpl drone = new DroneImpl(new Position(0, 0));
-        grid.setTile(1, 0, new it.unibo.agrobot.model.TileImpl(new Position(1, 0), it.unibo.agrobot.model.TileType.MARKET));
+        DroneImpl drone = new DroneImpl(new Position(8, 1));
 
         // inizializzazione della vista e della finestra di gioco
         int tileSize = 64; // dimensione in pixel di ogni tile della griglia
