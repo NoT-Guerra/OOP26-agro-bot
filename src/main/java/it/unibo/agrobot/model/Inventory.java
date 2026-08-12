@@ -66,6 +66,22 @@ public class Inventory {
     }
 
     /**
+     * rimuove una unita dell oggetto specificato dall inventario verificandone anche il tipo.
+     *
+     * @param itemName il nome dell oggetto da rimuovere
+     * @param type il tipo dell oggetto
+     * @return true se l oggetto e stato trovato e rimosso, false altrimenti
+     */
+    public synchronized boolean removeItem(String itemName, ItemType type) {
+        for (InventorySlot slot : this.slots) {
+            if (!slot.isEmpty() && slot.getItemName().equals(itemName) && slot.getType() == type) {
+                return slot.removeItem();
+            }
+        }
+        return false;
+    }
+
+    /**
      * conta quanti oggetti con quel nome ci sono in tutto l inventario sommando
      * le quantita di tutti gli slot.
      *

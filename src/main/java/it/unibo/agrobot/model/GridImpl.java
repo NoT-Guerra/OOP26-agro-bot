@@ -26,11 +26,15 @@ public class GridImpl implements Grid {
         this.height = height;
         this.tiles = new Tile[width][height];
 
-        reset();
+        initGrid();
     }
 
     @Override
     public synchronized void reset() {
+        initGrid();
+    }
+
+    private void initGrid() {
         // calcolo della colonna di divisione tra le due aree (due terzi a sinistra, un terzo a destra)
         int splitCol = (width * 2) / 3;
 
@@ -53,11 +57,24 @@ public class GridImpl implements Grid {
             this.tiles[hangarX][hangarY] = new TileImpl(new Position(hangarX, hangarY), TileType.HANGAR);
         }
 
-        // posiziono il pozzo d'acqua
-        int wellX = width - 2;
-        int wellY = 4;
-        if (wellX >= splitCol && wellY < height && (wellX != hangarX || wellY != hangarY)) {
-            this.tiles[wellX][wellY] = new TileImpl(new Position(wellX, wellY), TileType.WELL);
+        // posiziono il pozzo d'acqua (4 celle, allineato con hangar)
+        int wellStartX = hangarX;
+        int wellStartY = 4;
+        if (wellStartX >= splitCol && wellStartX + 1 < width && wellStartY >= 0 && wellStartY + 1 < height) {
+            this.tiles[wellStartX][wellStartY] = new TileImpl(new Position(wellStartX, wellStartY), TileType.WELL);
+            this.tiles[wellStartX + 1][wellStartY] = new TileImpl(new Position(wellStartX + 1, wellStartY), TileType.WELL);
+            this.tiles[wellStartX][wellStartY + 1] = new TileImpl(new Position(wellStartX, wellStartY + 1), TileType.WELL);
+            this.tiles[wellStartX + 1][wellStartY + 1] = new TileImpl(new Position(wellStartX + 1, wellStartY + 1), TileType.WELL);
+        }
+
+        // posiziono il mercato (4 celle in basso a destra, allineato con hangar)
+        int marketStartX = hangarX;
+        int marketStartY = height - 2;
+        if (marketStartX >= splitCol && marketStartX + 1 < width && marketStartY >= 0 && marketStartY + 1 < height) {
+            this.tiles[marketStartX][marketStartY] = new TileImpl(new Position(marketStartX, marketStartY), TileType.MARKET);
+            this.tiles[marketStartX + 1][marketStartY] = new TileImpl(new Position(marketStartX + 1, marketStartY), TileType.MARKET);
+            this.tiles[marketStartX][marketStartY + 1] = new TileImpl(new Position(marketStartX, marketStartY + 1), TileType.MARKET);
+            this.tiles[marketStartX + 1][marketStartY + 1] = new TileImpl(new Position(marketStartX + 1, marketStartY + 1), TileType.MARKET);
         }
     }
 

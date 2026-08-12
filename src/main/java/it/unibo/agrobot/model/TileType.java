@@ -11,5 +11,7 @@ public enum TileType {
     /** hangar per la ricarica della batteria del drone */
     HANGAR,
     /** tappeto erboso */
-    GRASS
+    GRASS,
+    /** mercato per comprare e vendere */
+    MARKET
 }

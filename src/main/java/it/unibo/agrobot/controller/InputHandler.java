@@ -14,11 +14,16 @@ public class InputHandler extends KeyAdapter {
     private final Drone drone;
     private final Grid grid;
     private final GameStateManager stateManager;
+    private Runnable openShopAction;
 
     public InputHandler(Drone drone, Grid grid, GameStateManager stateManager) {
         this.drone = drone;
         this.grid = grid;
         this.stateManager = stateManager;
+    }
+
+    public void setOpenShopAction(Runnable action) {
+        this.openShopAction = action;
     }
 
     @Override
@@ -71,11 +76,15 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
-            case KeyEvent.VK_I -> {
+            case KeyEvent.VK_M -> {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.HANGAR) {
                         if (stateManager != null) {
                             stateManager.setState(GameState.STORAGE_MENU);
+                        }
+                    } else if (tile.getType() == it.unibo.agrobot.model.TileType.MARKET) {
+                        if (openShopAction != null) {
+                            openShopAction.run();
                         }
                     }
                 });

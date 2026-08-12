@@ -25,11 +25,15 @@ public class TileView {
     private BufferedImage wateredImage;
     private BufferedImage hangarImage;
     private BufferedImage wellImage;
+    private BufferedImage marketImage;
     
     // mappa per memorizzare le immagini delle colture in base al loro stato
     private final Map<String, BufferedImage> cropImages = new HashMap<>();
+    
+    private final it.unibo.agrobot.model.Grid grid;
 
-    public TileView() {
+    public TileView(it.unibo.agrobot.model.Grid grid) {
+        this.grid = grid;
         this.loadSprites();
     }
 
@@ -41,6 +45,7 @@ public class TileView {
         
         this.hangarImage = loadImage("hangar.png", true);
         this.wellImage = loadImage("well.png", true);
+        this.marketImage = loadImage("market.png", true);
         
         // carica le immagini delle colture per ogni stato (seed, growing, mature, dead)
         String[] cropNames = {"wheat", "corn"};
@@ -146,16 +151,21 @@ public class TileView {
     public void drawObject(Graphics2D g, Tile tile, int x, int y, int size) {
         if (null != tile.getType()) switch (tile.getType()) {
             case WELL -> {
-                if (this.wellImage != null) {
-                    // faccio occupare al pozzo più spazio
-                    double scale = 1.8;
-                    int newSize = (int)(size * scale);
-                    int offsetX = (newSize - size) / 2;
-                    int offsetY = newSize - size;
-                    g.drawImage(this.wellImage, x - offsetX, y - offsetY, newSize, newSize, null);
-                } else {
+                if (this.wellImage != null && this.grid != null) {
+                    int tx = (int) tile.getPosition().getX();
+                    int ty = (int) tile.getPosition().getY();
+                    
+                    // Verifica se questa tile è la prima in alto a sinistra del blocco pozzo (2x2)
+                    boolean isLeftMost = !this.grid.getTile(tx - 1, ty).map(t -> t.getType() == TileType.WELL).orElse(false);
+                    boolean isTopMost = !this.grid.getTile(tx, ty - 1).map(t -> t.getType() == TileType.WELL).orElse(false);
+                    
+                    if (isLeftMost && isTopMost) {
+                        int wellSize = size * 2;
+                        g.drawImage(this.wellImage, x, y, wellSize, wellSize, null);
+                    }
+                } else if (this.wellImage == null) {
                     g.setColor(new Color(50, 150, 255));
-                    g.fillOval(x - size/4, y - size/4, (int)(size*1.5), (int)(size*1.5));
+                    g.fillOval(x, y, size * 2, size * 2);
                 }
             }
             case HANGAR -> {
@@ -167,6 +177,26 @@ public class TileView {
                 } else {
                     g.setColor(new Color(150, 150, 150));
                     g.fillRect(x, y - size, size * 2, size * 2);
+                }
+            }
+            case MARKET -> {
+                if (this.marketImage != null && this.grid != null) {
+                    int tx = (int) tile.getPosition().getX();
+                    int ty = (int) tile.getPosition().getY();
+                    
+                    // Verifica se questa tile è la prima in alto a sinistra del blocco mercato (2x2)
+                    boolean isLeftMost = !this.grid.getTile(tx - 1, ty).map(t -> t.getType() == TileType.MARKET).orElse(false);
+                    boolean isTopMost = !this.grid.getTile(tx, ty - 1).map(t -> t.getType() == TileType.MARKET).orElse(false);
+                    
+                    if (isLeftMost && isTopMost) {
+                        // Disegna l'immagine mercato grande 2x2 partendo da questa tile
+                        int marketSize = size * 2;
+                        g.drawImage(this.marketImage, x, y, marketSize, marketSize, null);
+                    }
+                } else if (this.marketImage == null) {
+                    // Fallback se manca l'immagine
+                    g.setColor(new Color(255, 165, 0)); // Orange per il mercato
+                    g.fillRect(x, y, size, size);
                 }
             }
             case SOIL -> {

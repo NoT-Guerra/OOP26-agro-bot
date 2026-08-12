@@ -23,7 +23,7 @@ public class GridView {
     public GridView(Grid grid, int tileSize) {
         this.grid = grid;
         this.tileSize = tileSize;
-        this.tileView = new TileView();
+        this.tileView = new TileView(grid);
     }
 
     public void setTileSize(int newSize) {
