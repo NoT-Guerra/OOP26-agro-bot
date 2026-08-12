@@ -17,8 +17,7 @@ class WalletTest {
     private Wallet wallet;
 
     @BeforeEach
-    @SuppressWarnings("unused")
-    void setUp() {
+    public void setUp() {
         wallet = new Wallet(100.0);
     }
 

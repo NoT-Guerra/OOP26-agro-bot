@@ -14,8 +14,7 @@ class MarketBuyTest {
     private Market market;
 
     @BeforeEach
-    @SuppressWarnings("unused")
-    void setUp() {
+    public void setUp() {
         // inventario con 1 slot
         inventory = new Inventory(1);
         wallet = new Wallet(20.0); // settiamo i crediti iniziali per i test base

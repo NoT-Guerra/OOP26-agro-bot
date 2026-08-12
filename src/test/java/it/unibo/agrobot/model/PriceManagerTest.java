@@ -11,8 +11,7 @@ class PriceManagerTest {
     private PriceManager priceManager;
 
     @BeforeEach
-    @SuppressWarnings("unused")
-    void setUp() {
+    public void setUp() {
         priceManager = new PriceManager();
     }
 

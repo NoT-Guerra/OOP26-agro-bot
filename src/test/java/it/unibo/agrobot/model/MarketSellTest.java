@@ -14,8 +14,7 @@ class MarketSellTest {
     private Market market;
 
     @BeforeEach
-    @SuppressWarnings("unused")
-    void setUp() {
+    public void setUp() {
         inventory = new Inventory(5);
         wallet = new Wallet(0.0);
         priceManager = new PriceManager();
