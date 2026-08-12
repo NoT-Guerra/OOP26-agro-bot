@@ -1,21 +1,21 @@
 package it.unibo.agrobot;
 
+import it.unibo.agrobot.controller.GameLoop;
+import it.unibo.agrobot.controller.GameState;
+import it.unibo.agrobot.controller.GameStateManager;
+import it.unibo.agrobot.controller.InputHandler;
 import it.unibo.agrobot.model.DroneImpl;
 import it.unibo.agrobot.model.GridImpl;
 import it.unibo.agrobot.model.Position;
 import it.unibo.agrobot.model.Storage;
 import it.unibo.agrobot.view.DroneView;
+import it.unibo.agrobot.view.GameOverView;
 import it.unibo.agrobot.view.GamePanel;
 import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.view.MainMenuView;
-import it.unibo.agrobot.view.GameOverView;
 import it.unibo.agrobot.view.StorageView;
-import it.unibo.agrobot.controller.InputHandler;
-import it.unibo.agrobot.controller.GameLoop;
-import it.unibo.agrobot.controller.GameState;
-import it.unibo.agrobot.controller.GameStateManager;
 
 public class App {
 
@@ -54,16 +54,19 @@ public class App {
         gameWindow.addPanel(storageView, "STORAGE_MENU");
 
         stateManager.setOnStateChange(state -> {
-            if (state == GameState.MENU) {
-                gameWindow.showPanel("MENU");
-            } else if (state == GameState.PLAYING) {
-                gameWindow.showPanel("PLAYING");
-                gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
-            } else if (state == GameState.GAME_OVER) {
-                gameWindow.showPanel("GAME_OVER");
-            } else if (state == GameState.STORAGE_MENU) {
-                storageView.refreshView();
-                gameWindow.showPanel("STORAGE_MENU");
+            if (null != state) switch (state) {
+                case MENU -> gameWindow.showPanel("MENU");
+                case PLAYING -> {
+                    gameWindow.showPanel("PLAYING");
+                    gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
+                }
+                case GAME_OVER -> gameWindow.showPanel("GAME_OVER");
+                case STORAGE_MENU -> {
+                    storageView.refreshView();
+                    gameWindow.showPanel("STORAGE_MENU");
+                }
+                default -> {
+                }
             }
         });
 

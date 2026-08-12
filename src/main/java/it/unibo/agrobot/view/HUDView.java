@@ -49,10 +49,10 @@ public class HUDView {
         double water = this.drone.getWaterLevel();
         g2d.drawString(String.format("Water Tank: %.0f", water), 20, 95);
 
-        drawInventory(g2d, screenWidth, screenHeight);
+        drawInventory(g2d);
     }
 
-    private void drawInventory(Graphics2D g2d, int screenWidth, int screenHeight) {
+    private void drawInventory(Graphics2D g2d) {
         Inventory inventory = this.drone.getInventory();
         if (inventory == null) {
             return;
@@ -61,7 +61,7 @@ public class HUDView {
         int slotCount = inventory.getSlotCount();
         int slotSize = 50;
         int spacing = 10;
-        int totalWidth = (slotSize * slotCount) + (spacing * (slotCount - 1));
+
         
         int startX = 10;
         int startY = 120;
