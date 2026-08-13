@@ -17,7 +17,9 @@ public class HUDView {
 
     private final Drone drone;
     private boolean showControls = false;
+    private boolean showHelp = false;
     private final java.awt.Rectangle infoButtonBounds = new java.awt.Rectangle(20, 200, 30, 30);
+    private final java.awt.Rectangle helpButtonBounds = new java.awt.Rectangle(60, 200, 30, 30);
 
     /**
      * crea l'HUD associato al drone.
@@ -32,8 +34,18 @@ public class HUDView {
         return infoButtonBounds.contains(x, y);
     }
 
+    public boolean isHelpButtonClicked(int x, int y) {
+        return helpButtonBounds.contains(x, y);
+    }
+
     public void toggleControls() {
         showControls = !showControls;
+        if (showControls) showHelp = false; // close the other panel
+    }
+
+    public void toggleHelp() {
+        showHelp = !showHelp;
+        if (showHelp) showControls = false; // close the other panel
     }
 
     /**
@@ -68,20 +80,83 @@ public class HUDView {
         g2d.setFont(new Font("Arial", Font.BOLD, 18));
         g2d.drawString("i", infoButtonBounds.x + 12, infoButtonBounds.y + 21);
 
+        //disegna il pulsante "?" per scopo del gioco
+        g2d.setColor(new Color(0, 0, 0, 150));
+        g2d.fillRoundRect(helpButtonBounds.x, helpButtonBounds.y, helpButtonBounds.width, helpButtonBounds.height, 15, 15);
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("Arial", Font.BOLD, 18));
+        g2d.drawString("?", helpButtonBounds.x + 10, helpButtonBounds.y + 21);
+
         //Disegna lo spazio verde con i comandi se showControls è true
         if (showControls) {
-            g2d.setColor(new Color(34, 139, 34, 220)); // Verde per i comandi
-            g2d.fillRoundRect(20, 240, 190, 160, 15, 15);
-            g2d.setColor(Color.WHITE);
+            String[] cmds = {
+                "w: andare su",
+                "s: andare giù",
+                "a: andare a sinistra",
+                "d: andare a destra",
+                "spazio: raccogliere",
+                "f: annaffiare",
+                "e: ricaricarsi"
+            };
             g2d.setFont(new Font("Arial", Font.BOLD, 12));
+            FontMetrics fm = g2d.getFontMetrics();
+            int maxWidth = 0;
+            for (String cmd : cmds) {
+                int w = fm.stringWidth(cmd);
+                if (w > maxWidth) maxWidth = w;
+            }
+            int boxWidth = maxWidth + 20; 
+            int boxHeight = (cmds.length * 20) + 15; 
+
+            g2d.setColor(new Color(34, 139, 34, 220)); 
+            g2d.fillRoundRect(20, 240, boxWidth, boxHeight, 15, 15);
+            
+            g2d.setColor(Color.WHITE);
             int startY = 260;
-            g2d.drawString("w: andare su", 30, startY);
-            g2d.drawString("s: andare giù", 30, startY + 20);
-            g2d.drawString("a: andare a sinistra", 30, startY + 40);
-            g2d.drawString("d: andare a destra", 30, startY + 60);
-            g2d.drawString("spazio: raccogliere", 30, startY + 80);
-            g2d.drawString("f: annaffiare", 30, startY + 100);
-            g2d.drawString("e: ricaricarsi", 30, startY + 120);
+            for (String cmd : cmds) {
+                g2d.drawString(cmd, 30, startY);
+                startY += 20;
+            }
+        } else if (showHelp) {
+            String title = "SCOPO DEL GIOCO:";
+            String[] helpLines = {
+                "Gestisci il tuo drone agricolo",
+                "per curare i tuoi campi",
+                "- Pianta i semi",
+                "- Annaffia le piante",
+                "- Raccogli e vendi il raccolto",
+                "- Ricordati peró di ricaricare batteria ed acqua",
+                "Guadagna più soldi che puoi!"
+            };
+
+            g2d.setFont(new Font("Arial", Font.BOLD, 13));
+            FontMetrics fmBold = g2d.getFontMetrics();
+            int maxWidth = fmBold.stringWidth(title);
+
+            g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+            FontMetrics fmPlain = g2d.getFontMetrics();
+            for (String line : helpLines) {
+                int w = fmPlain.stringWidth(line);
+                if (w > maxWidth) maxWidth = w;
+            }
+
+            int boxWidth = maxWidth + 20;
+            int boxHeight = 20 + (helpLines.length * 18) + 15;
+
+            g2d.setColor(new Color(70, 130, 180, 220)); 
+            g2d.fillRoundRect(20, 240, boxWidth, boxHeight, 15, 15);
+            
+            g2d.setColor(Color.WHITE);
+            int currentY = 260;
+            g2d.setFont(new Font("Arial", Font.BOLD, 13));
+            g2d.drawString(title, 30, currentY);
+            
+            currentY += 20;
+            g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+            for (String line : helpLines) {
+                g2d.drawString(line, 30, currentY);
+                currentY += 18;
+            }
         }
     }
 
