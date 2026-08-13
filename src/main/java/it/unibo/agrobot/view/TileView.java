@@ -169,14 +169,21 @@ public class TileView {
                 }
             }
             case HANGAR -> {
-                if (this.hangarImage != null) {
-                    // aumento le dimensioni dell'hangar
-                    int hangarSize = size * 2;
-                    int offsetY = hangarSize - size; // offset per farlo crescere in alto
-                    g.drawImage(this.hangarImage, x, y - offsetY, hangarSize, hangarSize, null);
-                } else {
+                if (this.hangarImage != null && this.grid != null) {
+                    int tx = (int) tile.getPosition().getX();
+                    int ty = (int) tile.getPosition().getY();
+                    
+                    // verifica se questa tile è la prima in alto a sinistra del blocco hangar (2x2)
+                    boolean isLeftMost = !this.grid.getTile(tx - 1, ty).map(t -> t.getType() == TileType.HANGAR).orElse(false);
+                    boolean isTopMost = !this.grid.getTile(tx, ty - 1).map(t -> t.getType() == TileType.HANGAR).orElse(false);
+                    
+                    if (isLeftMost && isTopMost) {
+                        int hangarSize = size * 2;
+                        g.drawImage(this.hangarImage, x, y, hangarSize, hangarSize, null);
+                    }
+                } else if (this.hangarImage == null) {
                     g.setColor(new Color(150, 150, 150));
-                    g.fillRect(x, y - size, size * 2, size * 2);
+                    g.fillRect(x, y, size * 2, size * 2);
                 }
             }
             case MARKET -> {

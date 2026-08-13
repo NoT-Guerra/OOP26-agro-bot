@@ -91,6 +91,44 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
+            case KeyEvent.VK_E -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (!drone.isDead()) {
+                            // check if there is a mature crop to harvest
+                            java.util.Optional<it.unibo.agrobot.model.Crop> harvested = tile.harvest();
+                            if (harvested.isPresent()) {
+                                drone.harvest(); // consume battery
+                                drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
+                            }
+                        }
+                    }
+                });
+            }
+            case KeyEvent.VK_Q -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.PLOWED || 
+                            tile.getSoilState() == it.unibo.agrobot.model.SoilState.WATERED) {
+                            if (drone.irrigate()) {
+                                tile.irrigate();
+                            }
+                        }
+                    }
+                });
+            }
+            case KeyEvent.VK_F -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.UNPLOWED) {
+                            if (!drone.isDead()) {
+                                drone.plow();
+                                tile.plow();
+                            }
+                        }
+                    }
+                });
+            }
             default -> {
             }
         }

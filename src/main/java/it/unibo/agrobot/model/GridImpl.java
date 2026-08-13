@@ -52,9 +52,12 @@ public class GridImpl implements Grid {
 
         // posiziono l'hangar nell'area di destra
         int hangarX = width - 2;
-        int hangarY = 1;
-        if (hangarX >= splitCol && hangarY < height) {
+        int hangarY = 0;
+        if (hangarX >= splitCol && hangarX + 1 < width && hangarY >= 0 && hangarY + 1 < height) {
             this.tiles[hangarX][hangarY] = new TileImpl(new Position(hangarX, hangarY), TileType.HANGAR);
+            this.tiles[hangarX + 1][hangarY] = new TileImpl(new Position(hangarX + 1, hangarY), TileType.HANGAR);
+            this.tiles[hangarX][hangarY + 1] = new TileImpl(new Position(hangarX, hangarY + 1), TileType.HANGAR);
+            this.tiles[hangarX + 1][hangarY + 1] = new TileImpl(new Position(hangarX + 1, hangarY + 1), TileType.HANGAR);
         }
 
         // posiziono il pozzo d'acqua (4 celle, allineato con hangar)
