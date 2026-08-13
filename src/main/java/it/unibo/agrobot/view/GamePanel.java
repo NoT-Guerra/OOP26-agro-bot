@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JPanel;
 
 import it.unibo.agrobot.controller.GameState;
@@ -42,6 +45,17 @@ public class GamePanel extends JPanel {
         this.setPreferredSize(new Dimension(width, height));
         // pannello focusable per ricevere input da tastiera
         this.setFocusable(true);
+
+        //aggiungo mouse listener per catturare il click sul pulsante "i"
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (hudView != null && hudView.isInfoButtonClicked(e.getX(), e.getY())) {
+                    hudView.toggleControls();
+                    repaint(); //ridisegna il pannello
+                }
+            }
+        });
     }
 
     @Override
