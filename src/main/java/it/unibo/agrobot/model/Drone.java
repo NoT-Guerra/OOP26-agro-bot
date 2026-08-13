@@ -49,10 +49,10 @@ public interface Drone {
     void updateState(double deltaTime);
 
     /**
-     * ticarica completamente il serbatoio dell'acqua del drone chiamato quando
-     * il drone si trova sul lago
+     * ricarica completamente il serbatoio dell'acqua del drone chiamato quando
+     * il drone si trova sul pozzo (well)
      */
-    void rechargeWaterAtLake();
+    void rechargeWaterAtWell();
 
     /**
      * esegue azione di aratura del terreno questa azione consuma più energia

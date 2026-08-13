@@ -156,7 +156,7 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public synchronized void rechargeWaterAtLake() {
+    public synchronized void rechargeWaterAtWell() {
         this.waterTank.fill();
     }
 

@@ -124,7 +124,7 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        drone.rechargeWaterAtLake(); 
+        drone.rechargeWaterAtWell(); 
         
         assertEquals(50.0, drone.getWaterLevel(), 0.001);
         System.out.println("testRechargeWater: PASSATO");
@@ -137,7 +137,7 @@ class DroneTest {
         
         assertFalse(drone.irrigate());
         
-        drone.rechargeWaterAtLake();
+        drone.rechargeWaterAtWell();
         
         double batteryBefore = drone.getBatteryLevel();
         double waterBefore = drone.getWaterLevel();

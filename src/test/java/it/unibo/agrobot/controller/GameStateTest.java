@@ -47,7 +47,7 @@ class GameStateTest {
             @Override public double getWaterLevel() { return 0; }
             @Override public boolean move(Direction dir) { return false; }
             @Override public boolean isMoving() { return false; }
-            @Override public void rechargeWaterAtLake() {}
+            @Override public void rechargeWaterAtWell() {}
             @Override public void plow() {}
             @Override public void harvest() {}
             @Override public boolean irrigate() { return false; }

@@ -73,6 +73,8 @@ public class InputHandler extends KeyAdapter {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.HANGAR) {
                         drone.rechargeAtHangar();
+                    } else if (tile.getType() == it.unibo.agrobot.model.TileType.WELL) {
+                        drone.rechargeWaterAtWell();
                     }
                 });
             }
