@@ -65,4 +65,11 @@ public interface Grid {
      * resetta la griglia al suo stato iniziale
      */
     void reset();
+
+    /**
+     * aggiorna lo stato della griglia e delle zolle nel tempo
+     * 
+     * @param deltaTime il tempo trascorso dall'ultimo frame
+     */
+    void update(double deltaTime);
 }

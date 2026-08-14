@@ -62,4 +62,11 @@ public interface Tile {
      * @return un Optional contenente la coltura attualmente piantata, solo se presente, altrimenti Optional vuoto
      */
     Optional<Crop> getCrop();
+
+    /**
+     * aggiorna lo stato della zolla nel tempo
+     * 
+     * @param deltaTime il tempo trascorso dall'ultimo frame
+     */
+    void update(double deltaTime);
 }

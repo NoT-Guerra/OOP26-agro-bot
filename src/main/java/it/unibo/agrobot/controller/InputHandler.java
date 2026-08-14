@@ -91,6 +91,77 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
+            case KeyEvent.VK_H -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (!drone.isDead()) {
+                            // check if there is a mature crop to harvest
+                            java.util.Optional<it.unibo.agrobot.model.Crop> harvested = tile.harvest();
+                            if (harvested.isPresent()) {
+                                drone.harvest(); // consume battery
+                                drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
+                            }
+                        }
+                    }
+                });
+            }
+            case KeyEvent.VK_I -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.PLOWED || 
+                            tile.getSoilState() == it.unibo.agrobot.model.SoilState.WATERED) {
+                            if (drone.irrigate()) {
+                                tile.irrigate();
+                            }
+                        }
+                    }
+                });
+            }
+            case KeyEvent.VK_C -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.UNPLOWED) {
+                            if (!drone.isDead()) {
+                                drone.plow();
+                                tile.plow();
+                            }
+                        }
+                    }
+                });
+            }
+            case KeyEvent.VK_P -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
+                        if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.PLOWED || 
+                            tile.getSoilState() == it.unibo.agrobot.model.SoilState.WATERED) {
+                            if (!drone.isDead()) {
+                                String seedToPlant = null;
+                                it.unibo.agrobot.model.Inventory inventory = drone.getInventory();
+                                for (int i = 0; i < inventory.getSlotCount(); i++) {
+                                    it.unibo.agrobot.model.InventorySlot slot = inventory.getSlot(i);
+                                    if (!slot.isEmpty() && slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
+                                        seedToPlant = slot.getItemName();
+                                        break;
+                                    }
+                                }
+
+                                if (seedToPlant != null) {
+                                    it.unibo.agrobot.model.Crop crop = null;
+                                    if ("Wheat".equals(seedToPlant)) {
+                                        crop = new it.unibo.agrobot.model.Wheat();
+                                    } else if ("Corn".equals(seedToPlant)) {
+                                        crop = new it.unibo.agrobot.model.Corn();
+                                    }
+
+                                    if (crop != null && tile.plant(crop)) {
+                                        inventory.removeItem(seedToPlant, it.unibo.agrobot.model.ItemType.SEED);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
             default -> {
             }
         }
