@@ -75,4 +75,16 @@ public class Wallet {
         }
         return this.balance >= amount;
     }
+
+    /**
+     * imposta direttamente il saldo.
+     *
+     * @param balance nuovo saldo
+     */
+    public synchronized void setBalance(double balance) {
+        if (balance < 0) {
+            throw new IllegalArgumentException("Il saldo non può essere negativo.");
+        }
+        this.balance = balance;
+    }
 }

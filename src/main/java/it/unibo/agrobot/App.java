@@ -55,11 +55,11 @@ public class App {
         priceManager.setSellPrice("Corn", it.unibo.agrobot.model.ItemType.CROP, 30.0);
         
         Market market = new Market(drone.getInventory(), wallet, priceManager);
-
         Runnable onRestart = () -> {
             drone.reset();
             grid.reset();
             storage.clear();
+            wallet.setBalance(100.0);
         };
 
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);

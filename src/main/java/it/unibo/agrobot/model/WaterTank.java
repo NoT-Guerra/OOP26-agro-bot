@@ -47,4 +47,11 @@ public class WaterTank {
             this.level = 0.0;
         }
     }
+
+    /**
+     * svuota completamente il serbatoio
+     */
+    public void empty() {
+        this.level = 0.0;
+    }
 }
