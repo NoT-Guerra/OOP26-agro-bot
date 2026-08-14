@@ -22,6 +22,7 @@ import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.view.MainMenuView;
 import it.unibo.agrobot.view.ShopMenuUI;
 import it.unibo.agrobot.view.StorageView;
+import it.unibo.agrobot.view.PauseMenuUI;
 
 public class App {
 
@@ -55,20 +56,27 @@ public class App {
         
         Market market = new Market(drone.getInventory(), wallet, priceManager);
 
+        Runnable onRestart = () -> {
+            drone.reset();
+            grid.reset();
+            storage.clear();
+        };
+
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
         
         ShopMenuUI shopMenuUI = new ShopMenuUI(market, stateManager);
         shopMenuUI.setVisible(false);
+        
+        PauseMenuUI pauseMenuUI = new PauseMenuUI(stateManager, onRestart);
+        pauseMenuUI.setVisible(false);
+        
         gamePanel.setLayout(new GridBagLayout());
         gamePanel.add(shopMenuUI);
+        gamePanel.add(pauseMenuUI);
 
         GameWindow gameWindow = new GameWindow("Agro-Bot");
         MainMenuView mainMenuView = new MainMenuView(stateManager);
-        GameOverView gameOverView = new GameOverView(stateManager, () -> {
-            drone.reset();
-            grid.reset();
-            storage.clear();
-        });
+        GameOverView gameOverView = new GameOverView(stateManager, onRestart);
         StorageView storageView = new StorageView(stateManager, drone.getInventory(), storage);
 
         gameWindow.addPanel(mainMenuView, "MENU");
@@ -82,7 +90,14 @@ public class App {
                 case PLAYING -> {
                     gameWindow.showPanel("PLAYING");
                     shopMenuUI.setVisible(false);
+                    pauseMenuUI.setVisible(false);
                     gamePanel.requestFocusInWindow(); // richiedo il focus per ricevere gli input
+                }
+                case PAUSED -> {
+                    if (!shopMenuUI.isVisible()) {
+                        pauseMenuUI.setVisible(true);
+                    }
+                    gameWindow.showPanel("PLAYING");
                 }
                 case GAME_OVER -> gameWindow.showPanel("GAME_OVER");
                 case STORAGE_MENU -> {

@@ -114,12 +114,6 @@ public class GamePanel extends JPanel {
         if (this.stateManager != null && this.stateManager.getState() == GameState.PAUSED) {
             g2d.setColor(new Color(0, 0, 0, 150));
             g2d.fillRect(0, 0, getWidth(), getHeight());
-            
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("Arial", Font.BOLD, 64));
-            String pauseText = "PAUSED";
-            int stringWidth = g2d.getFontMetrics().stringWidth(pauseText);
-            g2d.drawString(pauseText, (getWidth() - stringWidth) / 2, getHeight() / 2);
         }
     }
 }
