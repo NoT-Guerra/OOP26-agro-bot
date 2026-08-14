@@ -1,6 +1,7 @@
 package it.unibo.agrobot.controller;
 
 import it.unibo.agrobot.model.Drone;
+import it.unibo.agrobot.model.Grid;
 import it.unibo.agrobot.view.GamePanel;
 
 public class GameLoop implements Runnable {
@@ -13,6 +14,7 @@ public class GameLoop implements Runnable {
     private Thread renderThread;
 
     private final GamePanel gamePanel;
+    private final Grid grid;
     private final Drone drone;
     private final GameStateManager stateManager;
 
@@ -23,11 +25,13 @@ public class GameLoop implements Runnable {
      * Constructs a GameLoop with the specified game panel for rendering.
      *
      * @param gamePanel the panel to repaint during the render phase
+     * @param grid the grid to update
      * @param drone the drone to update
      * @param stateManager the state manager
      */
-    public GameLoop(GamePanel gamePanel, Drone drone, GameStateManager stateManager) {
+    public GameLoop(GamePanel gamePanel, it.unibo.agrobot.model.Grid grid, Drone drone, GameStateManager stateManager) {
         this.gamePanel = gamePanel;
+        this.grid = grid;
         this.drone = drone;
         this.stateManager = stateManager;
     }
@@ -37,6 +41,7 @@ public class GameLoop implements Runnable {
      */
     public GameLoop() {
         this.gamePanel = null;
+        this.grid = null;
         this.drone = null;
         this.stateManager = null;
     }
@@ -154,6 +159,9 @@ public class GameLoop implements Runnable {
         // calcola deltaTime in secondi
         double deltaTime = 1.0 / UPS_SET;
         this.drone.updateState(deltaTime);
+        if (this.grid != null) {
+            this.grid.update(deltaTime);
+        }
     }
 
     /**

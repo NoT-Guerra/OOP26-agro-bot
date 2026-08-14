@@ -133,4 +133,15 @@ public class GridImpl implements Grid {
         this.tiles[x][y] = tile;
         return true;
     }
+
+    @Override
+    public synchronized void update(double deltaTime) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (this.tiles[x][y] != null) {
+                    this.tiles[x][y].update(deltaTime);
+                }
+            }
+        }
+    }
 }

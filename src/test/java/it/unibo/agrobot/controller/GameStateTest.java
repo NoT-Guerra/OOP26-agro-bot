@@ -61,7 +61,7 @@ class GameStateTest {
         GameStateManager stateManager = new GameStateManager();
         // impostiamo lo stato inziale a MENU (NON dovrebbe consumare tick)
         stateManager.setState(GameState.MENU);
-        GameLoop gameLoop = new GameLoop(null, dummyDrone, stateManager);
+        GameLoop gameLoop = new GameLoop(null, null, dummyDrone, stateManager);
         gameLoop.start();
         // attendiamo per vedere se in stato MENU il drone viene aggiornato
         Thread.sleep(500);

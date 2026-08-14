@@ -110,4 +110,9 @@ public class TileImpl implements Tile {
     public synchronized Optional<Crop> getCrop() {
         return this.crop;
     }
+
+    @Override
+    public synchronized void update(double deltaTime) {
+        this.crop.ifPresent(c -> c.update(deltaTime));
+    }
 }

@@ -125,7 +125,7 @@ public class App {
         stateManager.setState(GameState.MENU);
         
         // avvio il game loop per la logica e il rendering continuo
-        GameLoop gameLoop = new GameLoop(gamePanel, drone, stateManager);
+        GameLoop gameLoop = new GameLoop(gamePanel, grid, drone, stateManager);
         gameLoop.start();
     }
 }
