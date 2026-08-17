@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
@@ -47,6 +49,15 @@ public class MainMenuView extends JPanel {
         playButton.addActionListener(e -> {
             if (stateManager != null) {
                 stateManager.setState(GameState.PLAYING);
+            }
+        });
+
+        playButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    playButton.doClick();
+                }
             }
         });
 

@@ -100,7 +100,11 @@ public class InputHandler extends KeyAdapter {
                             if (harvested.isPresent()) {
                                 drone.harvest(); // consume battery
                                 drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
+                            } else {
+                                java.awt.Toolkit.getDefaultToolkit().beep();
                             }
+                        } else {
+                            java.awt.Toolkit.getDefaultToolkit().beep();
                         }
                     }
                 });
@@ -112,7 +116,11 @@ public class InputHandler extends KeyAdapter {
                             tile.getSoilState() == it.unibo.agrobot.model.SoilState.WATERED) {
                             if (drone.irrigate()) {
                                 tile.irrigate();
+                            } else {
+                                java.awt.Toolkit.getDefaultToolkit().beep();
                             }
+                        } else {
+                            java.awt.Toolkit.getDefaultToolkit().beep();
                         }
                     }
                 });
@@ -124,7 +132,11 @@ public class InputHandler extends KeyAdapter {
                             if (!drone.isDead()) {
                                 drone.plow();
                                 tile.plow();
+                            } else {
+                                java.awt.Toolkit.getDefaultToolkit().beep();
                             }
+                        } else {
+                            java.awt.Toolkit.getDefaultToolkit().beep();
                         }
                     }
                 });
@@ -155,9 +167,17 @@ public class InputHandler extends KeyAdapter {
 
                                     if (crop != null && tile.plant(crop)) {
                                         inventory.removeItem(seedToPlant, it.unibo.agrobot.model.ItemType.SEED);
+                                    } else {
+                                        java.awt.Toolkit.getDefaultToolkit().beep();
                                     }
+                                } else {
+                                    java.awt.Toolkit.getDefaultToolkit().beep();
                                 }
+                            } else {
+                                java.awt.Toolkit.getDefaultToolkit().beep();
                             }
+                        } else {
+                            java.awt.Toolkit.getDefaultToolkit().beep();
                         }
                     }
                 });

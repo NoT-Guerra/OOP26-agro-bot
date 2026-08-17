@@ -2,11 +2,16 @@ package it.unibo.agrobot.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,7 +24,56 @@ import it.unibo.agrobot.controller.GameStateManager;
 
 public class PauseMenuUI extends JPanel {
 
+    private final JButton continueButton;
+    private final JButton restartButton;
+    private final GameStateManager stateManager;
+
+    private final KeyAdapter menuKeyListener = new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            Component src = (Component) e.getSource();
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ESCAPE -> {
+                    if (stateManager != null) {
+                        stateManager.setState(GameState.PLAYING);
+                    }
+                }
+                case KeyEvent.VK_ENTER -> {
+                    if (src instanceof JButton jButton) {
+                        jButton.doClick();
+                    }
+                }
+                case KeyEvent.VK_UP, KeyEvent.VK_DOWN -> {
+                    java.util.List<Component> buttons = java.util.Arrays.asList(continueButton, restartButton);
+                    int index = buttons.indexOf(src);
+                    if (index != -1) {
+                        if (e.getKeyCode() == KeyEvent.VK_UP) {
+                            index = (index - 1 + buttons.size()) % buttons.size();
+                        } else {
+                            index = (index + 1) % buttons.size();
+                        }
+                        buttons.get(index).requestFocusInWindow();
+                    }
+                }
+                default -> {
+                }
+            }
+        }
+    };
+
+    private final FocusAdapter buttonFocusListener = new FocusAdapter() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            e.getComponent().setBackground(Color.LIGHT_GRAY);
+        }
+        @Override
+        public void focusLost(FocusEvent e) {
+            e.getComponent().setBackground(Color.WHITE);
+        }
+    };
+
     public PauseMenuUI(GameStateManager stateManager, Runnable onRestart) {
+        this.stateManager = stateManager;
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(50, 50, 50, 240));
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
@@ -34,7 +88,7 @@ public class PauseMenuUI extends JPanel {
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setOpaque(false);
 
-        JButton continueButton = new JButton("CONTINUE");
+        continueButton = new JButton("CONTINUE");
         continueButton.setFont(new Font("Arial", Font.BOLD, 20));
         continueButton.setPreferredSize(new Dimension(200, 50));
         continueButton.setFocusPainted(false);
@@ -43,12 +97,14 @@ public class PauseMenuUI extends JPanel {
         continueButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         
         continueButton.addActionListener(e -> {
-            if (stateManager != null) {
-                stateManager.setState(GameState.PLAYING);
+            if (this.stateManager != null) {
+                this.stateManager.setState(GameState.PLAYING);
             }
         });
+        continueButton.addKeyListener(menuKeyListener);
+        continueButton.addFocusListener(buttonFocusListener);
 
-        JButton restartButton = new JButton("RESTART");
+        restartButton = new JButton("RESTART");
         restartButton.setFont(new Font("Arial", Font.BOLD, 20));
         restartButton.setPreferredSize(new Dimension(200, 50));
         restartButton.setFocusPainted(false);
@@ -60,10 +116,12 @@ public class PauseMenuUI extends JPanel {
             if (onRestart != null) {
                 onRestart.run();
             }
-            if (stateManager != null) {
-                stateManager.setState(GameState.PLAYING);
+            if (this.stateManager != null) {
+                this.stateManager.setState(GameState.PLAYING);
             }
         });
+        restartButton.addKeyListener(menuKeyListener);
+        restartButton.addFocusListener(buttonFocusListener);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -75,5 +133,13 @@ public class PauseMenuUI extends JPanel {
         centerPanel.add(restartButton, gbc);
 
         this.add(centerPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        if (b) {
+            javax.swing.SwingUtilities.invokeLater(() -> continueButton.requestFocusInWindow());
+        }
     }
 }
