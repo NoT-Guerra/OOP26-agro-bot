@@ -136,8 +136,15 @@ public class ShopMenuUI extends JPanel {
             JButton buyBtn = new JButton("Compra Seme " + seed);
             buyBtn.addKeyListener(menuKeyListener);
             buyBtn.addActionListener(e -> {
-                market.buySeed(seed);
-                refreshView();
+                if (market.buySeed(seed)) {
+                    refreshView();
+                } else {
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    buyBtn.setBackground(Color.RED);
+                    javax.swing.Timer timer = new javax.swing.Timer(200, evt -> refreshView());
+                    timer.setRepeats(false);
+                    timer.start();
+                }
             });
             itemsPanel.add(buyBtn);
         }
@@ -148,8 +155,15 @@ public class ShopMenuUI extends JPanel {
             JButton sellBtn = new JButton("Vendi " + crop);
             sellBtn.addKeyListener(menuKeyListener);
             sellBtn.addActionListener(e -> {
-                market.sellCrop(crop);
-                refreshView();
+                if (market.sellCrop(crop)) {
+                    refreshView();
+                } else {
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    sellBtn.setBackground(Color.RED);
+                    javax.swing.Timer timer = new javax.swing.Timer(200, evt -> refreshView());
+                    timer.setRepeats(false);
+                    timer.start();
+                }
             });
             itemsPanel.add(sellBtn);
         }
