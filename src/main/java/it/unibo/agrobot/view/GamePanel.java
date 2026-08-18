@@ -44,13 +44,18 @@ public class GamePanel extends JPanel {
         // pannello focusable per ricevere input da tastiera
         this.setFocusable(true);
 
-        //aggiungo mouse listener per catturare il click sul pulsante "i"
+        //aggiungo il mouse listener per catturare il click sul pulsante "i" o "?"
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (hudView != null && hudView.isInfoButtonClicked(e.getX(), e.getY())) {
-                    hudView.toggleControls();
-                    repaint(); //ridisegna il pannello
+                if (hudView != null) {
+                    if (hudView.isInfoButtonClicked(e.getX(), e.getY())) {
+                        hudView.toggleControls();
+                        repaint(); //ridisegna il pannello
+                    } else if (hudView.isHelpButtonClicked(e.getX(), e.getY())) {
+                        hudView.toggleHelp();
+                        repaint(); 
+                    }
                 }
             }
         });
