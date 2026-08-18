@@ -107,11 +107,19 @@ public class HUDView {
             int x = startX + (i * (slotSize + spacing));
 
             // Sfondo dello slot
-            g2d.setColor(new Color(0, 0, 0, 150));
+            if (i == inventory.getSelectedSlotIndex()) {
+                g2d.setColor(new Color(100, 200, 100, 200)); // slot selezionato
+            } else {
+                g2d.setColor(new Color(0, 0, 0, 150));
+            }
             g2d.fillRoundRect(x, startY, slotSize, slotSize, 10, 10);
             
             // Bordo dello slot
-            g2d.setColor(Color.WHITE);
+            if (i == inventory.getSelectedSlotIndex()) {
+                g2d.setColor(Color.GREEN);
+            } else {
+                g2d.setColor(Color.WHITE);
+            }
             g2d.drawRoundRect(x, startY, slotSize, slotSize, 10, 10);
 
             String itemName = slot.getItemName();

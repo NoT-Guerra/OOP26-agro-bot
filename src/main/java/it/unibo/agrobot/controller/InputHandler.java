@@ -30,12 +30,12 @@ public class InputHandler extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         if (stateManager != null) {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                if (stateManager.getState() == GameState.PLAYING) {
-                    stateManager.setState(GameState.PAUSED);
-                } else if (stateManager.getState() == GameState.PAUSED) {
-                    stateManager.setState(GameState.PLAYING);
-                } else if (stateManager.getState() == GameState.STORAGE_MENU) {
-                    stateManager.setState(GameState.PLAYING);
+                if (null != stateManager.getState()) switch (stateManager.getState()) {
+                    case PLAYING -> stateManager.setState(GameState.PAUSED);
+                    case PAUSED -> stateManager.setState(GameState.PLAYING);
+                    case STORAGE_MENU -> stateManager.setState(GameState.PLAYING);
+                    default -> {
+                    }
                 }
             }
 
@@ -143,30 +143,32 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
+            case KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3 -> {
+                int index = e.getKeyCode() - KeyEvent.VK_1;
+                if (drone != null && drone.getInventory() != null && index < drone.getInventory().getSlotCount()) {
+                    drone.getInventory().setSelectedSlotIndex(index);
+                }
+            }
             case KeyEvent.VK_P -> {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
                         if (tile.getSoilState() == it.unibo.agrobot.model.SoilState.PLOWED || 
                             tile.getSoilState() == it.unibo.agrobot.model.SoilState.WATERED) {
                             if (!drone.isDead()) {
-                                String seedToPlant = null;
                                 it.unibo.agrobot.model.Inventory inventory = drone.getInventory();
-                                for (int i = 0; i < inventory.getSlotCount(); i++) {
-                                    it.unibo.agrobot.model.InventorySlot slot = inventory.getSlot(i);
-                                    if (!slot.isEmpty() && slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
-                                        seedToPlant = slot.getItemName();
-                                        break;
-                                    }
-                                }
-
-                                if (seedToPlant != null) {
+                                int selectedIndex = inventory.getSelectedSlotIndex();
+                                it.unibo.agrobot.model.InventorySlot selectedSlot = inventory.getSlot(selectedIndex);
+                                
+                                if (!selectedSlot.isEmpty() && selectedSlot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
+                                    String seedToPlant = selectedSlot.getItemName();
                                     it.unibo.agrobot.model.Crop crop = null;
+                                    
                                     if ("Wheat".equals(seedToPlant)) {
                                         crop = new it.unibo.agrobot.model.Wheat();
                                     } else if ("Corn".equals(seedToPlant)) {
                                         crop = new it.unibo.agrobot.model.Corn();
                                     }
-
+                                    
                                     if (crop != null && tile.plant(crop)) {
                                         inventory.removeItem(seedToPlant, it.unibo.agrobot.model.ItemType.SEED);
                                     } else {
