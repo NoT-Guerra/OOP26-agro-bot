@@ -8,10 +8,17 @@ public class Battery {
 
     private double level;
     private double maxCapacity;
+    private final double initialMaxCapacity;
 
     public Battery(double maxCapacity) {
+        this.initialMaxCapacity = maxCapacity;
         this.maxCapacity = maxCapacity;
         this.level = maxCapacity;
+    }
+
+    public void reset() {
+        this.maxCapacity = this.initialMaxCapacity;
+        this.level = this.maxCapacity;
     }
 
     public double getLevel() {
@@ -45,5 +52,14 @@ public class Battery {
      */
     public boolean isDead() {
         return this.level <= 0;
+    }
+
+    public void increaseMaxCapacity(double amount) {
+        this.maxCapacity += amount;
+        this.level += amount;
+    }
+
+    public double getMaxCapacity() {
+        return this.maxCapacity;
     }
 }

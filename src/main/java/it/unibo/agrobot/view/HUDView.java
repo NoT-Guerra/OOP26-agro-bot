@@ -66,7 +66,8 @@ public class HUDView {
         g2d.drawString(String.format("Money: $%.2f", money), 20, 35);
         
         double battery = this.drone.getBatteryLevel();
-        g2d.drawString(String.format("Battery: %.0f", battery), 20, 65);
+        double maxBattery = this.drone.getMaxBatteryCapacity();
+        g2d.drawString(String.format("Battery: %.0f/%.0f", battery, maxBattery), 20, 65);
         
         double water = this.drone.getWaterLevel();
         g2d.drawString(String.format("Water Tank: %.0f", water), 20, 95);

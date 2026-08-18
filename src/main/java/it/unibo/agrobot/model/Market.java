@@ -67,4 +67,33 @@ public class Market {
 
         return false;
     }
+
+    private double batteryUpgradeCost = 25.0;
+
+    public void reset() {
+        this.batteryUpgradeCost = 25.0;
+    }
+
+    /**
+     * restituisce il costo del prossimo potenziamento batteria.
+     */
+    public double getBatteryUpgradeCost() {
+        return this.batteryUpgradeCost;
+    }
+
+    /**
+     * acquista un potenziamento batteria e ne aumenta il costo per la prossima volta.
+     *
+     * @param drone il drone a cui applicare il potenziamento
+     * @return true se l'acquisto ha successo, false se i fondi sono insufficienti
+     */
+    public boolean buyBatteryUpgrade(Drone drone) {
+        if (this.wallet.hasEnoughFunds(this.batteryUpgradeCost)) {
+            this.wallet.deductFunds(this.batteryUpgradeCost);
+            drone.upgradeBatteryMaxCapacity(25.0);
+            this.batteryUpgradeCost += 25.0;
+            return true;
+        }
+        return false;
+    }
 }

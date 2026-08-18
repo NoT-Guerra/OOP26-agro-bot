@@ -23,6 +23,7 @@ public class ShopMenuUI extends JPanel {
 
     private final Market market;
     private final GameStateManager stateManager;
+    private final it.unibo.agrobot.model.Drone drone;
 
     private final JPanel itemsPanel;
     private final JButton closeButton;
@@ -63,9 +64,10 @@ public class ShopMenuUI extends JPanel {
         }
     };
 
-    public ShopMenuUI(Market market, GameStateManager stateManager) {
+    public ShopMenuUI(Market market, GameStateManager stateManager, it.unibo.agrobot.model.Drone drone) {
         this.market = market;
         this.stateManager = stateManager;
+        this.drone = drone;
 
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(50, 50, 50, 240));
@@ -129,6 +131,22 @@ public class ShopMenuUI extends JPanel {
         }
 
         itemsPanel.removeAll();
+
+        // pulsante per potenziare la batteria
+        JButton upgradeBatteryBtn = new JButton(String.format("Potenzia Batteria +25 (Costo: %.0f)", market.getBatteryUpgradeCost()));
+        upgradeBatteryBtn.addKeyListener(menuKeyListener);
+        upgradeBatteryBtn.addActionListener(e -> {
+            if (market.buyBatteryUpgrade(drone)) {
+                refreshView();
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                upgradeBatteryBtn.setBackground(Color.RED);
+                javax.swing.Timer timer = new javax.swing.Timer(200, evt -> refreshView());
+                timer.setRepeats(false);
+                timer.start();
+            }
+        });
+        itemsPanel.add(upgradeBatteryBtn);
 
         // fetch dinamico degli oggetti acquistabili
         java.util.Set<String> seedsToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.SEED);

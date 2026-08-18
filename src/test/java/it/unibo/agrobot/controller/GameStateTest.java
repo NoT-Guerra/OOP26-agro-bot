@@ -56,6 +56,8 @@ class GameStateTest {
             @Override public Inventory getInventory() { return null; }
             @Override public Wallet getWallet() { return null; }
             @Override public void reset() {}
+            @Override public void upgradeBatteryMaxCapacity(double amount) {}
+            @Override public double getMaxBatteryCapacity() { return 100.0; }
         };
 
         GameStateManager stateManager = new GameStateManager();
