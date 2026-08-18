@@ -98,6 +98,7 @@ public class HUDView {
                 "i: annaffiare",
                 "c: arare",
                 "p: piantare",
+                "1, 2, 3: scegli slot invetario specifico",
                 "r: ricaricarsi",
                 "m: magazzino/negozio"
             };
