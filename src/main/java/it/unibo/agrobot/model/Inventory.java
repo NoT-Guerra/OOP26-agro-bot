@@ -11,6 +11,7 @@ import java.util.List;
 public class Inventory {
 
     private final List<InventorySlot> slots;
+    private int selectedSlotIndex = 0;
 
     /**
      * crea un inventario con il numero di slot specificato.
@@ -22,6 +23,16 @@ public class Inventory {
         for (int i = 0; i < numSlots; i++) {
             this.slots.add(new InventorySlot());
         }
+    }
+
+    public synchronized void setSelectedSlotIndex(int index) {
+        if (index >= 0 && index < slots.size()) {
+            this.selectedSlotIndex = index;
+        }
+    }
+
+    public synchronized int getSelectedSlotIndex() {
+        return this.selectedSlotIndex;
     }
 
     /**
