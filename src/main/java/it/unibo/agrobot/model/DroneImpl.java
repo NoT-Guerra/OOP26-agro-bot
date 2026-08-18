@@ -6,11 +6,11 @@ package it.unibo.agrobot.model;
  */
 public class DroneImpl implements Drone {
 
-    private Position position;
-    private Battery battery;
-    private WaterTank waterTank;
-    private Inventory inventory;
-    private Wallet wallet;
+    private final Position position;
+    private final Battery battery;
+    private final WaterTank waterTank;
+    private final Inventory inventory;
+    private final Wallet wallet;
 
     //variabili per il movimento fluido
     private boolean moving;
@@ -18,7 +18,7 @@ public class DroneImpl implements Drone {
     private static final double SPEED = 2.0;
 
     //costante per il consumo base del movimento
-    private static final double MOVEMENT_ENERGY_COST = 2.0;
+    private static final double MOVEMENT_ENERGY_COST = 1.0;
     //costante per il consumo delle azioni agricole
     private static final double ACTION_ENERGY_COST = 5.0;
 
