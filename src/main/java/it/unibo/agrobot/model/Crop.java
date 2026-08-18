@@ -24,6 +24,15 @@ public interface Crop {
     void update(double deltaTime);
 
     /**
+     * aggiorna i timer interni della pianta (crescita, sete) specificando un moltiplicatore
+     * da chiamare nel game loop per gestire lo scorrere del tempo
+     * 
+     * @param deltaTime il tempo trascorso dall ultimo aggiornamento
+     * @param growthMultiplier il moltiplicatore di velocità della crescita
+     */
+    void update(double deltaTime, double growthMultiplier);
+
+    /**
      * @return true se la pianta è matura e può essere raccolta, false altrimenti.
      */
     boolean isReadyToHarvest();

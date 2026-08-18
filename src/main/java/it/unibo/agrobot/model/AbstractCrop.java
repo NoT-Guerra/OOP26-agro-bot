@@ -58,6 +58,11 @@ public abstract class AbstractCrop implements Crop {
 
     @Override
     public void update(double deltaTime) {
+        update(deltaTime, 1.0);
+    }
+
+    @Override
+    public void update(double deltaTime, double growthMultiplier) {
         if (isDead() || isReadyToHarvest()) {
             return;
         }
@@ -69,8 +74,8 @@ public abstract class AbstractCrop implements Crop {
             return;
         }
 
-        // timer della crescita avanza
-        this.currentGrowthTimer += deltaTime;
+        // timer della crescita avanza col moltiplicatore
+        this.currentGrowthTimer += (deltaTime * growthMultiplier);
 
         // passaggi di stato basati sul timer di crescita
         if (this.currentGrowthTimer >= this.totalGrowthTime) {

@@ -113,6 +113,7 @@ public class TileImpl implements Tile {
 
     @Override
     public synchronized void update(double deltaTime) {
-        this.crop.ifPresent(c -> c.update(deltaTime));
+        double multiplier = (this.soilState == SoilState.WATERED) ? 2.0 : 1.0;
+        this.crop.ifPresent(c -> c.update(deltaTime, multiplier));
     }
 }
