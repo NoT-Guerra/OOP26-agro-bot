@@ -95,10 +95,11 @@ public class HUDView {
                 "a: andare a sinistra",
                 "d: andare a destra",
                 "h: raccogliere",
-                "i: annaffiare",
                 "c: arare",
+                "i: annaffiare",
                 "p: piantare",
-                "1, 2, 3: scegli slot invetario specifico",
+                "1, 2, 3: scegli slot specifico",
+                "u: usa diserbante",
                 "r: ricaricarsi",
                 "m: magazzino/negozio"
             };
@@ -159,11 +160,11 @@ public class HUDView {
                 "4. Raccogli (H) quando sono mature.",
                 "5. Vendi (M) al Negozio per guadagnare.",
                 "",
-                "Risorse vitali:",
+                "Risorse vitali ed extra:",
                 "- Batteria: ricaricala (R) all'Hangar.",
                 "- Acqua: ricaricala (R) al Pozzo.",
-                "- Mercato: ricordati che nel mercato puoi comprare e vendere (M)",
-                "- Magazzino: nell hangar disponi di un magazzino (M)",
+                "- Se nascono erbacce non potrai piantare!",
+                "- Compra il Diserbante (M) e usalo (U) per pulire.",
                 "- Se la batteria si scarica, hai perso!"
             };
 

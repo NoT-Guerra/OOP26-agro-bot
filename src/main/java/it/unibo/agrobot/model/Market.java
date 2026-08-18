@@ -67,4 +67,28 @@ public class Market {
 
         return false;
     }
+
+    /**
+     * acquista un consumabile e lo aggiunge all'inventario, rimuovendo il costo dal portafoglio
+     *
+     * @param consumableName il nome del consumabile da acquistare
+     * @return true se l'acquisto ha successo, false se i fondi sono insufficienti o l'inventario è pieno
+     */
+    public boolean buyConsumable(String consumableName) {
+        double buyPrice = this.priceManager.getBuyPrice(consumableName, ItemType.CONSUMABLE);
+
+        //verifica se il giocatore ha abbastanza fondi
+        if (!this.wallet.hasEnoughFunds(buyPrice)) {
+            return false;
+        }
+
+        //tenta di aggiungere il consumabile all'inventario
+        if (this.inventory.addItem(consumableName, ItemType.CONSUMABLE)) {
+            // se c'è spazio e l'aggiunta ha successo, deduce i fondi
+            this.wallet.deductFunds(buyPrice);
+            return true;
+        }
+
+        return false;
+    }
 }

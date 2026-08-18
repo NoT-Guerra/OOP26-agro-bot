@@ -186,6 +186,28 @@ public class InputHandler extends KeyAdapter {
                     }
                 });
             }
+            case KeyEvent.VK_U -> {
+                grid.getTile(drone.getPosition()).ifPresent(tile -> {
+                    if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL && tile.hasWeed()) {
+                        if (!drone.isDead()) {
+                            it.unibo.agrobot.model.Inventory inventory = drone.getInventory();
+                            int selectedIndex = inventory.getSelectedSlotIndex();
+                            it.unibo.agrobot.model.InventorySlot selectedSlot = inventory.getSlot(selectedIndex);
+                            
+                            if (!selectedSlot.isEmpty() && selectedSlot.getType() == it.unibo.agrobot.model.ItemType.CONSUMABLE && "Diserbante".equals(selectedSlot.getItemName())) {
+                                tile.removeWeed();
+                                inventory.removeItem("Diserbante", it.unibo.agrobot.model.ItemType.CONSUMABLE);
+                            } else {
+                                java.awt.Toolkit.getDefaultToolkit().beep();
+                            }
+                        } else {
+                            java.awt.Toolkit.getDefaultToolkit().beep();
+                        }
+                    } else {
+                        java.awt.Toolkit.getDefaultToolkit().beep();
+                    }
+                });
+            }
             default -> {
             }
         }
