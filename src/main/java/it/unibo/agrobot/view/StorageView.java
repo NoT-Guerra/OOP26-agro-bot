@@ -10,6 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
@@ -84,6 +89,17 @@ public class StorageView extends JPanel {
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         bottomPanel.add(closeButton);
         this.add(bottomPanel, BorderLayout.SOUTH);
+
+        // aggiunto key binding per chiudere con ESC
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "closeMenu");
+        this.getActionMap().put("closeMenu", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (stateManager != null) {
+                    stateManager.setState(GameState.PLAYING);
+                }
+            }
+        });
 
         refreshView();
     }
