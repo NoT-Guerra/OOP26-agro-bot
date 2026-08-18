@@ -94,9 +94,12 @@ public class HUDView {
                 "s: andare giù",
                 "a: andare a sinistra",
                 "d: andare a destra",
-                "spazio: raccogliere",
-                "f: annaffiare",
-                "e: ricaricarsi"
+                "h: raccogliere",
+                "i: annaffiare",
+                "c: arare",
+                "p: piantare",
+                "r: ricaricarsi",
+                "m: magazzino/negozio"
             };
             g2d.setFont(new Font("Arial", Font.BOLD, 12));
             FontMetrics fm = g2d.getFontMetrics();
