@@ -37,8 +37,8 @@ class CropTest {
         
         assertEquals(CropState.SEED, corn.getState());
         
-        // avanzo il tempo di 11 secondi per verificare che la pianta sia ancora in crescita
-        corn.update(11.0);
+        // avanzo il tempo di 41 secondi per verificare che la pianta sia morta
+        corn.update(41.0);
         
         // il mais dovrebbe essere morto per mancanza d'acqua
         assertEquals(CropState.DEAD, corn.getState());

@@ -62,8 +62,8 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //scarichiamo la batteria forzando 50 movimenti (50 * 2.0 = 100)
-        for (int i = 0; i < 50; i++) {
+        //scarichiamo la batteria forzando 100 movimenti (100 * 1.0 = 100)
+        for (int i = 0; i < 100; i++) {
             drone.move(Direction.UP);
             drone.updateState(0.5); // per farlo arrivare subito a destinazione (2.0 * 0.5 = 1.0)
         }
@@ -96,7 +96,7 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             drone.move(Direction.UP);
             drone.updateState(0.5);
         }
