@@ -20,9 +20,9 @@ import it.unibo.agrobot.view.GameWindow;
 import it.unibo.agrobot.view.GridView;
 import it.unibo.agrobot.view.HUDView;
 import it.unibo.agrobot.view.MainMenuView;
+import it.unibo.agrobot.view.PauseMenuUI;
 import it.unibo.agrobot.view.ShopMenuUI;
 import it.unibo.agrobot.view.StorageView;
-import it.unibo.agrobot.view.PauseMenuUI;
 
 public class App {
 
@@ -60,11 +60,12 @@ public class App {
             grid.reset();
             storage.clear();
             wallet.setBalance(100.0);
+            market.reset();
         };
 
         GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
         
-        ShopMenuUI shopMenuUI = new ShopMenuUI(market, stateManager);
+        ShopMenuUI shopMenuUI = new ShopMenuUI(market, stateManager, drone);
         shopMenuUI.setVisible(false);
         
         PauseMenuUI pauseMenuUI = new PauseMenuUI(stateManager, onRestart);

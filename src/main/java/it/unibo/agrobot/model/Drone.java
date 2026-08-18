@@ -102,4 +102,15 @@ public interface Drone {
      * resetta lo stato del drone ai valori iniziali
      */
     void reset();
+
+    /**
+     * Aumenta la capacità massima della batteria
+     * @param amount la quantità da aggiungere
+     */
+    void upgradeBatteryMaxCapacity(double amount);
+
+    /**
+     * @return la capacità massima della batteria
+     */
+    double getMaxBatteryCapacity();
 }
