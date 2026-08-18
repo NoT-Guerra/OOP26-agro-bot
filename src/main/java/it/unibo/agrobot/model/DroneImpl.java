@@ -38,10 +38,10 @@ public class DroneImpl implements Drone {
     public synchronized void reset() {
         this.position.setX(this.startPosition.getX());
         this.position.setY(this.startPosition.getY());
-        this.battery = new Battery(100.0);
-        this.waterTank = new WaterTank(50.0);
-        this.inventory = new Inventory(3);
-        this.wallet = new Wallet(0.0);
+        this.battery.recharge();
+        this.waterTank.empty();
+        this.inventory.clear();
+        this.wallet.setBalance(0.0);
         this.moving = false;
         this.targetPosition = null;
     }
