@@ -6,7 +6,7 @@ package it.unibo.agrobot.model;
 public class Corn extends AbstractCrop {
 
     private static final double GROWTH_TIME = 35.0;
-    private static final double HYDRATION_TIME = 10.0;
+    private static final double HYDRATION_TIME = 40.0;
 
     public Corn() {
         super("Corn", GROWTH_TIME, HYDRATION_TIME);

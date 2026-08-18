@@ -34,6 +34,8 @@ public class InputHandler extends KeyAdapter {
                     stateManager.setState(GameState.PAUSED);
                 } else if (stateManager.getState() == GameState.PAUSED) {
                     stateManager.setState(GameState.PLAYING);
+                } else if (stateManager.getState() == GameState.STORAGE_MENU) {
+                    stateManager.setState(GameState.PLAYING);
                 }
             }
 
