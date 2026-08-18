@@ -101,7 +101,26 @@ public class HUDView {
                 "r: ricaricarsi",
                 "m: magazzino/negozio"
             };
-            g2d.setFont(new Font("Arial", Font.BOLD, 12));
+            int lineHeight = 20;
+            int fontSize = 12;
+            
+            int boxHeight = (cmds.length * lineHeight) + 15; 
+            int startYBox = 240;
+            
+            // Logica responsive: adatta posizione e dimensione in base allo schermo
+            if (startYBox + boxHeight > screenHeight - 10) {
+                startYBox = screenHeight - boxHeight - 10;
+                if (startYBox < 10) {
+                    startYBox = 10; 
+                    int availableHeight = screenHeight - 20;
+                    double scale = (double) availableHeight / boxHeight;
+                    fontSize = Math.max(8, (int)(fontSize * scale));
+                    lineHeight = Math.max(10, (int)(20 * scale));
+                    boxHeight = (cmds.length * lineHeight) + 15;
+                }
+            }
+
+            g2d.setFont(new Font("Arial", Font.BOLD, fontSize));
             FontMetrics fm = g2d.getFontMetrics();
             int maxWidth = 0;
             for (String cmd : cmds) {
@@ -109,34 +128,70 @@ public class HUDView {
                 if (w > maxWidth) maxWidth = w;
             }
             int boxWidth = maxWidth + 20; 
-            int boxHeight = (cmds.length * 20) + 15; 
 
             g2d.setColor(new Color(34, 139, 34, 220)); 
-            g2d.fillRoundRect(20, 240, boxWidth, boxHeight, 15, 15);
+            g2d.fillRoundRect(20, startYBox, boxWidth, boxHeight, 15, 15);
             
             g2d.setColor(Color.WHITE);
-            int startY = 260;
+            int currentY = startYBox + lineHeight;
             for (String cmd : cmds) {
-                g2d.drawString(cmd, 30, startY);
-                startY += 20;
+                g2d.drawString(cmd, 30, currentY);
+                currentY += lineHeight;
             }
         } else if (showHelp) {
-            String title = "SCOPO DEL GIOCO:";
+            String title = "GUIDA E SCOPO DEL GIOCO:";
             String[] helpLines = {
-                "Gestisci il tuo drone agricolo",
-                "per curare i tuoi campi",
-                "- Pianta i semi",
-                "- Annaffia le piante",
-                "- Raccogli e vendi il raccolto",
-                "- Ricordati peró di ricaricare batteria ed acqua",
-                "Guadagna più soldi che puoi!"
+                "Gestisci il drone agricolo,",
+                "coltiva i campi e fai profitti!",
+                "",
+                "In alto a sinistra é presente lo stato",
+                "del drone e il suo inventario",
+                "All interno della mappa a destra troverai:",
+                "hangar  --> ricarica batteria e magazzino",
+                "pozzo  --> ricarica acqua",
+                "mercati  --> compravendita di semi e piante",
+                "",
+                "Fasi della coltivazione:",
+                "1. Ara (C) il terreno incolto.",
+                "2. Pianta (P) i semi (scegli slot con 1,2,3).",
+                "3. Annaffia (I) per far crescere le piante.",
+                "4. Raccogli (H) quando sono mature.",
+                "5. Vendi (M) al Negozio per guadagnare.",
+                "",
+                "Risorse vitali:",
+                "- Batteria: ricaricala (R) all'Hangar.",
+                "- Acqua: ricaricala (R) al Pozzo.",
+                "- Mercato: ricordati che nel mercato puoi comprare e vendere (M)",
+                "- Magazzino: nell hangar disponi di un magazzino (M)",
+                "- Se la batteria si scarica, hai perso!"
             };
 
-            g2d.setFont(new Font("Arial", Font.BOLD, 13));
+            int lineHeight = 18;
+            int titleSize = 13;
+            int plainSize = 12;
+            
+            int boxHeight = 20 + (helpLines.length * lineHeight) + 15;
+            int startYBox = 240;
+            
+            // Logica responsive: adatta posizione e dimensione in base allo schermo
+            if (startYBox + boxHeight > screenHeight - 10) {
+                startYBox = screenHeight - boxHeight - 10;
+                if (startYBox < 10) {
+                    startYBox = 10; 
+                    int availableHeight = screenHeight - 20;
+                    double scale = (double) availableHeight / boxHeight;
+                    titleSize = Math.max(9, (int)(titleSize * scale));
+                    plainSize = Math.max(8, (int)(plainSize * scale));
+                    lineHeight = Math.max(10, (int)(18 * scale));
+                    boxHeight = 20 + (helpLines.length * lineHeight) + 15;
+                }
+            }
+
+            g2d.setFont(new Font("Arial", Font.BOLD, titleSize));
             FontMetrics fmBold = g2d.getFontMetrics();
             int maxWidth = fmBold.stringWidth(title);
 
-            g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+            g2d.setFont(new Font("Arial", Font.PLAIN, plainSize));
             FontMetrics fmPlain = g2d.getFontMetrics();
             for (String line : helpLines) {
                 int w = fmPlain.stringWidth(line);
@@ -144,21 +199,20 @@ public class HUDView {
             }
 
             int boxWidth = maxWidth + 20;
-            int boxHeight = 20 + (helpLines.length * 18) + 15;
 
             g2d.setColor(new Color(70, 130, 180, 220)); 
-            g2d.fillRoundRect(20, 240, boxWidth, boxHeight, 15, 15);
+            g2d.fillRoundRect(20, startYBox, boxWidth, boxHeight, 15, 15);
             
             g2d.setColor(Color.WHITE);
-            int currentY = 260;
-            g2d.setFont(new Font("Arial", Font.BOLD, 13));
+            int currentY = startYBox + 20;
+            g2d.setFont(new Font("Arial", Font.BOLD, titleSize));
             g2d.drawString(title, 30, currentY);
             
-            currentY += 20;
-            g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+            currentY += lineHeight;
+            g2d.setFont(new Font("Arial", Font.PLAIN, plainSize));
             for (String line : helpLines) {
                 g2d.drawString(line, 30, currentY);
-                currentY += 18;
+                currentY += lineHeight;
             }
         }
     }
