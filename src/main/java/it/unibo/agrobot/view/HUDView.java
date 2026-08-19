@@ -70,7 +70,8 @@ public class HUDView {
         g2d.drawString(String.format("Battery: %.0f/%.0f", battery, maxBattery), 20, 65);
         
         double water = this.drone.getWaterLevel();
-        g2d.drawString(String.format("Water Tank: %.0f", water), 20, 95);
+        double maxWater = this.drone.getMaxWaterTankCapacity();
+        g2d.drawString(String.format("Water Tank: %.0f/%.0f", water, maxWater), 20, 95);
 
         drawInventory(g2d);
 

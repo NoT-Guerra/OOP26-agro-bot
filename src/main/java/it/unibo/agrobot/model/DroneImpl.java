@@ -39,7 +39,7 @@ public class DroneImpl implements Drone {
         this.position.setX(this.startPosition.getX());
         this.position.setY(this.startPosition.getY());
         this.battery.reset();
-        this.waterTank.empty();
+        this.waterTank.reset();
         this.inventory.clear();
         this.wallet.setBalance(0.0);
         this.moving = false;
@@ -178,5 +178,15 @@ public class DroneImpl implements Drone {
     @Override
     public synchronized double getMaxBatteryCapacity() {
         return this.battery.getMaxCapacity();
+    }
+
+    @Override
+    public synchronized void upgradeWaterTankMaxCapacity(double amount) {
+        this.waterTank.increaseMaxCapacity(amount);
+    }
+
+    @Override
+    public synchronized double getMaxWaterTankCapacity() {
+        return this.waterTank.getMaxCapacity();
     }
 }

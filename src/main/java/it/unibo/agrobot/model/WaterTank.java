@@ -7,10 +7,25 @@ public class WaterTank {
 
     private double level;
     private double maxCapacity;
+    private final double initialMaxCapacity;
 
     public WaterTank(double maxCapacity) {
+        this.initialMaxCapacity = maxCapacity;
         this.maxCapacity = maxCapacity;
         this.level = 0.0; //parte sempre vuoto
+    }
+
+    public void reset() {
+        this.maxCapacity = this.initialMaxCapacity;
+        this.level = 0.0;
+    }
+
+    public void increaseMaxCapacity(double amount) {
+        this.maxCapacity += amount;
+    }
+
+    public double getMaxCapacity() {
+        return this.maxCapacity;
     }
 
     public double getLevel() {

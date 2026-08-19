@@ -58,6 +58,8 @@ class GameStateTest {
             @Override public void reset() {}
             @Override public void upgradeBatteryMaxCapacity(double amount) {}
             @Override public double getMaxBatteryCapacity() { return 100.0; }
+            @Override public void upgradeWaterTankMaxCapacity(double amount) {}
+            @Override public double getMaxWaterTankCapacity() { return 50.0; }
         };
 
         GameStateManager stateManager = new GameStateManager();
