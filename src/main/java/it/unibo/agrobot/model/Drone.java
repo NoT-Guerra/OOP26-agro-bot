@@ -113,4 +113,15 @@ public interface Drone {
      * @return la capacità massima della batteria
      */
     double getMaxBatteryCapacity();
+
+    /**
+     * Aumenta la capacità massima del serbatoio
+     * @param amount la quantità da aggiungere
+     */
+    void upgradeWaterTankMaxCapacity(double amount);
+
+    /**
+     * @return la capacità massima del serbatoio
+     */
+    double getMaxWaterTankCapacity();
 }

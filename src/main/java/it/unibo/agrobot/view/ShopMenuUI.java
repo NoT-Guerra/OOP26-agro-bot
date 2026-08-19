@@ -148,6 +148,22 @@ public class ShopMenuUI extends JPanel {
         });
         itemsPanel.add(upgradeBatteryBtn);
 
+        // pulsante per potenziare il serbatoio dell'acqua
+        JButton upgradeWaterTankBtn = new JButton(String.format("Potenzia Serbatoio +25 (Costo: %.0f)", market.getWaterTankUpgradeCost()));
+        upgradeWaterTankBtn.addKeyListener(menuKeyListener);
+        upgradeWaterTankBtn.addActionListener(e -> {
+            if (market.buyWaterTankUpgrade(drone)) {
+                refreshView();
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                upgradeWaterTankBtn.setBackground(Color.RED);
+                javax.swing.Timer timer = new javax.swing.Timer(200, evt -> refreshView());
+                timer.setRepeats(false);
+                timer.start();
+            }
+        });
+        itemsPanel.add(upgradeWaterTankBtn);
+
         // fetch dinamico degli oggetti acquistabili
         java.util.Set<String> seedsToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.SEED);
         for (String seed : seedsToBuy) {

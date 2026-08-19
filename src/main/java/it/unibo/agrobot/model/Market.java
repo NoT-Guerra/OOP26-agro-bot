@@ -69,9 +69,11 @@ public class Market {
     }
 
     private double batteryUpgradeCost = 25.0;
+    private double waterTankUpgradeCost = 25.0;
 
     public void reset() {
         this.batteryUpgradeCost = 25.0;
+        this.waterTankUpgradeCost = 25.0;
     }
 
     /**
@@ -92,6 +94,29 @@ public class Market {
             this.wallet.deductFunds(this.batteryUpgradeCost);
             drone.upgradeBatteryMaxCapacity(25.0);
             this.batteryUpgradeCost += 25.0;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * restituisce il costo del prossimo potenziamento serbatoio acqua.
+     */
+    public double getWaterTankUpgradeCost() {
+        return this.waterTankUpgradeCost;
+    }
+
+    /**
+     * acquista un potenziamento serbatoio acqua e ne aumenta il costo per la prossima volta.
+     *
+     * @param drone il drone a cui applicare il potenziamento
+     * @return true se l'acquisto ha successo, false se i fondi sono insufficienti
+     */
+    public boolean buyWaterTankUpgrade(Drone drone) {
+        if (this.wallet.hasEnoughFunds(this.waterTankUpgradeCost)) {
+            this.wallet.deductFunds(this.waterTankUpgradeCost);
+            drone.upgradeWaterTankMaxCapacity(25.0);
+            this.waterTankUpgradeCost += 25.0;
             return true;
         }
         return false;
