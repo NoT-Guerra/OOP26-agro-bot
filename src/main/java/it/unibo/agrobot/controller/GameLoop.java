@@ -17,6 +17,7 @@ public class GameLoop implements Runnable {
     private final Grid grid;
     private final Drone drone;
     private final GameStateManager stateManager;
+    private final it.unibo.agrobot.model.WeatherManager weatherManager;
 
     // lock per sincronizzare i thread evitando che grafica e logica accedano ai dati del gioco contemporaneamente
     private final Object stateLock = new Object();
@@ -28,12 +29,14 @@ public class GameLoop implements Runnable {
      * @param grid the grid to update
      * @param drone the drone to update
      * @param stateManager the state manager
+     * @param weatherManager the weather manager
      */
-    public GameLoop(GamePanel gamePanel, it.unibo.agrobot.model.Grid grid, Drone drone, GameStateManager stateManager) {
+    public GameLoop(GamePanel gamePanel, it.unibo.agrobot.model.Grid grid, Drone drone, GameStateManager stateManager, it.unibo.agrobot.model.WeatherManager weatherManager) {
         this.gamePanel = gamePanel;
         this.grid = grid;
         this.drone = drone;
         this.stateManager = stateManager;
+        this.weatherManager = weatherManager;
     }
 
     /**
@@ -44,6 +47,7 @@ public class GameLoop implements Runnable {
         this.grid = null;
         this.drone = null;
         this.stateManager = null;
+        this.weatherManager = null;
     }
 
     /**
@@ -161,6 +165,9 @@ public class GameLoop implements Runnable {
         this.drone.updateState(deltaTime);
         if (this.grid != null) {
             this.grid.update(deltaTime);
+        }
+        if (this.weatherManager != null) {
+            this.weatherManager.update(deltaTime);
         }
     }
 

@@ -43,6 +43,9 @@ public class App {
         int screenHeight = grid.getHeight() * tileSize;
 
         GameStateManager stateManager = new GameStateManager();
+        it.unibo.agrobot.model.WeatherManager weatherManager = new it.unibo.agrobot.model.WeatherManagerImpl(grid);
+        drone.setWeatherManager(weatherManager);
+        
         Storage storage = new Storage();
         Wallet wallet = drone.getWallet();
         wallet.addFunds(100.0);
@@ -58,12 +61,14 @@ public class App {
         Runnable onRestart = () -> {
             drone.reset();
             grid.reset();
+            weatherManager.reset();
             storage.clear();
             wallet.setBalance(100.0);
             market.reset();
         };
 
-        GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager);
+        GamePanel gamePanel = new GamePanel(gridView, droneView, hudView, screenWidth, screenHeight, stateManager, weatherManager);
+        hudView.setWeatherManager(weatherManager);
         
         ShopMenuUI shopMenuUI = new ShopMenuUI(market, stateManager, drone);
         shopMenuUI.setVisible(false);
@@ -126,7 +131,7 @@ public class App {
         stateManager.setState(GameState.MENU);
         
         // avvio il game loop per la logica e il rendering continuo
-        GameLoop gameLoop = new GameLoop(gamePanel, grid, drone, stateManager);
+        GameLoop gameLoop = new GameLoop(gamePanel, grid, drone, stateManager, weatherManager);
         gameLoop.start();
     }
 }

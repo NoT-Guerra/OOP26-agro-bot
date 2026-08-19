@@ -11,6 +11,7 @@ public class DroneImpl implements Drone {
     private final WaterTank waterTank;
     private final Inventory inventory;
     private final Wallet wallet;
+    private WeatherManager weatherManager;
 
     //variabili per il movimento fluido
     private boolean moving;
@@ -32,6 +33,16 @@ public class DroneImpl implements Drone {
         this.inventory = new Inventory(3); //inventario con 3 slot iniziali
         this.wallet = new Wallet(0.0); //portafoglio con saldo iniziale 0
         this.moving = false;
+    }
+
+    /**
+     * imposta il gestore meteo che verrà utilizzato per calcolare i malus
+     * dovuti alle condizioni meteorologiche
+     *
+     * @param weatherManager il gestore meteo da impostare
+     */
+    public void setWeatherManager(WeatherManager weatherManager) {
+        this.weatherManager = weatherManager;
     }
 
     @Override
@@ -69,17 +80,25 @@ public class DroneImpl implements Drone {
     @Override
     public synchronized boolean move(Direction dir) {
         if (!this.moving && !this.battery.isDead()) {
-            this.battery.decrease(MOVEMENT_ENERGY_COST);
+            double cost = MOVEMENT_ENERGY_COST;
+            if (weatherManager != null && weatherManager.getCurrentCondition() == WeatherCondition.RAINY) {
+                cost *= 2.0; // Malus pioggia
+            }
+            this.battery.decrease(cost);
             this.moving = true;
 
             double targetX = this.position.getX();
             double targetY = this.position.getY();
 
             switch (dir) {
-                case UP -> targetY -= 1.0;
-                case DOWN -> targetY += 1.0;
-                case LEFT -> targetX -= 1.0;
-                case RIGHT -> targetX += 1.0;
+                case UP ->
+                    targetY -= 1.0;
+                case DOWN ->
+                    targetY += 1.0;
+                case LEFT ->
+                    targetX -= 1.0;
+                case RIGHT ->
+                    targetX += 1.0;
             }
             this.targetPosition = new Position(targetX, targetY);
             return true;
@@ -117,10 +136,24 @@ public class DroneImpl implements Drone {
         }
     }
 
+    /**
+     * calcola il costo energetico di un'azione, tenendo conto delle condizioni
+     * meteorologiche
+     *
+     * @return il costo energetico dell'azione
+     */
+    private double getActionCost() {
+        double cost = ACTION_ENERGY_COST;
+        if (weatherManager != null && weatherManager.getCurrentCondition() == WeatherCondition.RAINY) {
+            cost *= 2.0;
+        }
+        return cost;
+    }
+
     @Override
     public synchronized void plow() {
         if (!this.battery.isDead()) {
-            this.battery.decrease(ACTION_ENERGY_COST);
+            this.battery.decrease(getActionCost());
             //todo
             //serisci la logica di interazione col terreno 
         }
@@ -129,7 +162,7 @@ public class DroneImpl implements Drone {
     @Override
     public synchronized void harvest() {
         if (!this.battery.isDead()) {
-            this.battery.decrease(ACTION_ENERGY_COST);
+            this.battery.decrease(getActionCost());
             // La logica effettiva di raccolta risorsa verrà inserita qui
         }
     }
@@ -138,7 +171,7 @@ public class DroneImpl implements Drone {
     public synchronized boolean irrigate() {
         double IRRIGATION_WATER_COST = 10.0;
         if (!this.battery.isDead() && this.waterTank.getLevel() >= IRRIGATION_WATER_COST) {
-            this.battery.decrease(ACTION_ENERGY_COST);
+            this.battery.decrease(getActionCost());
             this.waterTank.remove(IRRIGATION_WATER_COST);
             return true;
         }

@@ -16,10 +16,11 @@ import it.unibo.agrobot.model.InventorySlot;
 public class HUDView {
 
     private final Drone drone;
+    private it.unibo.agrobot.model.WeatherManager weatherManager;
     private boolean showControls = false;
     private boolean showHelp = false;
-    private final java.awt.Rectangle infoButtonBounds = new java.awt.Rectangle(20, 200, 30, 30);
-    private final java.awt.Rectangle helpButtonBounds = new java.awt.Rectangle(60, 200, 30, 30);
+    private final java.awt.Rectangle infoButtonBounds = new java.awt.Rectangle(20, 230, 30, 30);
+    private final java.awt.Rectangle helpButtonBounds = new java.awt.Rectangle(60, 230, 30, 30);
 
     /**
      * crea l'HUD associato al drone.
@@ -28,6 +29,10 @@ public class HUDView {
      */
     public HUDView(Drone drone) {
         this.drone = drone;
+    }
+
+    public void setWeatherManager(it.unibo.agrobot.model.WeatherManager weatherManager) {
+        this.weatherManager = weatherManager;
     }
 
     public boolean isInfoButtonClicked(int x, int y) {
@@ -59,7 +64,7 @@ public class HUDView {
         g2d.setFont(new Font("Arial", Font.BOLD, 18));
 
         g2d.setColor(new Color(0, 0, 0, 150));
-        g2d.fillRoundRect(10, 10, 200, 100, 15, 15);
+        g2d.fillRoundRect(10, 10, 200, 130, 15, 15);
         
         g2d.setColor(Color.WHITE);
         double money = this.drone.getWallet().getBalance();
@@ -71,6 +76,11 @@ public class HUDView {
         
         double water = this.drone.getWaterLevel();
         g2d.drawString(String.format("Water Tank: %.0f", water), 20, 95);
+
+        if (this.weatherManager != null) {
+            String weatherText = "Weather: " + (this.weatherManager.getCurrentCondition() == it.unibo.agrobot.model.WeatherCondition.SUNNY ? "☀️ Sunny" : "🌧️ Rainy");
+            g2d.drawString(weatherText, 20, 125);
+        }
 
         drawInventory(g2d);
 
@@ -107,7 +117,7 @@ public class HUDView {
             int fontSize = 12;
             
             int boxHeight = (cmds.length * lineHeight) + 15; 
-            int startYBox = 240;
+            int startYBox = 270;
             
             // Logica responsive: adatta posizione e dimensione in base allo schermo
             if (startYBox + boxHeight > screenHeight - 10) {
@@ -173,7 +183,7 @@ public class HUDView {
             int plainSize = 12;
             
             int boxHeight = 20 + (helpLines.length * lineHeight) + 15;
-            int startYBox = 240;
+            int startYBox = 270;
             
             // Logica responsive: adatta posizione e dimensione in base allo schermo
             if (startYBox + boxHeight > screenHeight - 10) {
@@ -231,7 +241,7 @@ public class HUDView {
 
         
         int startX = 10;
-        int startY = 120;
+        int startY = 150;
 
         g2d.setFont(new Font("Arial", Font.PLAIN, 12));
         FontMetrics fm = g2d.getFontMetrics();

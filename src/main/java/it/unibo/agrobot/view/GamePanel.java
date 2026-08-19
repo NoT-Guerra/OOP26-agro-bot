@@ -17,11 +17,11 @@ import it.unibo.agrobot.controller.GameStateManager;
  * estende JPanel e e ridefinisce paintComponent per disegnare la griglia e il drone
  */
 public class GamePanel extends JPanel {
-    
     private final GridView gridView;
     private final DroneView droneView;
     private final HUDView hudView;
     private final GameStateManager stateManager;
+    private final WeatherView weatherView;
 
     /**
      * costruisce il pannello di gioco
@@ -32,12 +32,14 @@ public class GamePanel extends JPanel {
      * @param width larghezza in pixel della finestra
      * @param height altezza in pixel della finestra
      * @param stateManager gestore degli stati di gioco
+     * @param weatherManager gestore del meteo
      */
-    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height, GameStateManager stateManager) {
+    public GamePanel(GridView gridView, DroneView droneView, HUDView hudView, int width, int height, GameStateManager stateManager, it.unibo.agrobot.model.WeatherManager weatherManager) {
         this.gridView = gridView;
         this.droneView = droneView;
         this.hudView = hudView;
         this.stateManager = stateManager;
+        this.weatherView = new WeatherView(weatherManager);
         
         // dimensioni preferite del pannello
         this.setPreferredSize(new Dimension(width, height));
@@ -108,6 +110,12 @@ public class GamePanel extends JPanel {
         
         // riportiamo il pennello alla posizione originale
         g2d.translate(-offsetX, -offsetY);
+
+        // disegna gli effetti atmosferici sopra la griglia e il drone, ma sotto l'HUD
+        if (this.weatherView != null) {
+            this.weatherView.draw(g2d, getWidth(), getHeight());
+        }
+
         // disegna l'HUD in sovraimpressione
         if (this.hudView != null) {
             this.hudView.draw(g2d, getWidth(), getHeight());
