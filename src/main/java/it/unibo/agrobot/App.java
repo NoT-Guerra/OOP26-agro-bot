@@ -13,6 +13,9 @@ import it.unibo.agrobot.model.Position;
 import it.unibo.agrobot.model.PriceManager;
 import it.unibo.agrobot.model.Storage;
 import it.unibo.agrobot.model.Wallet;
+import it.unibo.agrobot.model.WeatherManager;
+import it.unibo.agrobot.model.WeatherManagerImpl;
+import it.unibo.agrobot.model.ItemType;
 import it.unibo.agrobot.view.DroneView;
 import it.unibo.agrobot.view.GameOverView;
 import it.unibo.agrobot.view.GamePanel;
@@ -43,7 +46,7 @@ public class App {
         int screenHeight = grid.getHeight() * tileSize;
 
         GameStateManager stateManager = new GameStateManager();
-        it.unibo.agrobot.model.WeatherManager weatherManager = new it.unibo.agrobot.model.WeatherManagerImpl(grid);
+        WeatherManager weatherManager = new WeatherManagerImpl(grid);
         drone.setWeatherManager(weatherManager);
         
         Storage storage = new Storage();
@@ -52,10 +55,10 @@ public class App {
         PriceManager priceManager = new PriceManager();
         
         // configurazione dei prezzi del mercato
-        priceManager.setBuyPrice("Wheat", it.unibo.agrobot.model.ItemType.SEED, 10.0);
-        priceManager.setSellPrice("Wheat", it.unibo.agrobot.model.ItemType.CROP, 20.0);
-        priceManager.setBuyPrice("Corn", it.unibo.agrobot.model.ItemType.SEED, 15.0);
-        priceManager.setSellPrice("Corn", it.unibo.agrobot.model.ItemType.CROP, 30.0);
+        priceManager.setBuyPrice("Wheat", ItemType.SEED, 10.0);
+        priceManager.setSellPrice("Wheat", ItemType.CROP, 20.0);
+        priceManager.setBuyPrice("Corn", ItemType.SEED, 15.0);
+        priceManager.setSellPrice("Corn", ItemType.CROP, 30.0);
         
         Market market = new Market(drone.getInventory(), wallet, priceManager);
         Runnable onRestart = () -> {
