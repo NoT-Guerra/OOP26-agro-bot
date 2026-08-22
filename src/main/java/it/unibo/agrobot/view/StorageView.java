@@ -4,17 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
@@ -33,6 +34,9 @@ public class StorageView extends JPanel {
 
     private final JPanel dronePanel;
     private final JPanel storagePanel;
+
+    private final ArrayList<JButton> focusableButtons = new ArrayList<>();
+    private int selectedIndex = 0;
 
     /**
      * 
@@ -101,16 +105,62 @@ public class StorageView extends JPanel {
             }
         });
 
+        // aggiunti key binding per navigare con le frecce su/giu e invio
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectItem");
+
+        this.getActionMap().put("moveUp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusableButtons.isEmpty()) return;
+                updateSelection((selectedIndex - 1 + focusableButtons.size()) % focusableButtons.size());
+            }
+        });
+
+        this.getActionMap().put("moveDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusableButtons.isEmpty()) return;
+                updateSelection((selectedIndex + 1) % focusableButtons.size());
+            }
+        });
+
+        this.getActionMap().put("selectItem", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (focusableButtons.isEmpty()) return;
+                focusableButtons.get(selectedIndex).doClick();
+            }
+        });
+
         refreshView();
+    }
+
+    private void updateSelection(int newIndex) {
+        if (!focusableButtons.isEmpty() && selectedIndex >= 0 && selectedIndex < focusableButtons.size()) {
+            JButton oldBtn = focusableButtons.get(selectedIndex);
+            oldBtn.setBackground(Color.WHITE); 
+            oldBtn.setForeground(new Color(50, 50, 50));
+        }
+        
+        selectedIndex = newIndex;
+        
+        if (!focusableButtons.isEmpty() && selectedIndex >= 0 && selectedIndex < focusableButtons.size()) {
+            JButton newBtn = focusableButtons.get(selectedIndex);
+            newBtn.setBackground(new Color(100, 200, 100)); // highlight verde
+            newBtn.setForeground(Color.BLACK);
+        }
     }
 
     /**
      * aggiorna la vista leggendo nuovamente gli inventari deve essere chiamato
      * ogni volta che si apre la vista o si fa un trasferimento
      */
-    public void refreshView() {
+    public final void refreshView() {
         dronePanel.removeAll();
         storagePanel.removeAll();
+        focusableButtons.clear();
 
         // popola il pannello drone
         for (int i = 0; i < droneInventory.getSlotCount(); i++) {
@@ -118,11 +168,13 @@ public class StorageView extends JPanel {
             if (!slot.isEmpty()) {
                 String text = slot.getItemName() + " (x" + slot.getQuantity() + ")";
                 JButton itemBtn = new JButton(text + " -> Deposita");
+                styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {
                     storage.transferFromInventory(slot.getItemName(), droneInventory);
                     refreshView(); // ridisegna dopo il trasferimento
                 });
                 dronePanel.add(itemBtn);
+                focusableButtons.add(itemBtn);
             }
         }
 
@@ -132,17 +184,32 @@ public class StorageView extends JPanel {
             if (!slot.isEmpty()) {
                 String text = slot.getItemName() + " (x" + slot.getQuantity() + ")";
                 JButton itemBtn = new JButton("Preleva <- " + text);
+                styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {
                     storage.transferToInventory(slot.getItemName(), droneInventory);
                     refreshView(); // ridisegna dopo il trasferimento
                 });
                 storagePanel.add(itemBtn);
+                focusableButtons.add(itemBtn);
             }
         }
+
+        if (selectedIndex >= focusableButtons.size()) {
+            selectedIndex = Math.max(0, focusableButtons.size() - 1);
+        }
+
+        updateSelection(selectedIndex);
 
         dronePanel.revalidate();
         dronePanel.repaint();
         storagePanel.revalidate();
         storagePanel.repaint();
+    }
+
+    private void styleButton(JButton btn) {
+        btn.setFont(new Font("Arial", Font.BOLD, 14));
+        btn.setBackground(Color.WHITE);
+        btn.setForeground(new Color(50, 50, 50));
+        btn.setFocusPainted(false);
     }
 }
