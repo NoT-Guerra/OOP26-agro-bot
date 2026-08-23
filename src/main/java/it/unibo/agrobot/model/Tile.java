@@ -69,4 +69,24 @@ public interface Tile {
      * @param deltaTime il tempo trascorso dall'ultimo frame
      */
     void update(double deltaTime);
+    /**
+     * controlla se la zolla contiene un'erbaccia infestante
+     * 
+     * @return true se c'è un'erbaccia, false altrimenti
+     */
+    boolean hasWeed();
+
+    /**
+     * fa nascere un'erbaccia infestante sulla zolla se è di tipo SOIL
+     * 
+     * @return true se l'erbaccia è nata con successo, false altrimenti
+     */
+    boolean spawnWeed();
+
+    /**
+     * rimuove l'erbaccia infestante dalla zolla.
+     * 
+     * @return true se l'erbaccia è stata rimossa, false altrimenti
+     */
+    boolean removeWeed();
 }

@@ -9,9 +9,10 @@ import java.util.Optional;
 public class TileImpl implements Tile {
 
     private final Position position;
-    private final TileType type;
+    private TileType type;
     private SoilState soilState;
     private Optional<Crop> crop = Optional.empty();
+    private boolean weed = false;
 
     /**
      * costruisce una nuova casella impostando lo stato iniziale del terreno a UNPLOWED
@@ -79,7 +80,7 @@ public class TileImpl implements Tile {
     public synchronized boolean plant(Crop crop) {
         if (this.type == TileType.SOIL && 
             (this.soilState == SoilState.PLOWED || this.soilState == SoilState.WATERED) && 
-            this.crop.isEmpty()) {
+            this.crop.isEmpty() && !this.weed) {
             
             this.crop = Optional.of(Objects.requireNonNull(crop, "Crop cannot be null"));
             return true;
@@ -115,5 +116,32 @@ public class TileImpl implements Tile {
     public synchronized void update(double deltaTime) {
         double multiplier = (this.soilState == SoilState.WATERED) ? 2.0 : 1.0;
         this.crop.ifPresent(c -> c.update(deltaTime, multiplier));
+
+        if (this.type == TileType.SOIL && !this.weed && Math.random() < 0.001 * deltaTime) {
+            spawnWeed();
+        }
+    }
+
+    @Override
+    public synchronized boolean hasWeed() {
+        return this.weed;
+    }
+
+    @Override
+    public synchronized boolean spawnWeed() {
+        if (this.type == TileType.SOIL && !this.weed) {
+            this.weed = true;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public synchronized boolean removeWeed() {
+        if (this.weed) {
+            this.weed = false;
+            return true;
+        }
+        return false;
     }
 }

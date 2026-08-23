@@ -26,6 +26,7 @@ public class TileView {
     private BufferedImage hangarImage;
     private BufferedImage wellImage;
     private BufferedImage marketImage;
+    private BufferedImage weedImage;
     
     // mappa per memorizzare le immagini delle colture in base al loro stato
     private final Map<String, BufferedImage> cropImages = new HashMap<>();
@@ -46,6 +47,8 @@ public class TileView {
         this.hangarImage = loadImage("hangar.png", true);
         this.wellImage = loadImage("well.png", true);
         this.marketImage = loadImage("market.png", true);
+        
+        this.weedImage = loadImage("weed.png", true);
         
         // carica le immagini delle colture per ogni stato (seed, growing, mature, dead)
         String[] cropNames = {"wheat", "corn"};
@@ -131,11 +134,22 @@ public class TileView {
             int innerX = x + padding;
             int innerY = y + padding;
 
-            if (soilImage != null) {
+                if (soilImage != null) {
                 g.drawImage(soilImage, innerX, innerY, innerSize, innerSize, null);
             } else {
                 g.setColor(fallbackColor);
                 g.fillRect(innerX, innerY, innerSize, innerSize);
+            }
+
+            
+            if (tile.hasWeed()) {
+                if (this.weedImage != null) {
+                    g.drawImage(this.weedImage, innerX, innerY, innerSize, innerSize, null);
+                } else {
+                    // Fallback nel caso l'immagine non sia ancora stata inserita
+                    g.setColor(new Color(0, 100, 0, 150)); 
+                    g.fillOval(innerX + innerSize/4, innerY + innerSize/4, innerSize/2, innerSize/2);
+                }
             }
         }
     }

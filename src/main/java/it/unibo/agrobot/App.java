@@ -60,6 +60,8 @@ public class App {
         priceManager.setBuyPrice("Corn", ItemType.SEED, 15.0);
         priceManager.setSellPrice("Corn", ItemType.CROP, 30.0);
         
+        priceManager.setBuyPrice("Diserbante", it.unibo.agrobot.model.ItemType.CONSUMABLE, 5.0);
+        
         Market market = new Market(drone.getInventory(), wallet, priceManager);
         Runnable onRestart = () -> {
             drone.reset();

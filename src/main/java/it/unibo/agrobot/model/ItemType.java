@@ -6,7 +6,8 @@ package it.unibo.agrobot.model;
  */
 public enum ItemType {
     CROP(10),  //colture raccolte, massimo 10 per slot
-    SEED(5);   //semi da piantare, massimo 5 per slot
+    SEED(5),   //semi da piantare, massimo 5 per slot
+    CONSUMABLE(10); //oggetti consumabili (es. diserbante), massimo 10 per slot
 
     private final int maxPerSlot;
 

@@ -183,6 +183,25 @@ public class ShopMenuUI extends JPanel {
             itemsPanel.add(buyBtn);
         }
 
+        //fetch dinamico dei consumabili (diserbante)
+        java.util.Set<String> consumablesToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.CONSUMABLE);
+        for (String consumable : consumablesToBuy) {
+            JButton buyBtn = new JButton("Compra " + consumable);
+            buyBtn.addKeyListener(menuKeyListener);
+            buyBtn.addActionListener(e -> {
+                if (market.buyConsumable(consumable)) {
+                    refreshView();
+                } else {
+                    java.awt.Toolkit.getDefaultToolkit().beep();
+                    buyBtn.setBackground(Color.RED);
+                    javax.swing.Timer timer = new javax.swing.Timer(200, evt -> refreshView());
+                    timer.setRepeats(false);
+                    timer.start();
+                }
+            });
+            itemsPanel.add(buyBtn);
+        }
+
         // fetch dinamico degli oggetti vendibili
         java.util.Set<String> cropsToSell = market.getPriceManager().getSellableItems(it.unibo.agrobot.model.ItemType.CROP);
         for (String crop : cropsToSell) {
