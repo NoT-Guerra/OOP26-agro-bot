@@ -42,9 +42,8 @@ class ConcurrencyTest {
                         inventory.addSlot();
                     }
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | RuntimeException e) {
                 hasException.set(true);
-                e.printStackTrace();
             } finally {
                 endLatch.countDown();
             }
@@ -59,9 +58,8 @@ class ConcurrencyTest {
                     inventory.findItemType("Seed");
                     inventory.getSlotCount();
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | RuntimeException e) {
                 hasException.set(true);
-                e.printStackTrace();
             } finally {
                 endLatch.countDown();
             }
@@ -104,9 +102,8 @@ class ConcurrencyTest {
                     Tile newTile = new TileImpl(new Position(5, 5), TileType.SOIL);
                     grid.setTile(5, 5, newTile);
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | RuntimeException e) {
                 hasException.set(true);
-                e.printStackTrace();
             } finally {
                 endLatch.countDown();
             }
@@ -120,9 +117,8 @@ class ConcurrencyTest {
                     grid.getTile(5, 5).ifPresent(t -> t.getType());
                     grid.isInBounds(5, 5);
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | RuntimeException e) {
                 hasException.set(true);
-                e.printStackTrace();
             } finally {
                 endLatch.countDown();
             }
