@@ -79,7 +79,10 @@ public class GamePanel extends JPanel {
 
         // Calcoliamo la grandezza di una singola tile in base alla grandezza attuale della finestra
         if (this.gridView != null) {
-            int hudSpace = 220; 
+            double scaleY = (double) this.getHeight() / 640.0;
+            double scaleX = (double) this.getWidth() / 860.0;
+            double currentScale = Math.min(scaleX, scaleY);
+            int hudSpace = (int)(220 * currentScale); 
             int availableWidthForGrid = this.getWidth() - hudSpace;
             
             int dynamicTileSize = Math.min(

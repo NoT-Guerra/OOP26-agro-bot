@@ -21,6 +21,7 @@ public class HUDView {
     private boolean showHelp = false;
     private final java.awt.Rectangle infoButtonBounds = new java.awt.Rectangle(20, 230, 30, 30);
     private final java.awt.Rectangle helpButtonBounds = new java.awt.Rectangle(60, 230, 30, 30);
+    private double currentScale = 1.0;
 
     /**
      * crea l'HUD associato al drone.
@@ -36,11 +37,11 @@ public class HUDView {
     }
 
     public boolean isInfoButtonClicked(int x, int y) {
-        return infoButtonBounds.contains(x, y);
+        return infoButtonBounds.contains(x / currentScale, y / currentScale);
     }
 
     public boolean isHelpButtonClicked(int x, int y) {
-        return helpButtonBounds.contains(x, y);
+        return helpButtonBounds.contains(x / currentScale, y / currentScale);
     }
 
     public void toggleControls() {
@@ -61,6 +62,16 @@ public class HUDView {
      * @param screenHeight altezza dello schermo
      */
     public void draw(Graphics2D g2d, int screenWidth, int screenHeight) {
+        java.awt.geom.AffineTransform oldTransform = g2d.getTransform();
+        
+        double scaleY = (double) screenHeight / 640.0;
+        double scaleX = (double) screenWidth / 860.0;
+        currentScale = Math.min(scaleX, scaleY);
+        
+        g2d.scale(currentScale, currentScale);
+        
+        double logicalScreenHeight = screenHeight / currentScale;
+
         g2d.setFont(new Font("Arial", Font.BOLD, 18));
 
         g2d.setColor(new Color(0, 0, 0, 150));
@@ -122,11 +133,11 @@ public class HUDView {
             int startYBox = 270;
             
             // Logica responsive: adatta posizione e dimensione in base allo schermo
-            if (startYBox + boxHeight > screenHeight - 10) {
-                startYBox = screenHeight - boxHeight - 10;
+            if (startYBox + boxHeight > logicalScreenHeight - 10) {
+                startYBox = (int)logicalScreenHeight - boxHeight - 10;
                 if (startYBox < 10) {
                     startYBox = 10; 
-                    int availableHeight = screenHeight - 20;
+                    int availableHeight = (int)logicalScreenHeight - 20;
                     double scale = (double) availableHeight / boxHeight;
                     fontSize = Math.max(8, (int)(fontSize * scale));
                     lineHeight = Math.max(10, (int)(20 * scale));
@@ -188,11 +199,11 @@ public class HUDView {
             int startYBox = 270;
             
             // Logica responsive: adatta posizione e dimensione in base allo schermo
-            if (startYBox + boxHeight > screenHeight - 10) {
-                startYBox = screenHeight - boxHeight - 10;
+            if (startYBox + boxHeight > logicalScreenHeight - 10) {
+                startYBox = (int)logicalScreenHeight - boxHeight - 10;
                 if (startYBox < 10) {
                     startYBox = 10; 
-                    int availableHeight = screenHeight - 20;
+                    int availableHeight = (int)logicalScreenHeight - 20;
                     double scale = (double) availableHeight / boxHeight;
                     titleSize = Math.max(9, (int)(titleSize * scale));
                     plainSize = Math.max(8, (int)(plainSize * scale));
@@ -229,6 +240,8 @@ public class HUDView {
                 currentY += lineHeight;
             }
         }
+        
+        g2d.setTransform(oldTransform);
     }
 
     private void drawInventory(Graphics2D g2d) {
