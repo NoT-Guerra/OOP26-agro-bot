@@ -5,25 +5,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
 
-// represents the main menu screen of the game
+// rappresenta la schermata del menu principale del gioco
 public class MainMenuView extends JPanel {
 
     /**
-     * constructs the main menu view
-     *
-     * @param stateManager the state manager to update when the user clicks play
+     * costruisce la vista del menu principale
+     * 
+     * @param stateManager il gestore di stato da aggiornare quando l'utente clicca su gioca
      */
     public MainMenuView(GameStateManager stateManager) {
         this.setLayout(new BorderLayout());

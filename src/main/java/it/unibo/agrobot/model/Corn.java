@@ -8,6 +8,9 @@ public class Corn extends AbstractCrop {
     private static final double GROWTH_TIME = 35.0;
     private static final double HYDRATION_TIME = 40.0;
 
+    /**
+     * Costruisce una pianta di mais.
+     */
     public Corn() {
         super("Corn", GROWTH_TIME, HYDRATION_TIME);
     }

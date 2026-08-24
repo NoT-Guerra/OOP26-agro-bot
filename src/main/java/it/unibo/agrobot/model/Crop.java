@@ -6,11 +6,15 @@ package it.unibo.agrobot.model;
 public interface Crop {
 
     /**
+     * Restituisce il nome della coltura.
+     *
      * @return il nome della coltura
      */
     String getName();
 
     /**
+     * Restituisce lo stato della coltura.
+     *
      * @return lo stato della coltura (SEED, GROWING, MATURE, DEAD)
      */
     CropState getState();
@@ -33,11 +37,15 @@ public interface Crop {
     void update(double deltaTime, double growthMultiplier);
 
     /**
+     * Verifica se la coltura è pronta per il raccolto.
+     *
      * @return true se la pianta è matura e può essere raccolta, false altrimenti.
      */
     boolean isReadyToHarvest();
 
     /**
+     * Verifica se la coltura è morta.
+     *
      * @return true se la pianta è morta, false altrimenti.
      */
     boolean isDead();

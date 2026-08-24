@@ -4,6 +4,9 @@ import it.unibo.agrobot.model.Drone;
 import it.unibo.agrobot.model.Grid;
 import it.unibo.agrobot.view.GamePanel;
 
+/**
+ * Gestisce il ciclo principale di esecuzione del gioco.
+ */
 public class GameLoop implements Runnable {
 
     private static final int UPS_SET = 60;
@@ -23,13 +26,13 @@ public class GameLoop implements Runnable {
     private final Object stateLock = new Object();
 
     /**
-     * Constructs a GameLoop with the specified game panel for rendering.
+     * Costruisce un GameLoop con il pannello di gioco specificato per il rendering.
      *
-     * @param gamePanel the panel to repaint during the render phase
-     * @param grid the grid to update
-     * @param drone the drone to update
-     * @param stateManager the state manager
-     * @param weatherManager the weather manager
+     * @param gamePanel il pannello da ridisegnare durante la fase di render
+     * @param grid la griglia da aggiornare
+     * @param drone il drone da aggiornare
+     * @param stateManager il gestore degli stati
+     * @param weatherManager il gestore del meteo
      */
     public GameLoop(GamePanel gamePanel, it.unibo.agrobot.model.Grid grid, Drone drone, GameStateManager stateManager, it.unibo.agrobot.model.WeatherManager weatherManager) {
         this.gamePanel = gamePanel;
@@ -40,7 +43,7 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Constructs a GameLoop without a view (test).
+     * Costruisce un GameLoop senza vista (test).
      */
     public GameLoop() {
         this.gamePanel = null;
@@ -51,7 +54,7 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Starts the game loop logic and rendering threads.
+     * Avvia i thread di logica e rendering del game loop.
      */
     public synchronized void start() {
         if (running) {
@@ -65,8 +68,8 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Stops the game loop and safely waits for both the logic and rendering
-     * threads to terminate.
+     * Ferma il game loop e attende in modo sicuro che sia il thread logico
+     * che quello di rendering terminino.
      */
     public void stop() {
         if (!running) {
@@ -86,7 +89,7 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Continuously updates the game state at the defined UPS.
+     * Aggiorna continuamente lo stato del gioco agli UPS definiti.
      */
     @Override
     @SuppressWarnings("BusyWait")
@@ -119,7 +122,7 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Continuously triggers the rendering of frames at the defined FPS.
+     * Attiva continuamente il rendering dei frame agli FPS definiti.
      */
     @SuppressWarnings("BusyWait")
     private void renderLoop() { // lo stesso ragionamento fatto per il thread principale, ma per il thread di rendering
@@ -150,6 +153,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * Aggiorna la logica di gioco.
+     */
     protected void update() {
         if (this.drone == null || (this.stateManager != null && this.stateManager.getState() != GameState.PLAYING)) return;
         
@@ -172,7 +178,7 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Triggers the rendering of the game view.
+     * Attiva il rendering della vista di gioco.
      */
     protected void render() {
         if (gamePanel != null) {

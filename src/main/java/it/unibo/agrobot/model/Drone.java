@@ -8,16 +8,22 @@ package it.unibo.agrobot.model;
 public interface Drone {
 
     /**
+     * Restituisce la posizione del drone.
+     *
      * @return l'oggetto position che contiene le coordinate attuali del drone
      */
     Position getPosition();
 
     /**
+     * Restituisce il livello della batteria.
+     *
      * @return il livello attuale di carica della batteria
      */
     double getBatteryLevel();
 
     /**
+     * Restituisce il livello dell'acqua.
+     *
      * @return il livello attuale di acqua nel serbatoio del drone
      */
     double getWaterLevel();
@@ -34,6 +40,8 @@ public interface Drone {
     boolean move(Direction dir);
 
     /**
+     * Verifica se il drone è in movimento.
+     *
      * @return true se il drone è attualmente in viaggio tra due caselle, false
      * se è fermo
      */
@@ -89,11 +97,15 @@ public interface Drone {
     void rechargeAtHangar();
 
     /**
+     * Restituisce l'inventario.
+     *
      * @return l'inventario del drone con i suoi slot
      */
     Inventory getInventory();
 
     /**
+     * Restituisce il portafoglio.
+     *
      * @return il portafoglio associato al drone
      */
     Wallet getWallet();
@@ -110,6 +122,8 @@ public interface Drone {
     void upgradeBatteryMaxCapacity(double amount);
 
     /**
+     * Restituisce la capacità massima della batteria.
+     *
      * @return la capacità massima della batteria
      */
     double getMaxBatteryCapacity();
@@ -121,6 +135,8 @@ public interface Drone {
     void upgradeWaterTankMaxCapacity(double amount);
 
     /**
+     * Restituisce la capacità massima del serbatoio.
+     *
      * @return la capacità massima del serbatoio
      */
     double getMaxWaterTankCapacity();

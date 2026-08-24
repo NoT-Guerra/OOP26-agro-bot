@@ -6,6 +6,8 @@ package it.unibo.agrobot.model;
 public interface WeatherManager {
 
     /**
+     * Restituisce la condizione corrente.
+     *
      * @return la condizione meteorologica attuale
      */
     WeatherCondition getCurrentCondition();

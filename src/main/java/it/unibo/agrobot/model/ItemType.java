@@ -16,6 +16,8 @@ public enum ItemType {
     }
 
     /**
+     * Restituisce il numero massimo per slot.
+     *
      * @return il numero massimo di oggetti di questo tipo che possono stare in un singolo slot
      */
     public int getMaxPerSlot() {

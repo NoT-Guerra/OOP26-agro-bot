@@ -25,6 +25,11 @@ public class DroneImpl implements Drone {
 
     private final Position startPosition;
 
+    /**
+     * Costruisce un drone con la posizione specificata.
+     *
+     * @param position la posizione iniziale
+     */
     public DroneImpl(Position position) {
         this.startPosition = new Position(position.getX(), position.getY());
         this.position = position;

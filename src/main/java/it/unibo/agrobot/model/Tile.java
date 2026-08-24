@@ -8,16 +8,22 @@ import java.util.Optional;
 public interface Tile {
 
     /**
+     * Restituisce la posizione della casella nella griglia.
+     *
      * @return la posizione della casella nella griglia
      */
     Position getPosition();
 
     /**
+     * Restituisce il tipo di casella.
+     *
      * @return il tipo di casella, ovvero SOIL, WELL o HANGAR
      */
     TileType getType();
 
     /**
+     * Restituisce lo stato attuale del terreno.
+     *
      * @return lo stato attuale del terreno
      */
     SoilState getSoilState();
@@ -59,6 +65,8 @@ public interface Tile {
     Optional<Crop> harvest();
 
     /**
+     * Restituisce la coltura attualmente piantata nella zolla.
+     *
      * @return un Optional contenente la coltura attualmente piantata, solo se presente, altrimenti Optional vuoto
      */
     Optional<Crop> getCrop();

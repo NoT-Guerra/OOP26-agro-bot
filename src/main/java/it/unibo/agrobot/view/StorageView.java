@@ -39,10 +39,11 @@ public class StorageView extends JPanel {
     private int selectedIndex = 0;
 
     /**
+     * Costruisce la vista del magazzino.
      * 
-     * @param stateManager
-     * @param droneInventory
-     * @param storage
+     * @param stateManager gestore dello stato del gioco
+     * @param droneInventory inventario del drone
+     * @param storage deposito magazzino
      */
     public StorageView(GameStateManager stateManager, Inventory droneInventory, Storage storage) {
         this.stateManager = stateManager;

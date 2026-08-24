@@ -8,6 +8,7 @@ import it.unibo.agrobot.controller.GameStateManager;
 import it.unibo.agrobot.controller.InputHandler;
 import it.unibo.agrobot.model.DroneImpl;
 import it.unibo.agrobot.model.GridImpl;
+import it.unibo.agrobot.model.ItemType;
 import it.unibo.agrobot.model.Market;
 import it.unibo.agrobot.model.Position;
 import it.unibo.agrobot.model.PriceManager;
@@ -15,7 +16,6 @@ import it.unibo.agrobot.model.Storage;
 import it.unibo.agrobot.model.Wallet;
 import it.unibo.agrobot.model.WeatherManager;
 import it.unibo.agrobot.model.WeatherManagerImpl;
-import it.unibo.agrobot.model.ItemType;
 import it.unibo.agrobot.view.DroneView;
 import it.unibo.agrobot.view.GameOverView;
 import it.unibo.agrobot.view.GamePanel;
@@ -28,7 +28,11 @@ import it.unibo.agrobot.view.ShopMenuUI;
 import it.unibo.agrobot.view.StorageView;
 
 public class App {
-
+    /**
+     * Punto di ingresso dell'applicazione.
+     *
+     * @param args argomenti passati da riga di comando
+     */
     public static void main(String[] args) {
         // creazione della griglia 10x10 e posizionamento iniziale del drone sulla base di ricarica (magazzino in 8,1)
         GridImpl grid = new GridImpl(10, 10);

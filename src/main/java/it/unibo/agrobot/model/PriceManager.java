@@ -10,6 +10,9 @@ public class PriceManager {
     private final Map<String, Map<ItemType, Double>> buyPrices;
     private final Map<String, Map<ItemType, Double>> sellPrices;
 
+    /**
+     * Costruisce un nuovo listino prezzi vuoto.
+     */
     public PriceManager() {
         this.buyPrices = new HashMap<>();
         this.sellPrices = new HashMap<>();
@@ -46,7 +49,9 @@ public class PriceManager {
     /**
      * restituisce il prezzo di acquisto per un determinato item name e
      * ItemType.
+     * 
      *
+     * @param itemName il nome dell'oggetto
      * @param type il tipo di oggetto
      * @return il prezzo di acquisto
      */
@@ -67,6 +72,9 @@ public class PriceManager {
 
     /**
      * restituisce un set di nomi di oggetti acquistabili per un dato tipo.
+     * 
+     * @param type il tipo di oggetto
+     * @return un set contenente i nomi degli oggetti acquistabili
      */
     public java.util.Set<String> getBuyableItems(ItemType type) {
         return buyPrices.entrySet().stream()
@@ -77,6 +85,9 @@ public class PriceManager {
 
     /**
      * restituisce un set di nomi di oggetti vendibili per un dato tipo.
+     * 
+     * @param type il tipo di oggetto
+     * @return un set contenente i nomi degli oggetti vendibili
      */
     public java.util.Set<String> getSellableItems(ItemType type) {
         return sellPrices.entrySet().stream()

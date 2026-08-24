@@ -16,12 +16,24 @@ public class InputHandler extends KeyAdapter {
     private final GameStateManager stateManager;
     private Runnable openShopAction;
 
+    /**
+     * Costruisce il gestore dell'input.
+     *
+     * @param drone il drone da controllare
+     * @param grid la griglia di gioco
+     * @param stateManager il gestore dello stato del gioco
+     */
     public InputHandler(Drone drone, Grid grid, GameStateManager stateManager) {
         this.drone = drone;
         this.grid = grid;
         this.stateManager = stateManager;
     }
 
+    /**
+     * Imposta l'azione da eseguire per aprire il negozio.
+     *
+     * @param action l'azione
+     */
     public void setOpenShopAction(Runnable action) {
         this.openShopAction = action;
     }
@@ -97,10 +109,10 @@ public class InputHandler extends KeyAdapter {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
                         if (!drone.isDead()) {
-                            // check if there is a mature crop to harvest
+                            // controlla se c'è un raccolto maturo da raccogliere
                             java.util.Optional<it.unibo.agrobot.model.Crop> harvested = tile.harvest();
                             if (harvested.isPresent()) {
-                                drone.harvest(); // consume battery
+                                drone.harvest(); // consuma batteria
                                 drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
                             } else {
                                 java.awt.Toolkit.getDefaultToolkit().beep();

@@ -8,11 +8,15 @@ import java.util.Optional;
 public interface Grid {
 
     /**
+     * Restituisce la larghezza.
+     *
      * @return larghezza della griglia
      */
     int getWidth();
 
     /**
+     * Restituisce l'altezza.
+     *
      * @return altezza della griglia
      */
     int getHeight();

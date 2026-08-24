@@ -10,17 +10,30 @@ public class Battery {
     private double maxCapacity;
     private final double initialMaxCapacity;
 
+    /**
+     * Crea una batteria con la capacità massima specificata.
+     *
+     * @param maxCapacity la capacità massima
+     */
     public Battery(double maxCapacity) {
         this.initialMaxCapacity = maxCapacity;
         this.maxCapacity = maxCapacity;
         this.level = maxCapacity;
     }
 
+    /**
+     * Resetta la batteria ai valori iniziali.
+     */
     public void reset() {
         this.maxCapacity = this.initialMaxCapacity;
         this.level = this.maxCapacity;
     }
 
+    /**
+     * Restituisce il livello attuale della batteria.
+     *
+     * @return il livello attuale
+     */
     public double getLevel() {
         return this.level;
     }
@@ -54,11 +67,21 @@ public class Battery {
         return this.level <= 0;
     }
 
+    /**
+     * Aumenta la capacità massima della batteria.
+     *
+     * @param amount l'ammontare di incremento
+     */
     public void increaseMaxCapacity(double amount) {
         this.maxCapacity += amount;
         this.level += amount;
     }
 
+    /**
+     * Restituisce la capacità massima attuale.
+     *
+     * @return la capacità massima
+     */
     public double getMaxCapacity() {
         return this.maxCapacity;
     }

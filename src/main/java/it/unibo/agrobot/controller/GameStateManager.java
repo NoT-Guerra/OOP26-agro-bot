@@ -2,7 +2,7 @@ package it.unibo.agrobot.controller;
 
 import java.util.function.Consumer;
 
-// manages the current state of the game and notifies listeners of state changes
+// gestisce lo stato attuale del gioco e notifica i listener dei cambiamenti di stato
 
 public class GameStateManager {
     
@@ -10,18 +10,18 @@ public class GameStateManager {
     private Consumer<GameState> onStateChange;
 
     /**
-     * sets the listener to be notified when the game state changes
+     * imposta il listener da notificare quando lo stato del gioco cambia
      *
-     * @param onStateChange the listener to set
+     * @param onStateChange il listener da impostare
      */
     public void setOnStateChange(Consumer<GameState> onStateChange) {
         this.onStateChange = onStateChange;
     }
 
     /**
-     * updates the current game state and triggers the listener if present
+     * aggiorna lo stato attuale del gioco e attiva il listener se presente
      *
-     * @param state the new game state
+     * @param state il nuovo stato del gioco
      */
     public void setState(GameState state) {
         this.state = state;
@@ -31,9 +31,9 @@ public class GameStateManager {
     }
 
     /**
-     * gets the current game state
+     * ottiene lo stato attuale del gioco
      *
-     * @return the current game state
+     * @return lo stato attuale del gioco
      */
     public GameState getState() {
         return this.state;

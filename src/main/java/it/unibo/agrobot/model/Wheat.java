@@ -8,6 +8,9 @@ public class Wheat extends AbstractCrop {
     private static final double GROWTH_TIME = 20.0;
     private static final double HYDRATION_TIME = 25.0;
 
+    /**
+     * Costruisce una pianta di grano.
+     */
     public Wheat() {
         super("Wheat", GROWTH_TIME, HYDRATION_TIME);
     }

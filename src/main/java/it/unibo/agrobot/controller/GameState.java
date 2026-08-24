@@ -1,29 +1,29 @@
 package it.unibo.agrobot.controller;
 
-// represents the current state of the game
+// rappresenta lo stato attuale del gioco
 public enum GameState {
     /**
-     * The game is in the main menu
+     * Il gioco è nel menu principale
      */
     MENU,
     
     /**
-     * The game is currently playing
+     * Il gioco è attualmente in corso
      */
     PLAYING,
     
     /**
-     * The game is paused
+     * Il gioco è in pausa
      */
     PAUSED,
 
     /**
-     * The game is over
+     * Il gioco è terminato
      */
     GAME_OVER,
 
     /**
-     * The game is in the storage menu
+     * Il gioco è nel menu del magazzino
      */
     STORAGE_MENU
 }

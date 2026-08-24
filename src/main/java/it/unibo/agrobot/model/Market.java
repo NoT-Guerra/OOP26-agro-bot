@@ -23,6 +23,8 @@ public class Market {
 
     /**
      * restituisce il listino prezzi.
+     * 
+     * @return il listino prezzi
      */
     public PriceManager getPriceManager() {
         return this.priceManager;
@@ -71,6 +73,9 @@ public class Market {
     private double batteryUpgradeCost = 25.0;
     private double waterTankUpgradeCost = 25.0;
 
+    /**
+     * Resetta i costi dei potenziamenti ai valori predefiniti.
+     */
     public void reset() {
         this.batteryUpgradeCost = 25.0;
         this.waterTankUpgradeCost = 25.0;
@@ -78,6 +83,8 @@ public class Market {
 
     /**
      * restituisce il costo del prossimo potenziamento batteria.
+     *
+     * @return il costo del potenziamento
      */
     public double getBatteryUpgradeCost() {
         return this.batteryUpgradeCost;
@@ -101,6 +108,8 @@ public class Market {
 
     /**
      * restituisce il costo del prossimo potenziamento serbatoio acqua.
+     *
+     * @return il costo del potenziamento
      */
     public double getWaterTankUpgradeCost() {
         return this.waterTankUpgradeCost;

@@ -21,7 +21,7 @@ public class DroneView {
 
     /**
      * crea la view del drone caricando lo sprite dal file drone.png se il file
-     * non viene trovato si usera un placeholder coloratoa caso
+     * non viene trovato si usera un placeholder colorato a caso
      *
      * @param drone il drone del model da disegnare
      */

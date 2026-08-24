@@ -26,14 +26,29 @@ public class GridView {
         this.tileView = new TileView(grid);
     }
 
+    /**
+     * Imposta la dimensione della tile in pixel.
+     *
+     * @param newSize la nuova dimensione
+     */
     public void setTileSize(int newSize) {
         this.tileSize = newSize;
     }
     
+    /**
+     * Restituisce il numero di colonne della griglia.
+     *
+     * @return il numero di colonne
+     */
     public int getCols() {
         return this.grid.getWidth();
     }
     
+    /**
+     * Restituisce il numero di righe della griglia.
+     *
+     * @return il numero di righe
+     */
     public int getRows() {
         return this.grid.getHeight();
     }

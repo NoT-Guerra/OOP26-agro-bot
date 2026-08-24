@@ -3,6 +3,11 @@ package it.unibo.agrobot.model;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * WeatherManagerImpl e la classe che implementa l'interfaccia WeatherManager
+ * e che si occupa di gestire il meteo del gioco
+ */
+
 public class WeatherManagerImpl implements WeatherManager {
 
     private WeatherCondition currentCondition;
@@ -18,6 +23,11 @@ public class WeatherManagerImpl implements WeatherManager {
     private static final double RAIN_WATERING_INTERVAL = 0.5; // ogni 0.5 secondi piove su alcune zolle
     private static final int TILES_WATERED_PER_TICK = 5; // zolle annaffiate per ogni tick di pioggia
 
+    /**
+     * Costruisce il gestore meteo associato a una griglia.
+     *
+     * @param grid la griglia di gioco da gestire per gli eventi atmosferici
+     */
     public WeatherManagerImpl(Grid grid) {
         this.grid = grid;
         this.currentCondition = WeatherCondition.SUNNY;
@@ -91,8 +101,6 @@ public class WeatherManagerImpl implements WeatherManager {
 
     /**
      * resetta il meteo allo stato iniziale
-     *
-     * @return true se il meteo è stato resettato, false altrimenti
      */
     @Override
     public void reset() {

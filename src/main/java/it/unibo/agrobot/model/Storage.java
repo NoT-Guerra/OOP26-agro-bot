@@ -9,6 +9,9 @@ public class Storage extends Inventory {
 
     private static final int DEFAULT_SLOTS = 6;
 
+    /**
+     * Costruisce un nuovo deposito vuoto con il numero di slot predefinito.
+     */
     public Storage() {
         super(DEFAULT_SLOTS);
     }

@@ -8,10 +8,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,6 +22,9 @@ import javax.swing.SwingConstants;
 import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
 
+/**
+ * Interfaccia utente per il menu di pausa del gioco.
+ */
 public class PauseMenuUI extends JPanel {
 
     private final JButton continueButton;
@@ -61,6 +64,7 @@ public class PauseMenuUI extends JPanel {
         }
     };
 
+    /** Listener per il focus dei pulsanti. */
     private final FocusAdapter buttonFocusListener = new FocusAdapter() {
         @Override
         public void focusGained(FocusEvent e) {
@@ -72,6 +76,12 @@ public class PauseMenuUI extends JPanel {
         }
     };
 
+    /**
+     * Costruisce il menu di pausa.
+     *
+     * @param stateManager gestore dello stato del gioco
+     * @param onRestart azione da eseguire al riavvio
+     */
     public PauseMenuUI(GameStateManager stateManager, Runnable onRestart) {
         this.stateManager = stateManager;
         this.setLayout(new BorderLayout());

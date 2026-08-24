@@ -33,6 +33,11 @@ public class TileView {
     
     private final it.unibo.agrobot.model.Grid grid;
 
+    /**
+     * Costruisce la vista delle tile per la griglia specificata.
+     *
+     * @param grid la griglia del gioco
+     */
     public TileView(it.unibo.agrobot.model.Grid grid) {
         this.grid = grid;
         this.loadSprites();

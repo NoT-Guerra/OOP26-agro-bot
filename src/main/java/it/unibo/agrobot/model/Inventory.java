@@ -25,12 +25,22 @@ public class Inventory {
         }
     }
 
+    /**
+     * Imposta l'indice dello slot selezionato.
+     *
+     * @param index il nuovo indice
+     */
     public synchronized void setSelectedSlotIndex(int index) {
         if (index >= 0 && index < slots.size()) {
             this.selectedSlotIndex = index;
         }
     }
 
+    /**
+     * Restituisce l'indice dello slot selezionato.
+     *
+     * @return l'indice dello slot selezionato
+     */
     public synchronized int getSelectedSlotIndex() {
         return this.selectedSlotIndex;
     }
@@ -118,6 +128,8 @@ public class Inventory {
     }
 
     /**
+     * Restituisce il numero totale di slot.
+     *
      * @return il numero totale di slot nell inventario
      */
     public synchronized int getSlotCount() {
@@ -125,6 +137,8 @@ public class Inventory {
     }
 
     /**
+     * Restituisce lo slot alla posizione specificata.
+     *
      * @param index l indice dello slot da ottenere
      * @return lo slot alla posizione specificata
      */

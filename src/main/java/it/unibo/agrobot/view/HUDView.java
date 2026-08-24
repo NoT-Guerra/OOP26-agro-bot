@@ -32,26 +32,51 @@ public class HUDView {
         this.drone = drone;
     }
 
+    /**
+     * Imposta il gestore del meteo per visualizzarlo nell'HUD.
+     * 
+     * @param weatherManager il gestore meteo
+     */
     public void setWeatherManager(it.unibo.agrobot.model.WeatherManager weatherManager) {
         this.weatherManager = weatherManager;
     }
 
+    /**
+     * Controlla se il pulsante delle info è stato cliccato.
+     * 
+     * @param x la coordinata x del clic
+     * @param y la coordinata y del clic
+     * @return true se è stato cliccato
+     */
     public boolean isInfoButtonClicked(int x, int y) {
         return infoButtonBounds.contains(x / currentScale, y / currentScale);
     }
 
+    /**
+     * Controlla se il pulsante di aiuto è stato cliccato.
+     * 
+     * @param x la coordinata x del clic
+     * @param y la coordinata y del clic
+     * @return true se è stato cliccato
+     */
     public boolean isHelpButtonClicked(int x, int y) {
         return helpButtonBounds.contains(x / currentScale, y / currentScale);
     }
 
+    /**
+     * Mostra o nasconde i controlli.
+     */
     public void toggleControls() {
         showControls = !showControls;
-        if (showControls) showHelp = false; // close the other panel
+        if (showControls) showHelp = false; // chiude l'altro pannello
     }
 
+    /**
+     * Mostra o nasconde la schermata di aiuto.
+     */
     public void toggleHelp() {
         showHelp = !showHelp;
-        if (showHelp) showControls = false; // close the other panel
+        if (showHelp) showControls = false; // chiude l'altro pannello
     }
 
     /**

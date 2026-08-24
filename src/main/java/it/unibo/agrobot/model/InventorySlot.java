@@ -10,6 +10,9 @@ public class InventorySlot {
     private ItemType type;
     private int quantity;
 
+    /**
+     * Costruisce uno slot inventario vuoto.
+     */
     public InventorySlot() {
         this.itemName = null;
         this.type = null;
@@ -59,6 +62,8 @@ public class InventorySlot {
     }
 
     /**
+     * Verifica se lo slot è vuoto.
+     *
      * @return true se lo slot non contiene nessun oggetto
      */
     public boolean isEmpty() {
@@ -66,6 +71,8 @@ public class InventorySlot {
     }
 
     /**
+     * Verifica se lo slot è pieno.
+     *
      * @return true se lo slot ha raggiunto il limite massimo per il suo tipo di oggetto
      */
     public boolean isFull() {
@@ -76,6 +83,8 @@ public class InventorySlot {
     }
 
     /**
+     * Restituisce il nome dell'oggetto.
+     *
      * @return il nome dell oggetto contenuto nello slot, null se vuoto
      */
     public String getItemName() {
@@ -83,6 +92,8 @@ public class InventorySlot {
     }
 
     /**
+     * Restituisce il tipo dell'oggetto.
+     *
      * @return il tipo dell oggetto contenuto nello slot, null se vuoto
      */
     public ItemType getType() {
@@ -90,6 +101,8 @@ public class InventorySlot {
     }
 
     /**
+     * Restituisce la quantità di oggetti.
+     *
      * @return la quantita di oggetti presenti nello slot
      */
     public int getQuantity() {

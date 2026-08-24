@@ -15,6 +15,8 @@ public abstract class AbstractCrop implements Crop {
     private double currentHydrationTimer;
 
     /**
+     * Costruisce una nuova coltura.
+     *
      * @param name nome della coltura
      * @param totalGrowthTime tempo totale per raggiungere lo stato MATURE
      * @param maxHydrationTime tempo massimo che la pianta può resistere senza acqua prima di morire

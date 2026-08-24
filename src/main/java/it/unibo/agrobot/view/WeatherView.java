@@ -7,6 +7,9 @@ import java.util.Random;
 import it.unibo.agrobot.model.WeatherCondition;
 import it.unibo.agrobot.model.WeatherManager;
 
+/**
+ * Gestisce la renderizzazione grafica degli effetti meteorologici (pioggia, sole).
+ */
 public class WeatherView {
 
     private final WeatherManager weatherManager;
@@ -33,6 +36,13 @@ public class WeatherView {
         }
     }
 
+    /**
+     * Disegna gli effetti atmosferici.
+     *
+     * @param g2d il contesto grafico
+     * @param width la larghezza dello schermo
+     * @param height l'altezza dello schermo
+     */
     public void draw(Graphics2D g2d, int width, int height) {
         if (weatherManager == null || weatherManager.getCurrentCondition() != WeatherCondition.RAINY) {
             return;

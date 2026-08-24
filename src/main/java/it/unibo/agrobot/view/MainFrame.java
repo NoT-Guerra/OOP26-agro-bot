@@ -2,12 +2,15 @@ package it.unibo.agrobot.view;
 
 import javax.swing.JFrame;
 
+/**
+ * Rappresenta il frame principale dell'applicazione.
+ */
 public class MainFrame extends JFrame {
 
     /**
-     * Constructs the main frame of the application.
+     * Costruisce il frame principale dell'applicazione.
      *
-     * @param gamePanel the panel responsible for rendering the game view
+     * @param gamePanel il pannello responsabile del rendering della vista di gioco
      */
     public MainFrame(GamePanel gamePanel) {
         setTitle("Agro-Bot");

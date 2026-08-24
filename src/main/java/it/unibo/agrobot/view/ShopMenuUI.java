@@ -19,6 +19,7 @@ import it.unibo.agrobot.controller.GameState;
 import it.unibo.agrobot.controller.GameStateManager;
 import it.unibo.agrobot.model.Market;
 
+// interfaccia utente per il menu del negozio
 public class ShopMenuUI extends JPanel {
 
     private final Market market;
@@ -64,6 +65,13 @@ public class ShopMenuUI extends JPanel {
         }
     };
 
+    /**
+     * Costruisce il menu del negozio.
+     *
+     * @param market il mercato da cui acquistare e vendere
+     * @param stateManager gestore dello stato del gioco
+     * @param drone il drone del giocatore
+     */
     public ShopMenuUI(Market market, GameStateManager stateManager, it.unibo.agrobot.model.Drone drone) {
         this.market = market;
         this.stateManager = stateManager;
@@ -117,6 +125,9 @@ public class ShopMenuUI extends JPanel {
         }
     }
 
+    /**
+     * Aggiorna i pulsanti del negozio per riflettere i costi attuali e la disponibilità.
+     */
     public final void refreshView() {
         int focusedIndex = -1;
         Component focusOwner = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
