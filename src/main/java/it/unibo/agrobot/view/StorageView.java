@@ -40,7 +40,7 @@ public class StorageView extends JPanel {
 
     /**
      * Costruisce la vista del magazzino.
-     * 
+     *
      * @param stateManager gestore dello stato del gioco
      * @param droneInventory inventario del drone
      * @param storage deposito magazzino
@@ -53,7 +53,7 @@ public class StorageView extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(50, 50, 50));
 
-        JLabel titleLabel = new JLabel("MAGAZZINO", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("WAREHOUSE", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
@@ -65,12 +65,12 @@ public class StorageView extends JPanel {
 
         dronePanel = new JPanel(new GridLayout(10, 1, 0, 5));
         dronePanel.setOpaque(false);
-        dronePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE), "Inventario Drone"));
+        dronePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE), "Drone inventory"));
         ((javax.swing.border.TitledBorder) dronePanel.getBorder()).setTitleColor(Color.WHITE);
 
         storagePanel = new JPanel(new GridLayout(10, 1, 0, 5));
         storagePanel.setOpaque(false);
-        storagePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE), "Deposito Magazzino"));
+        storagePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE), "Warehouse storage"));
         ((javax.swing.border.TitledBorder) storagePanel.getBorder()).setTitleColor(Color.WHITE);
 
         centerPanel.add(dronePanel);
@@ -78,7 +78,7 @@ public class StorageView extends JPanel {
 
         this.add(centerPanel, BorderLayout.CENTER);
 
-        JButton closeButton = new JButton("CHIUDI");
+        JButton closeButton = new JButton("CLOSE");
         closeButton.setFont(new Font("Arial", Font.BOLD, 24));
         closeButton.setBackground(Color.WHITE);
         closeButton.setForeground(new Color(50, 50, 50));
@@ -114,7 +114,9 @@ public class StorageView extends JPanel {
         this.getActionMap().put("moveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (focusableButtons.isEmpty()) return;
+                if (focusableButtons.isEmpty()) {
+                    return;
+                }
                 updateSelection((selectedIndex - 1 + focusableButtons.size()) % focusableButtons.size());
             }
         });
@@ -122,7 +124,9 @@ public class StorageView extends JPanel {
         this.getActionMap().put("moveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (focusableButtons.isEmpty()) return;
+                if (focusableButtons.isEmpty()) {
+                    return;
+                }
                 updateSelection((selectedIndex + 1) % focusableButtons.size());
             }
         });
@@ -130,7 +134,9 @@ public class StorageView extends JPanel {
         this.getActionMap().put("selectItem", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (focusableButtons.isEmpty()) return;
+                if (focusableButtons.isEmpty()) {
+                    return;
+                }
                 focusableButtons.get(selectedIndex).doClick();
             }
         });
@@ -141,12 +147,12 @@ public class StorageView extends JPanel {
     private void updateSelection(int newIndex) {
         if (!focusableButtons.isEmpty() && selectedIndex >= 0 && selectedIndex < focusableButtons.size()) {
             JButton oldBtn = focusableButtons.get(selectedIndex);
-            oldBtn.setBackground(Color.WHITE); 
+            oldBtn.setBackground(Color.WHITE);
             oldBtn.setForeground(new Color(50, 50, 50));
         }
-        
+
         selectedIndex = newIndex;
-        
+
         if (!focusableButtons.isEmpty() && selectedIndex >= 0 && selectedIndex < focusableButtons.size()) {
             JButton newBtn = focusableButtons.get(selectedIndex);
             newBtn.setBackground(new Color(100, 200, 100)); // highlight verde
@@ -169,10 +175,10 @@ public class StorageView extends JPanel {
             if (!slot.isEmpty()) {
                 String displayName = slot.getItemName();
                 if (slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
-                    displayName = "Seme " + displayName;
+                    displayName = displayName + " Seed";
                 }
                 String text = displayName + " (x" + slot.getQuantity() + ")";
-                JButton itemBtn = new JButton(text + " -> Deposita");
+                JButton itemBtn = new JButton(text + " -> Deposit");
                 styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {
                     storage.transferFromInventory(slot.getItemName(), droneInventory);
@@ -189,10 +195,10 @@ public class StorageView extends JPanel {
             if (!slot.isEmpty()) {
                 String displayName = slot.getItemName();
                 if (slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
-                    displayName = "Seme " + displayName;
+                    displayName = displayName + " Seed";
                 }
                 String text = displayName + " (x" + slot.getQuantity() + ")";
-                JButton itemBtn = new JButton("Preleva <- " + text);
+                JButton itemBtn = new JButton("Withdraw <- " + text);
                 styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {
                     storage.transferToInventory(slot.getItemName(), droneInventory);

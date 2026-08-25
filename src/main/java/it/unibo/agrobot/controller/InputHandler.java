@@ -221,9 +221,9 @@ public class InputHandler extends KeyAdapter {
                             int selectedIndex = inventory.getSelectedSlotIndex();
                             it.unibo.agrobot.model.InventorySlot selectedSlot = inventory.getSlot(selectedIndex);
                             
-                            if (!selectedSlot.isEmpty() && selectedSlot.getType() == it.unibo.agrobot.model.ItemType.CONSUMABLE && "Diserbante".equals(selectedSlot.getItemName())) {
+                            if (!selectedSlot.isEmpty() && selectedSlot.getType() == it.unibo.agrobot.model.ItemType.CONSUMABLE && "Herbicide".equals(selectedSlot.getItemName())) {
                                 tile.removeWeed();
-                                inventory.removeItem("Diserbante", it.unibo.agrobot.model.ItemType.CONSUMABLE);
+                                inventory.removeItem("Herbicide", it.unibo.agrobot.model.ItemType.CONSUMABLE);
                             } else {
                                 java.awt.Toolkit.getDefaultToolkit().beep();
                             }
