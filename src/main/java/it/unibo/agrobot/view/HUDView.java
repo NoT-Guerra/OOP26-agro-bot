@@ -115,7 +115,7 @@ public class HUDView {
         g2d.drawString(String.format("Water Tank: %.0f/%.0f", water, maxWater), 20, 95);
 
         if (this.weatherManager != null) {
-            String weatherText = "Weather: " + (this.weatherManager.getCurrentCondition() == it.unibo.agrobot.model.WeatherCondition.SUNNY ? "☀️ Sunny" : "🌧️ Rainy");
+            String weatherText = "Weather: " + (this.weatherManager.getCurrentCondition() == it.unibo.agrobot.model.WeatherCondition.SUNNY ? "Sunny" : "Rainy");
             g2d.drawString(weatherText, 20, 125);
         }
 
