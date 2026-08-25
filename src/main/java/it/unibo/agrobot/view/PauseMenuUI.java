@@ -89,7 +89,7 @@ public class PauseMenuUI extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         this.setPreferredSize(new Dimension(400, 300));
 
-        JLabel titleLabel = new JLabel("PAUSA", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("PAUSE", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));

@@ -47,8 +47,11 @@ public class ShopMenuUI extends JPanel {
                 case KeyEvent.VK_UP, KeyEvent.VK_DOWN -> {
                     java.util.List<Component> buttons = new java.util.ArrayList<>();
                     for (Component c : itemsPanel.getComponents()) {
-                        if (c instanceof JButton) buttons.add(c);
-                    }   buttons.add(closeButton);
+                        if (c instanceof JButton) {
+                            buttons.add(c);
+                        }
+                    }
+                    buttons.add(closeButton);
                     int index = buttons.indexOf(src);
                     if (index != -1) {
                         if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -82,7 +85,7 @@ public class ShopMenuUI extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         this.setPreferredSize(new Dimension(400, 300));
 
-        JLabel titleLabel = new JLabel("MERCATO", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("MARKET", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -91,10 +94,10 @@ public class ShopMenuUI extends JPanel {
         itemsPanel = new JPanel(new GridLayout(0, 1, 0, 5));
         itemsPanel.setOpaque(false);
         itemsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        
+
         this.add(itemsPanel, BorderLayout.CENTER);
 
-        closeButton = new JButton("CHIUDI");
+        closeButton = new JButton("CLOSE");
         closeButton.setFont(new Font("Arial", Font.BOLD, 16));
         closeButton.setBackground(Color.WHITE);
         closeButton.setForeground(new Color(50, 50, 50));
@@ -126,7 +129,8 @@ public class ShopMenuUI extends JPanel {
     }
 
     /**
-     * Aggiorna i pulsanti del negozio per riflettere i costi attuali e la disponibilità.
+     * Aggiorna i pulsanti del negozio per riflettere i costi attuali e la
+     * disponibilità.
      */
     public final void refreshView() {
         int focusedIndex = -1;
@@ -144,7 +148,7 @@ public class ShopMenuUI extends JPanel {
         itemsPanel.removeAll();
 
         // pulsante per potenziare la batteria
-        JButton upgradeBatteryBtn = new JButton(String.format("Potenzia Batteria +25 (Costo: %.0f)", market.getBatteryUpgradeCost()));
+        JButton upgradeBatteryBtn = new JButton(String.format("Better battery +25 (Cost: %.0f)", market.getBatteryUpgradeCost()));
         upgradeBatteryBtn.addKeyListener(menuKeyListener);
         upgradeBatteryBtn.addActionListener(e -> {
             if (market.buyBatteryUpgrade(drone)) {
@@ -160,7 +164,7 @@ public class ShopMenuUI extends JPanel {
         itemsPanel.add(upgradeBatteryBtn);
 
         // pulsante per potenziare il serbatoio dell'acqua
-        JButton upgradeWaterTankBtn = new JButton(String.format("Potenzia Serbatoio +25 (Costo: %.0f)", market.getWaterTankUpgradeCost()));
+        JButton upgradeWaterTankBtn = new JButton(String.format("Better water tank +25 (Cost: %.0f)", market.getWaterTankUpgradeCost()));
         upgradeWaterTankBtn.addKeyListener(menuKeyListener);
         upgradeWaterTankBtn.addActionListener(e -> {
             if (market.buyWaterTankUpgrade(drone)) {
@@ -179,7 +183,7 @@ public class ShopMenuUI extends JPanel {
         java.util.Set<String> seedsToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.SEED);
         for (String seed : seedsToBuy) {
             double price = market.getPriceManager().getBuyPrice(seed, it.unibo.agrobot.model.ItemType.SEED);
-            JButton buyBtn = new JButton(String.format("Compra Seme %s (Costo: %.2f)", seed, price));
+            JButton buyBtn = new JButton(String.format("Buy %s seed (Cost: %.2f)", seed, price));
             buyBtn.addKeyListener(menuKeyListener);
             buyBtn.addActionListener(e -> {
                 if (market.buySeed(seed)) {
@@ -199,7 +203,7 @@ public class ShopMenuUI extends JPanel {
         java.util.Set<String> consumablesToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.CONSUMABLE);
         for (String consumable : consumablesToBuy) {
             double price = market.getPriceManager().getBuyPrice(consumable, it.unibo.agrobot.model.ItemType.CONSUMABLE);
-            JButton buyBtn = new JButton(String.format("Compra %s (Costo: %.2f)", consumable, price));
+            JButton buyBtn = new JButton(String.format("Buy %s (Cost: %.2f)", consumable, price));
             buyBtn.addKeyListener(menuKeyListener);
             buyBtn.addActionListener(e -> {
                 if (market.buyConsumable(consumable)) {
@@ -219,7 +223,7 @@ public class ShopMenuUI extends JPanel {
         java.util.Set<String> cropsToSell = market.getPriceManager().getSellableItems(it.unibo.agrobot.model.ItemType.CROP);
         for (String crop : cropsToSell) {
             double price = market.getPriceManager().getSellPrice(crop, it.unibo.agrobot.model.ItemType.CROP);
-            JButton sellBtn = new JButton(String.format("Vendi %s (Guadagno: %.2f)", crop, price));
+            JButton sellBtn = new JButton(String.format("Sell %s (Profit: %.2f)", crop, price));
             sellBtn.addKeyListener(menuKeyListener);
             sellBtn.addActionListener(e -> {
                 if (market.sellCrop(crop)) {
@@ -237,7 +241,7 @@ public class ShopMenuUI extends JPanel {
 
         this.revalidate();
         this.repaint();
-        
+
         if (itemsPanel.getComponentCount() > 0 && this.isVisible()) {
             if (focusedIndex >= 0 && focusedIndex < itemsPanel.getComponentCount()) {
                 itemsPanel.getComponent(focusedIndex).requestFocusInWindow();
