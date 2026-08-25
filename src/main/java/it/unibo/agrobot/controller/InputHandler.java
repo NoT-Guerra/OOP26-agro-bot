@@ -218,10 +218,8 @@ public class InputHandler extends KeyAdapter {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL && tile.hasWeed()) {
                         if (!drone.isDead()) {
                             it.unibo.agrobot.model.Inventory inventory = drone.getInventory();
-                            int selectedIndex = inventory.getSelectedSlotIndex();
-                            it.unibo.agrobot.model.InventorySlot selectedSlot = inventory.getSlot(selectedIndex);
                             
-                            if (!selectedSlot.isEmpty() && selectedSlot.getType() == it.unibo.agrobot.model.ItemType.CONSUMABLE && "Herbicide".equals(selectedSlot.getItemName())) {
+                            if (inventory.getItemCount("Herbicide") > 0) {
                                 tile.removeWeed();
                                 inventory.removeItem("Herbicide", it.unibo.agrobot.model.ItemType.CONSUMABLE);
                             } else {
