@@ -72,6 +72,27 @@ public class Inventory {
     }
 
     /**
+     * verifica se c'e spazio nell inventario per aggiungere un oggetto.
+     *
+     * @param itemName il nome dell oggetto da inserire
+     * @param type il tipo dell oggetto (CROP o SEED)
+     * @return true se l oggetto puo essere inserito, false se l inventario e pieno
+     */
+    public synchronized boolean canAddItem(String itemName, ItemType type) {
+        for (InventorySlot slot : this.slots) {
+            if (!slot.isEmpty() && slot.getItemName().equals(itemName) && slot.getType() == type && !slot.isFull()) {
+                return true;
+            }
+        }
+        for (InventorySlot slot : this.slots) {
+            if (slot.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * rimuove una unita dell oggetto specificato dall inventario.
      *
      * @param itemName il nome dell oggetto da rimuovere

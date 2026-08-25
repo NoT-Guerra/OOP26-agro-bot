@@ -167,7 +167,11 @@ public class StorageView extends JPanel {
         for (int i = 0; i < droneInventory.getSlotCount(); i++) {
             InventorySlot slot = droneInventory.getSlot(i);
             if (!slot.isEmpty()) {
-                String text = slot.getItemName() + " (x" + slot.getQuantity() + ")";
+                String displayName = slot.getItemName();
+                if (slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
+                    displayName = "Seme " + displayName;
+                }
+                String text = displayName + " (x" + slot.getQuantity() + ")";
                 JButton itemBtn = new JButton(text + " -> Deposita");
                 styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {
@@ -183,7 +187,11 @@ public class StorageView extends JPanel {
         for (int i = 0; i < storage.getSlotCount(); i++) {
             InventorySlot slot = storage.getSlot(i);
             if (!slot.isEmpty()) {
-                String text = slot.getItemName() + " (x" + slot.getQuantity() + ")";
+                String displayName = slot.getItemName();
+                if (slot.getType() == it.unibo.agrobot.model.ItemType.SEED) {
+                    displayName = "Seme " + displayName;
+                }
+                String text = displayName + " (x" + slot.getQuantity() + ")";
                 JButton itemBtn = new JButton("Preleva <- " + text);
                 styleButton(itemBtn);
                 itemBtn.addActionListener(e -> {

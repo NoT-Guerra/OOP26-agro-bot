@@ -109,11 +109,26 @@ public class InputHandler extends KeyAdapter {
                 grid.getTile(drone.getPosition()).ifPresent(tile -> {
                     if (tile.getType() == it.unibo.agrobot.model.TileType.SOIL) {
                         if (!drone.isDead()) {
-                            // controlla se c'è un raccolto maturo da raccogliere
-                            java.util.Optional<it.unibo.agrobot.model.Crop> harvested = tile.harvest();
-                            if (harvested.isPresent()) {
-                                drone.harvest(); // consuma batteria
-                                drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
+                            // controlla se c'è un raccolto maturo da raccogliere e spazio nell'inventario
+                            java.util.Optional<it.unibo.agrobot.model.Crop> cropOpt = tile.getCrop();
+                            if (cropOpt.isPresent()) {
+                                it.unibo.agrobot.model.Crop crop = cropOpt.get();
+                                if (crop.isReadyToHarvest()) {
+                                    if (drone.getInventory().canAddItem(crop.getName(), it.unibo.agrobot.model.ItemType.CROP)) {
+                                        java.util.Optional<it.unibo.agrobot.model.Crop> harvested = tile.harvest();
+                                        if (harvested.isPresent()) {
+                                            drone.harvest(); // consuma batteria
+                                            drone.getInventory().addItem(harvested.get().getName(), it.unibo.agrobot.model.ItemType.CROP);
+                                        }
+                                    } else {
+                                        java.awt.Toolkit.getDefaultToolkit().beep();
+                                    }
+                                } else if (crop.isDead()) {
+                                    tile.harvest(); // pulisci terreno
+                                    drone.harvest();
+                                } else {
+                                    java.awt.Toolkit.getDefaultToolkit().beep();
+                                }
                             } else {
                                 java.awt.Toolkit.getDefaultToolkit().beep();
                             }

@@ -178,7 +178,8 @@ public class ShopMenuUI extends JPanel {
         // fetch dinamico degli oggetti acquistabili
         java.util.Set<String> seedsToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.SEED);
         for (String seed : seedsToBuy) {
-            JButton buyBtn = new JButton("Compra Seme " + seed);
+            double price = market.getPriceManager().getBuyPrice(seed, it.unibo.agrobot.model.ItemType.SEED);
+            JButton buyBtn = new JButton(String.format("Compra Seme %s (Costo: %.2f)", seed, price));
             buyBtn.addKeyListener(menuKeyListener);
             buyBtn.addActionListener(e -> {
                 if (market.buySeed(seed)) {
@@ -197,7 +198,8 @@ public class ShopMenuUI extends JPanel {
         //fetch dinamico dei consumabili (diserbante)
         java.util.Set<String> consumablesToBuy = market.getPriceManager().getBuyableItems(it.unibo.agrobot.model.ItemType.CONSUMABLE);
         for (String consumable : consumablesToBuy) {
-            JButton buyBtn = new JButton("Compra " + consumable);
+            double price = market.getPriceManager().getBuyPrice(consumable, it.unibo.agrobot.model.ItemType.CONSUMABLE);
+            JButton buyBtn = new JButton(String.format("Compra %s (Costo: %.2f)", consumable, price));
             buyBtn.addKeyListener(menuKeyListener);
             buyBtn.addActionListener(e -> {
                 if (market.buyConsumable(consumable)) {
@@ -216,7 +218,8 @@ public class ShopMenuUI extends JPanel {
         // fetch dinamico degli oggetti vendibili
         java.util.Set<String> cropsToSell = market.getPriceManager().getSellableItems(it.unibo.agrobot.model.ItemType.CROP);
         for (String crop : cropsToSell) {
-            JButton sellBtn = new JButton("Vendi " + crop);
+            double price = market.getPriceManager().getSellPrice(crop, it.unibo.agrobot.model.ItemType.CROP);
+            JButton sellBtn = new JButton(String.format("Vendi %s (Guadagno: %.2f)", crop, price));
             sellBtn.addKeyListener(menuKeyListener);
             sellBtn.addActionListener(e -> {
                 if (market.sellCrop(crop)) {

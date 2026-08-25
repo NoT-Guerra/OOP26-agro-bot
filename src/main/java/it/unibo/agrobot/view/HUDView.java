@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import it.unibo.agrobot.model.Drone;
 import it.unibo.agrobot.model.Inventory;
 import it.unibo.agrobot.model.InventorySlot;
+import it.unibo.agrobot.model.ItemType;
 
 /**
  * gestisce la visualizzazione dell'HUD con le informazioni del drone:
@@ -313,7 +314,11 @@ public class HUDView {
             if (itemName != null && quantity > 0) {
                 String quantityStr = String.valueOf(quantity);
 
-                String shortName = itemName.length() > 6 ? itemName.substring(0, 6) + "." : itemName;
+                String displayName = itemName;
+                if (slot.getType() == ItemType.SEED) {
+                    displayName = "Seme " + itemName;
+                }
+                String shortName = displayName.length() > 9 ? displayName.substring(0, 9) + "." : displayName;
                 int textX = x + (slotSize - fm.stringWidth(shortName)) / 2;
                 g2d.drawString(shortName, textX, startY + 20);
 
