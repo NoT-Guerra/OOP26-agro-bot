@@ -85,22 +85,33 @@ public class GamePanel extends JPanel {
             int hudSpace = (int)(220 * currentScale); 
             int availableWidthForGrid = this.getWidth() - hudSpace;
             
+            int colsWithFence = this.gridView.getCols() + 2;
+            int rowsWithFence = this.gridView.getRows() + 2;
+            
             int dynamicTileSize = Math.min(
-                availableWidthForGrid / this.gridView.getCols(),
-                this.getHeight() / this.gridView.getRows()
+                availableWidthForGrid / colsWithFence,
+                this.getHeight() / rowsWithFence
             );
             this.gridView.setTileSize(dynamicTileSize);
 
             // Calcoliamo di quanto spostare la griglia per centrarla nello spazio rimanente a destra dell'HUD
-            int totalGridWidth = dynamicTileSize * this.gridView.getCols();
-            int totalGridHeight = dynamicTileSize * this.gridView.getRows();
+            int totalGridWidth = dynamicTileSize * colsWithFence;
+            int totalGridHeight = dynamicTileSize * rowsWithFence;
             
             offsetX = hudSpace + (availableWidthForGrid - totalGridWidth) / 2;
             offsetY = (this.getHeight() - totalGridHeight) / 2;
         }
 
         // Spostiamo il "pennello" per centrare tutto quello che stiamo per disegnare
-        g2d.translate(offsetX, offsetY);
+        // aggiungendo la dimensione di una tile per far spazio alla staccionata
+        int translateOffsetX = offsetX;
+        int translateOffsetY = offsetY;
+        if (this.gridView != null) {
+            translateOffsetX += this.gridView.getTileSize();
+            translateOffsetY += this.gridView.getTileSize();
+        }
+        
+        g2d.translate(translateOffsetX, translateOffsetY);
 
         if (this.gridView != null) {
             this.gridView.draw(g2d);
@@ -112,7 +123,7 @@ public class GamePanel extends JPanel {
         }
         
         // riportiamo il pennello alla posizione originale
-        g2d.translate(-offsetX, -offsetY);
+        g2d.translate(-translateOffsetX, -translateOffsetY);
 
         // disegna gli effetti atmosferici sopra la griglia e il drone, ma sotto l'HUD
         if (this.weatherView != null) {

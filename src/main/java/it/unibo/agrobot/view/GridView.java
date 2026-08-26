@@ -60,6 +60,27 @@ public class GridView {
      * @param g contesto grafico su cui disegnare la griglia
      */
     public void draw(Graphics2D g) {
+        // disegno staccionata (bordo esterno)
+        for (int x = -1; x <= grid.getWidth(); x++) {
+            // Riga superiore
+            String typeTop = "horizontal";
+            if (x == -1) typeTop = "corner_tl";
+            else if (x == grid.getWidth()) typeTop = "corner_tr";
+            tileView.drawFence(g, x * tileSize, -tileSize, tileSize, typeTop);
+            
+            // Riga inferiore
+            String typeBottom = "horizontal";
+            if (x == -1) typeBottom = "corner_bl";
+            else if (x == grid.getWidth()) typeBottom = "corner_br";
+            tileView.drawFence(g, x * tileSize, grid.getHeight() * tileSize, tileSize, typeBottom);
+        }
+        for (int y = 0; y < grid.getHeight(); y++) {
+            // Colonna sinistra
+            tileView.drawFence(g, -tileSize, y * tileSize, tileSize, "vertical");
+            // Colonna destra
+            tileView.drawFence(g, grid.getWidth() * tileSize, y * tileSize, tileSize, "vertical");
+        }
+
         // disegno il terreno (sfondo) per ogni tile
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
