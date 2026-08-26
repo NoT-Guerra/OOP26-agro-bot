@@ -27,6 +27,12 @@ public class TileView {
     private BufferedImage wellImage;
     private BufferedImage marketImage;
     private BufferedImage weedImage;
+    private BufferedImage fenceHorizontalImage;
+    private BufferedImage fenceVerticalImage;
+    private BufferedImage fenceCornerHighDx;
+    private BufferedImage fenceCornerHighSx;
+    private BufferedImage fenceCornerLowDx;
+    private BufferedImage fenceCornerLowSx;
     
     // mappa per memorizzare le immagini delle colture in base al loro stato
     private final Map<String, BufferedImage> cropImages = new HashMap<>();
@@ -54,6 +60,13 @@ public class TileView {
         this.marketImage = loadImage("market.png", true);
         
         this.weedImage = loadImage("weed.png", true);
+        
+        this.fenceHorizontalImage = loadImage("fence_horizontal.png", true);
+        this.fenceVerticalImage = loadImage("fence_vertical.png", true);
+        this.fenceCornerHighDx = loadImage("fence_corner_high_dx.png", true);
+        this.fenceCornerHighSx = loadImage("fence_corner_high_sx.png", true);
+        this.fenceCornerLowDx = loadImage("fence_corner_low_dx.png", true);
+        this.fenceCornerLowSx = loadImage("fence_corner_low_sx.png", true);
         
         // carica le immagini delle colture per ogni stato (seed, growing, mature, dead)
         String[] cropNames = {"wheat", "corn"};
@@ -263,6 +276,39 @@ public class TileView {
             int offsetX = x + (size - cropSize) / 2;
             int offsetY = y + (size - cropSize) / 2;
             g.fillOval(offsetX, offsetY, cropSize, cropSize);
+        }
+    }
+
+    /**
+     * disegna la staccionata decorativa (bordo esterno della griglia)
+     * @param g il contesto grafico su cui disegnare
+     * @param x coordinata x
+     * @param y coordinata y
+     * @param size dimensione della casella
+     * @param type tipo di staccionata ("horizontal", "vertical", "corner")
+     */
+    public void drawFence(Graphics2D g, int x, int y, int size, String type) {
+        // Disegna sempre uno sfondo erboso sotto la staccionata per continuità visiva
+        g.setColor(new Color(124, 204, 76)); 
+        g.fillRect(x, y, size, size);
+
+        BufferedImage fenceImage = null;
+        
+        switch (type) {
+            case "corner_tr" -> fenceImage = this.fenceCornerHighDx;
+            case "corner_tl" -> fenceImage = this.fenceCornerHighSx;
+            case "corner_br" -> fenceImage = this.fenceCornerLowDx;
+            case "corner_bl" -> fenceImage = this.fenceCornerLowSx;
+            case "horizontal" -> fenceImage = this.fenceHorizontalImage;
+            case "vertical" -> fenceImage = this.fenceVerticalImage;
+        }
+
+        if (fenceImage != null) {
+            g.drawImage(fenceImage, x, y, size, size, null);
+        } else {
+            // Fallback
+            g.setColor(new Color(139, 69, 19)); // Marrone
+            g.fillRect(x + size/4, y + size/4, size/2, size/2);
         }
     }
 }
