@@ -285,8 +285,9 @@ public class HUDView {
         }
 
         int slotCount = inventory.getSlotCount();
-        int slotSize = 50;
         int spacing = 10;
+        int hudWidth = 200;
+        int slotSize = slotCount > 0 ? (hudWidth - (slotCount - 1) * spacing) / slotCount : 50;
 
         int startX = 10;
         int startY = 150;
@@ -300,7 +301,7 @@ public class HUDView {
 
             // Sfondo dello slot
             if (i == inventory.getSelectedSlotIndex()) {
-                g2d.setColor(new Color(100, 200, 100, 200)); // slot selezionato
+                g2d.setColor(new Color(255, 215, 0, 200)); // slot selezionato
             } else {
                 g2d.setColor(new Color(0, 0, 0, 150));
             }
@@ -308,7 +309,7 @@ public class HUDView {
 
             // Bordo dello slot
             if (i == inventory.getSelectedSlotIndex()) {
-                g2d.setColor(Color.GREEN);
+                g2d.setColor(Color.YELLOW);
             } else {
                 g2d.setColor(Color.WHITE);
             }
@@ -316,7 +317,11 @@ public class HUDView {
 
             String itemName = slot.getItemName();
             int quantity = slot.getQuantity();
-
+            if (i == inventory.getSelectedSlotIndex()) {
+                g2d.setColor(Color.BLACK);
+            } else {
+                g2d.setColor(Color.WHITE);
+            }
             // Contenuto dello slot
             if (itemName != null && quantity > 0) {
                 String quantityStr = String.valueOf(quantity);
@@ -325,12 +330,30 @@ public class HUDView {
                 if (slot.getType() == ItemType.SEED) {
                     displayName = "Seme " + itemName;
                 }
-                String shortName = displayName.length() > 9 ? displayName.substring(0, 9) + "." : displayName;
-                int textX = x + (slotSize - fm.stringWidth(shortName)) / 2;
-                g2d.drawString(shortName, textX, startY + 20);
+                String[] words = displayName.split(" ");
+                for (int w = 0; w < words.length; w++) {
+                    String word = words[w];
+                    if (fm.stringWidth(word) > slotSize - 4) {
+                        for (int j = word.length() - 1; j > 0; j--) {
+                            String shortWord = word.substring(0, j) + ".";
+                            if (fm.stringWidth(shortWord) <= slotSize - 4) {
+                                words[w] = shortWord;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                int currentY = startY + (words.length == 1 ? 25 : 20);
+                for (String word : words) {
+                    int textX = x + (slotSize - fm.stringWidth(word)) / 2;
+                    g2d.drawString(word, textX, currentY);
+                    currentY += 15;
+                }
 
+                int qY = startY + 50;
                 int qX = x + (slotSize - fm.stringWidth(quantityStr)) / 2;
-                g2d.drawString(quantityStr, qX, startY + 40);
+                g2d.drawString(quantityStr, qX, qY);
             }
         }
     }
