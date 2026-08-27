@@ -17,9 +17,9 @@ public class WeatherManagerImpl implements WeatherManager {
     private final Grid grid;
 
     // definisco i parametri per la pioggia
-    private static final double MIN_TIME_BETWEEN_CHANGES = 20.0; // secondi minimi tra cambi di tempo
-    private static final double CHANGE_PROBABILITY = 0.3; // 30% di probabilità
-    private static final double RAIN_DURATION = 15.0; // durata della pioggia
+    private static final double MIN_TIME_BETWEEN_CHANGES = 40.0; // secondi minimi tra cambi di tempo
+    private static final double CHANGE_PROBABILITY = 0.15; // 15% di probabilità
+    private static final double RAIN_DURATION = 8.0; // durata della pioggia
     private static final double RAIN_WATERING_INTERVAL = 0.5; // ogni 0.5 secondi piove su alcune zolle
     private static final int TILES_WATERED_PER_TICK = 5; // zolle annaffiate per ogni tick di pioggia
 

@@ -5,8 +5,8 @@ package it.unibo.agrobot.model;
  */
 public class Corn extends AbstractCrop {
 
-    private static final double GROWTH_TIME = 35.0;
-    private static final double HYDRATION_TIME = 40.0;
+    private static final double GROWTH_TIME = 70.0;
+    private static final double HYDRATION_TIME = 80.0;
 
     /**
      * Costruisce una pianta di mais.

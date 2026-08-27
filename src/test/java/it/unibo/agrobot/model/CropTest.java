@@ -11,19 +11,19 @@ class CropTest {
      */
     @Test
     void testWheatGrowth() {
-        Crop wheat = new Wheat(); // 20.0s per la crescita, 15.0s per l'irrigazione
+        Crop wheat = new Wheat(); // 40.0s per la crescita, 50.0s per l'irrigazione
         
         assertEquals(CropState.SEED, wheat.getState()); // inizialmente è uno stato di seme
         
-        // avanzo il tempo di 11 secondi e verifico che la pianta sia ancora in crescita
-        wheat.update(11.0);
+        // avanzo il tempo di 21 secondi e verifico che la pianta sia ancora in crescita
+        wheat.update(21.0);
         assertEquals(CropState.GROWING, wheat.getState());
         
         // annaffio la pianta in modo che non muoia
         wheat.water();
         
-        // avanzo il tempo di altri 10 secondi → totale 21s > 20s di crescita
-        wheat.update(10.0);
+        // avanzo il tempo di altri 20 secondi → totale 41s > 40s di crescita
+        wheat.update(20.0);
         assertEquals(CropState.MATURE, wheat.getState());
         assertTrue(wheat.isReadyToHarvest());
     }
@@ -33,12 +33,12 @@ class CropTest {
      */
     @Test
     void testCornDehydration() {
-        Crop corn = new Corn(); // 35.0s per la crescita, 10.0s per l'irrigazione
+        Crop corn = new Corn(); // 70.0s per la crescita, 80.0s per l'irrigazione
         
         assertEquals(CropState.SEED, corn.getState());
         
-        // avanzo il tempo di 41 secondi per verificare che la pianta sia morta
-        corn.update(41.0);
+        // avanzo il tempo di 81 secondi per verificare che la pianta sia morta
+        corn.update(81.0);
         
         // il mais dovrebbe essere morto per mancanza d'acqua
         assertEquals(CropState.DEAD, corn.getState());
@@ -68,10 +68,10 @@ class CropTest {
         assertTrue(tile.plant(wheat));
         assertTrue(tile.getCrop().isPresent());
         
-        // avanzo il tempo di 10 secondi per far maturare la pianta
-        wheat.update(10.0);
+        // avanzo il tempo di 20 secondi per far maturare la pianta
+        wheat.update(20.0);
         tile.irrigate(); // annaffio la pianta
-        wheat.update(11.0);
+        wheat.update(21.0);
         
         assertTrue(wheat.isReadyToHarvest());
         
