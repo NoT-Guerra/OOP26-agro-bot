@@ -117,7 +117,7 @@ public class TileImpl implements Tile {
         double multiplier = (this.soilState == SoilState.WATERED) ? 2.0 : 1.0;
         this.crop.ifPresent(c -> c.update(deltaTime, multiplier));
 
-        if (this.type == TileType.SOIL && !this.weed && Math.random() < 0.001 * deltaTime) {
+        if (this.type == TileType.SOIL && !this.weed && this.crop.isEmpty() && Math.random() < 0.001 * deltaTime) {
             spawnWeed();
         }
     }
@@ -129,7 +129,7 @@ public class TileImpl implements Tile {
 
     @Override
     public synchronized boolean spawnWeed() {
-        if (this.type == TileType.SOIL && !this.weed) {
+        if (this.type == TileType.SOIL && !this.weed && this.crop.isEmpty()) {
             this.weed = true;
             return true;
         }
