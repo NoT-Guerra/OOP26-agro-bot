@@ -117,7 +117,7 @@ public class TileImpl implements Tile {
         double multiplier = (this.soilState == SoilState.WATERED) ? 2.0 : 1.0;
         this.crop.ifPresent(c -> c.update(deltaTime, multiplier));
 
-        if (this.type == TileType.SOIL && !this.weed && this.crop.isEmpty() && Math.random() < 0.001 * deltaTime) {
+        if (this.type == TileType.SOIL && !this.weed && this.crop.isEmpty() && Math.random() < 0.0001 * deltaTime) {
             spawnWeed();
         }
     }
