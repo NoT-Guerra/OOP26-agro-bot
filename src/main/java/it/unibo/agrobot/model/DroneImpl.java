@@ -159,8 +159,6 @@ public class DroneImpl implements Drone {
     public synchronized void plow() {
         if (!this.battery.isDead()) {
             this.battery.decrease(getActionCost());
-            //todo
-            //serisci la logica di interazione col terreno 
         }
     }
 
@@ -168,7 +166,6 @@ public class DroneImpl implements Drone {
     public synchronized void harvest() {
         if (!this.battery.isDead()) {
             this.battery.decrease(getActionCost());
-            // La logica effettiva di raccolta risorsa verrà inserita qui
         }
     }
 
