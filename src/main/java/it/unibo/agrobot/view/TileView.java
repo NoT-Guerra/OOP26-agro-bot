@@ -304,7 +304,12 @@ public class TileView {
         }
 
         if (fenceImage != null) {
-            g.drawImage(fenceImage, x, y, size, size, null);
+            int imgW = fenceImage.getWidth();
+            int imgH = fenceImage.getHeight();
+            int max = Math.max(imgW, imgH);
+            int w = size * imgW / max;
+            int h = size * imgH / max;
+            g.drawImage(fenceImage, x + (size - w) / 2, y + (size - h) / 2, w, h, null);
         } else {
             // Fallback
             g.setColor(new Color(139, 69, 19)); // Marrone
