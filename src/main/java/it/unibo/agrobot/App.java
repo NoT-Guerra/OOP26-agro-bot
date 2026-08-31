@@ -114,7 +114,10 @@ public class App {
                     }
                     gameWindow.showPanel("PLAYING");
                 }
-                case GAME_OVER -> gameWindow.showPanel("GAME_OVER");
+                case GAME_OVER -> {
+                    gameOverView.setReason(stateManager.getGameOverReason());
+                    gameWindow.showPanel("GAME_OVER");
+                }
                 case STORAGE_MENU -> {
                     storageView.refreshView();
                     gameWindow.showPanel("STORAGE_MENU");
@@ -141,6 +144,41 @@ public class App {
         
         // avvio il game loop per la logica e il rendering continuo
         GameLoop gameLoop = new GameLoop(gamePanel, grid, drone, stateManager, weatherManager);
+        
+        gameLoop.setBankruptcyChecker(() -> {
+            //Controlla se il bilancio è sotto il prezzo minimo (10 per il grano)
+            if (wallet.getBalance() < 10.0) {
+                boolean hasSeedsOrCrops = false;
+                
+                //check drone Inventory
+                it.unibo.agrobot.model.Inventory inv = drone.getInventory();
+                for (int i = 0; i < inv.getSlotCount(); i++) {
+                    it.unibo.agrobot.model.InventorySlot slot = inv.getSlot(i);
+                    if (!slot.isEmpty() && (slot.getType() == ItemType.SEED || slot.getType() == ItemType.CROP)) {
+                        hasSeedsOrCrops = true;
+                        break;
+                    }
+                }
+                
+                // controllo storage se non ha ancora trovato niente
+                if (!hasSeedsOrCrops) {
+                    for (int i = 0; i < storage.getSlotCount(); i++) {
+                        it.unibo.agrobot.model.InventorySlot slot = storage.getSlot(i);
+                        if (!slot.isEmpty() && (slot.getType() == ItemType.SEED || slot.getType() == ItemType.CROP)) {
+                            hasSeedsOrCrops = true;
+                            break;
+                        }
+                    }
+                }
+                
+                //Game over se non ci sono soldi, semi o raccolto
+                if (!hasSeedsOrCrops) {
+                    return "You've run out of money and have no resources to continue!";
+                }
+            }
+            return null;
+        });
+
         gameLoop.start();
     }
 }

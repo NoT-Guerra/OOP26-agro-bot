@@ -8,6 +8,25 @@ public class GameStateManager {
     
     private GameState state = GameState.MENU;
     private Consumer<GameState> onStateChange;
+    private String gameOverReason = "";
+
+    /**
+     * imposta il motivo del game over
+     *
+     * @param reason il motivo
+     */
+    public void setGameOverReason(String reason) {
+        this.gameOverReason = reason;
+    }
+
+    /**
+     * ottiene il motivo del game over
+     *
+     * @return il motivo
+     */
+    public String getGameOverReason() {
+        return this.gameOverReason;
+    }
 
     /**
      * imposta il listener da notificare quando lo stato del gioco cambia

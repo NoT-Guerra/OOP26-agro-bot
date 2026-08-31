@@ -22,6 +22,8 @@ import it.unibo.agrobot.controller.GameStateManager;
  */
 public class GameOverView extends JPanel {
 
+    private JLabel subtitleLabel;
+
     /**
      * costruttore della schermata di game over
      *
@@ -32,11 +34,22 @@ public class GameOverView extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(139, 34, 34)); // rosso scuro
 
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.setOpaque(false);
+
         JLabel titleLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 80));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(150, 0, 0, 0));
-        this.add(titleLabel, BorderLayout.NORTH);
+        northPanel.add(titleLabel, BorderLayout.NORTH);
+
+        subtitleLabel = new JLabel("", SwingConstants.CENTER);
+        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        subtitleLabel.setForeground(Color.WHITE);
+        subtitleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        northPanel.add(subtitleLabel, BorderLayout.CENTER);
+
+        this.add(northPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setOpaque(false);
@@ -65,5 +78,15 @@ public class GameOverView extends JPanel {
         centerPanel.add(restartButton, gbc);
 
         this.add(centerPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * imposta il motivo del game over
+     * @param reason il motivo
+     */
+    public void setReason(String reason) {
+        if (this.subtitleLabel != null) {
+            this.subtitleLabel.setText(reason);
+        }
     }
 }

@@ -53,6 +53,16 @@ public class GameLoop implements Runnable {
         this.weatherManager = null;
     }
 
+    private java.util.function.Supplier<String> bankruptcyChecker;
+
+    /**
+     * Imposta il controllo per il game over
+     * @param checker funzione che ritorna il motivo del game over o null se non c'è
+     */
+    public void setBankruptcyChecker(java.util.function.Supplier<String> checker) {
+        this.bankruptcyChecker = checker;
+    }
+
     /**
      * Avvia i thread di logica e rendering del game loop.
      */
@@ -161,9 +171,21 @@ public class GameLoop implements Runnable {
         
         if (this.drone.isDead()) {
             if (this.stateManager != null) {
+                this.stateManager.setGameOverReason("You've run out of battery!");
                 this.stateManager.setState(GameState.GAME_OVER);
             }
             return;
+        }
+
+        if (this.bankruptcyChecker != null) {
+            String reason = this.bankruptcyChecker.get();
+            if (reason != null) {
+                if (this.stateManager != null) {
+                    this.stateManager.setGameOverReason(reason);
+                    this.stateManager.setState(GameState.GAME_OVER);
+                }
+                return;
+            }
         }
 
         // calcola deltaTime in secondi
